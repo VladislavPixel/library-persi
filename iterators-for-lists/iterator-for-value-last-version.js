@@ -12,8 +12,12 @@ class IteratorForValueLastVersion {
 			return { value: undefined, done: true };
 		}
 
-		const currentNode = this.list;
+		const nodeLatestVersion = this.list.applyListChanges();
 
-		
+		const clone = nodeLatestVersion.getClone();
+
+		this.list = nodeLatestVersion.next;
+
+		return { value: clone.value, done: false };
 	}
 }

@@ -1,6 +1,5 @@
 class HistoryChanges {
-	constructor(getTotalVersionsFn) {
-		this.getTotalVersions = getTotalVersionsFn;
+	constructor() {
 		this.selectedIndexHistory = 0;
 		this.arrHistoryChanges = [];
 	}
@@ -11,7 +10,7 @@ class HistoryChanges {
 		}
 
 		if (indexChange === undefined) {
-			this.selectedIndexHistory = this.getTotalVersions() - 1;
+			this.selectedIndexHistory = this.arrHistoryChanges.length - 1;
 
 			return this.arrHistoryChanges[this.selectedIndexHistory];
 		}

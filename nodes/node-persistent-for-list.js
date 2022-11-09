@@ -8,46 +8,72 @@ class NodePersistent{
 		this.changeLog = {};
 	}
 
-	[Symbol.iterator]() {
-		return new IteratorNodePersistentByNodes(this);
-	}
+	// [Symbol.iterator]() {
+	// 	return new IteratorNodePersistentByNodes(this);
+	// }
 
-	cloneCascading() {
+	// findByKey(key) {
+	// 	for (const node of this) {
+	// 		if (typeof key === "object") {
+	// 			const { path, value } = key;
 
-	}
+	// 			try {
+	// 				const { value: val, lastSegment } = node.getValueByPath(path);
 
-	findByKey(key) {
-		for (const node of this) {
-			if (typeof key === "object") {
-				const { path, value } = key;
+	// 				if (val && val[lastSegment] === value) {
+	// 					return node;
+	// 				}
+	// 			} catch (err) {
+	// 				continue;
+	// 			}
+	// 		} else if (node.value === key) {
+	// 			return node;
+	// 		}
+	// 	}
 
-				try {
-					const { value: val, lastSegment } = node.getValueByPath(path);
+	// 	return -1;
+	// }
 
-					if (val && val[lastSegment] === value) {
-						return node;
-					}
-				} catch (err) {
-					continue;
-				}
-			} else if (node.value === key) {
-				return node;
-			}
-		}
-
-		return -1;
-	}
-
-	addChange(numberVersion, value, path) {
-		if (path !== undefined) {
-			this.changeLog[numberVersion] = { value, path };
+	addChange(numberVersion, change) {
+		if ("path" in change) {
+			this.changeLog[numberVersion] = { value: change.value, path: change.path };
 		} else {
-			this.changeLog[numberVersion] = value;
+			this.changeLog[numberVersion] = change;
 		}
 
 		this.counterChanges++;
 
 		return this.counterChanges;
+	}
+
+	cloneCascading(node, totalVersion, change) {
+		if (node === null) {
+			return;
+		}
+
+		if (change !== undefined) {
+			node.addChange(totalVersion, change);
+		}
+
+		if (node.counterChanges > node.MAX_CHANGES) {
+			const newNode = node.applyListChanges();
+
+			this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
+
+			this.cloneCascading(newNode.next, totalVersion, { prev: newNode });
+
+			return newNode;
+		}
+
+		return node;
+	}
+
+	getClone() {
+		const clone = Object.assign(new NodePersistent(0), this);
+
+		clone.value = JSON.parse(JSON.stringify(clone.value));
+
+		return clone;
 	}
 
 	getValueByPath(path) {
@@ -65,6 +91,10 @@ class NodePersistent{
 
 		if (currentValue === undefined) {
 			throw new Error("It is not possible to access the value in the specified path. The value does not contain such nesting.");
+		}
+
+		if (typeof currentValue !== "object") {
+			throw new Error("Writing a new value is not possible because the value does not meet the required levels.");
 		}
 
 		return { value: currentValue, lastSegment: arrSegments[arrSegments.length - 1] };
@@ -91,14 +121,32 @@ class NodePersistent{
 			const change = this.changeLog[strVersion];
 
 			if ("path" in change) {
-				const { value, lastSegment } = this.getValueByPath(change.path);
+				const { value: dataValue, lastSegment } = this.getValueByPath(change.path);
 
-				value[lastSegment] = change.value;
+				if (dataValue === this) {
+					newNode = Object.assign(newNode, { value: change.value });
+					
+					continue;
+				}
+
+				dataValue[lastSegment] = change.value;
 			} else {
-				newNode = Object.assign(newNode, this.changeLog[strVersion]);
+				newNode = Object.assign(newNode, change);
 			}
 		}
 
 		return newNode;
+	}
+
+	set(configForValueNode, numberVersion) {
+		if ("path" in configForValueNode) {
+			const nodeLatestVersion = this.applyListChanges();
+
+			nodeLatestVersion.getValueByPath(configForValueNode.path);
+		}
+
+		const node = this.cloneCascading(this, numberVersion, configForValueNode);
+
+		return node;
 	}
 }
