@@ -12,6 +12,10 @@ class OneWayLinkedList{
 		return new IteratorForValueLastVersion(this.head);
 	}
 
+	getIteratorNewAndOldNodes() {
+		return new IteratorForNewAndOldNodes(this.head);
+	}
+
 	#getTotalVersion() {
 		return this.totalVersions;
 	}
@@ -24,18 +28,18 @@ class OneWayLinkedList{
 		const isEmptyInitData = initData === undefined || (isArray && initData.length === 0) || (isObject && Object.keys(initData).length === 0);
 
 		if (isEmptyInitData) {
-			this.historyChanges.registerChange("Initialization oneWayLinkedList data structure. Creating an instance without default data.");
+			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.");
 
 			return;
 		}
 
 		if (!isArray && !isObject) {
-			throw new Error("The passed defaultData cannot be used for initialization oneWayLinkedList. Required to pass an object instance or an array instance.");
+			throw new Error("The passed defaultData cannot be used for initialization list. Required to pass an object instance or an array instance.");
 		}
 
 		const arrayKeys = Object.keys(initData);
 
-		this.historyChanges.registerChange(`Data initialization for structure oneWayLinkedList. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`);
+		this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`);
 
 		for (const key of arrayKeys) {
 			this.addFirst(initData[key]);
@@ -73,13 +77,35 @@ class OneWayLinkedList{
 
 	findByKey(key) {
 		if (this.length === 0) {
-			throw new Error("Method - findByKey is not supported in Empty oneWayLinkedList.");
+			throw new Error("Method - findByKey is not supported in Empty list.");
 		}
+
+		const iterator = this.getIteratorNewAndOldNodes();
+
+		for (const { latestVersionN, stockN } of iterator) {
+			if (typeof key !== "object" && key === latestVersionN.value) {
+				return stockN;
+			}
+
+			try {
+				if (typeof key === "object") {
+					const { value, lastSegment } = latestVersionN.getValueByPath(key.path);
+
+					if (value[lastSegment] === key.value) {
+						return stockN;
+					}
+				}
+			} catch(err) {
+				continue;
+			}
+		}
+
+		return -1;
 	}
 
 	set(configForValueNode, preprocessingConfig) {
 		if (preprocessingConfig === undefined) {
-			this.historyChanges.registerChange(`Set value for oneWayLinkedList. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`);
+			this.historyChanges.registerChange(`Set value for list. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`);
 
 			const node = this.head.set(configForValueNode, this.totalVersions);
 
@@ -97,12 +123,26 @@ class OneWayLinkedList{
 
 			for (const { nameMethod, arrArgsForMethod } of preprocessingConfig) {
 				if (!(nameMethod in this)) {
-					throw new Error(`${nameMethod} is not supported in oneWayLinkedList.`);
+					throw new Error(`${nameMethod} is not supported in your list.`);
 				}
 
-				node = this.structure[nameMethod](...arrArgsForMethod);
+				node = this[nameMethod](...arrArgsForMethod);
+			}
 
-				console.log(node, "РАБОТА ВЫБОРКИ");
+			if (node === -1) {
+				throw new Error("Node is not found in on your list for operation set().");
+			}
+
+			this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`);
+
+			const result = node.set(configForValueNode, this.totalVersions);
+
+			const firstNode = result.getFirstNode();
+
+			if (firstNode !== this.head) {
+				this.head = firstNode;
+
+				this.versions.registerVersion(this.head, this.totalVersions);
 			}
 		}
 

@@ -8,31 +8,17 @@ class NodePersistent{
 		this.changeLog = {};
 	}
 
-	// [Symbol.iterator]() {
-	// 	return new IteratorNodePersistentByNodes(this);
-	// }
+	getFirstNode() {
+		const iterator = new IteratorReverseOverNodes(this)
 
-	// findByKey(key) {
-	// 	for (const node of this) {
-	// 		if (typeof key === "object") {
-	// 			const { path, value } = key;
+		let result;
 
-	// 			try {
-	// 				const { value: val, lastSegment } = node.getValueByPath(path);
+		for (const node of iterator) {
+			result = node;
+		}
 
-	// 				if (val && val[lastSegment] === value) {
-	// 					return node;
-	// 				}
-	// 			} catch (err) {
-	// 				continue;
-	// 			}
-	// 		} else if (node.value === key) {
-	// 			return node;
-	// 		}
-	// 	}
-
-	// 	return -1;
-	// }
+		return result;
+	}
 
 	addChange(numberVersion, change) {
 		if ("path" in change) {
@@ -48,7 +34,7 @@ class NodePersistent{
 
 	cloneCascading(node, totalVersion, change) {
 		if (node === null) {
-			return;
+			return null;
 		}
 
 		if (change !== undefined) {
@@ -58,9 +44,11 @@ class NodePersistent{
 		if (node.counterChanges > node.MAX_CHANGES) {
 			const newNode = node.applyListChanges();
 
-			this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
+			newNode.prev = this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
 
-			this.cloneCascading(newNode.next, totalVersion, { prev: newNode });
+			if (change.next !== newNode.next) {
+				newNode.next = this.cloneCascading(newNode.next, totalVersion, { prev: newNode });
+			}
 
 			return newNode;
 		}
@@ -121,7 +109,8 @@ class NodePersistent{
 			const change = this.changeLog[strVersion];
 
 			if ("path" in change) {
-				const { value: dataValue, lastSegment } = this.getValueByPath(change.path);
+
+				const { value: dataValue, lastSegment } = newNode.getValueByPath(change.path);
 
 				if (dataValue === this) {
 					newNode = Object.assign(newNode, { value: change.value });
