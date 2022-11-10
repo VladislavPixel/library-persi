@@ -60,14 +60,19 @@ class NodePersistent{
 		const clone = Object.assign(new NodePersistent(0), this);
 
 		clone.value = JSON.parse(JSON.stringify(clone.value));
-
 		return clone;
+	}
+
+	getCloneValue(valueNode) {
+		return JSON.parse(JSON.stringify(valueNode));
 	}
 
 	getValueByPath(path) {
 		const arrSegments = path.split("/");
 
 		let currentValue = this;
+
+		currentValue.value = this.getCloneValue(currentValue.value);
 
 		for (let m = 0; m < arrSegments.length - 1; m++) {
 			if (currentValue === undefined) {
@@ -109,12 +114,11 @@ class NodePersistent{
 			const change = this.changeLog[strVersion];
 
 			if ("path" in change) {
-
 				const { value: dataValue, lastSegment } = newNode.getValueByPath(change.path);
 
 				if (dataValue === this) {
 					newNode = Object.assign(newNode, { value: change.value });
-					
+
 					continue;
 				}
 

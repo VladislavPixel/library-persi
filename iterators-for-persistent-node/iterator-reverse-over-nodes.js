@@ -12,9 +12,9 @@ class IteratorReverseOverNodes {
 			return { value: undefined, done: true };
 		}
 
-		const nodeLatestVersion = this.node.applyListChanges();
-
 		const currentNode = this.node;
+
+		const nodeLatestVersion = this.node.applyListChanges();
 
 		this.node = nodeLatestVersion.prev;
 

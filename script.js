@@ -17,6 +17,14 @@ persistentOneWayLinkedList.set({ value: "T-34", path: "value" }, [{ nameMethod: 
 persistentOneWayLinkedList.set({ value: { name: "Vladisalv", job: "programmer", home: { target: "Moscow" } } }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 100 }] }]);
 persistentOneWayLinkedList.set({ path: "value/home/target", value: "Tula" }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/home/target", value: "Moscow" }] }]);
 
-persistentOneWayLinkedList.set({ value: "Valeria" }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/name", value: "Vladisalv" }] }]);
+// persistentOneWayLinkedList.set({ value: "Valeria" }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/name", value: "Vladisalv" }] }]);
+
+// persistentOneWayLinkedList.set({ value: 900 }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: "pixel" }] }]);
+// persistentOneWayLinkedList.set({ value: 1500 }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 900 }] }]);
+// persistentOneWayLinkedList.set({ value: "Globus" }, [{ nameMethod: "findByKey", arrArgsForMethod: ["Valeria"] }]);
+// persistentOneWayLinkedList.set({ value: 3500, path: "value" }, [{ nameMethod: "findByKey", arrArgsForMethod: [1500] }]);
+
+console.log(persistentOneWayLinkedList.versions.at(0));
 
 console.log(persistentOneWayLinkedList);
+
