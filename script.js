@@ -7,6 +7,8 @@ persistentHashTable.set({ path: "value/color", value: "blue" });
 persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
 persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
 
+console.log(persistentHashTable.get(5, "value/profession"));
+
 console.log("Структура: ", persistentHashTable);
 
 //! OneWayLinkedList

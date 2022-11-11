@@ -93,7 +93,21 @@ class HashTable {
 		return this.totalVersions;
 	}
 
-	get() {
+	get(numberVersion, path) {
+		const isNumber = typeof numberVersion === "number";
 
+		if (!isNumber || path === undefined || numberVersion < 0 || numberVersion > this.totalVersions - 1) {
+			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
+		}
+
+		this.historyChanges.registerChange(`Getting field value from hashTable. Version query - ${numberVersion}. Way to the field - ${path}.`);
+
+		const correctIndex = numberVersion <= 4 ? 0 : Math.floor(numberVersion / 4);
+
+		const clone = this.versions.arrVersions[correctIndex].value.getClone().applyListChanges(numberVersion);
+
+		const { value, lastSegment } = clone.getValueByPath(path);
+
+		return value[lastSegment];
 	}
 }
