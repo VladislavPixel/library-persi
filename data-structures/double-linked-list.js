@@ -33,22 +33,26 @@ class DoubleLinkedList extends OneWayLinkedList {
 	}
 
 	addFirst(value) {
-		super.addFirst(value);
+		const result = super.addFirst(value);
 
 		if (this.length === 1) {
 			this.tail = this.head;
+		}
+
+		if (result.lastNode !== this.tail) {
+			this.tail = result.lastNode;
 		}
 
 		return this.length;
 	}
 
 	set(configForValueNode, preprocessingConfig) {
-		const result = super.set(configForValueNode, preprocessingConfig);
+		const { node, newTotalVersion } = super.set(configForValueNode, preprocessingConfig);
 
-		if (result.next === null && result !== this.tail) {
-			this.tail = result;
+		if (node.next === null && node !== this.tail) {
+			this.tail = node;
 		}
 
-		return result;
+		return { node, newTotalVersion };
 	}
 }

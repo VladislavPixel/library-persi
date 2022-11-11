@@ -60,7 +60,7 @@ class NodePersistent{
 
 	cloneCascading(node, totalVersion, change) {
 		if (node === null) {
-			return null;
+			return { updatedNode: null, lastNode: null };
 		}
 
 		if (change !== undefined) {
@@ -70,16 +70,24 @@ class NodePersistent{
 		if (node.counterChanges > node.MAX_CHANGES) {
 			const newNode = node.applyListChanges();
 
-			newNode.prev = this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
+			const resultPrev = this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
+
+			newNode.prev = resultPrev.updatedNode;
+
+			let lastNode = null;
 
 			if (change.next !== newNode.next) {
-				newNode.next = this.cloneCascading(newNode.next, totalVersion, { prev: newNode });
+				const resultNext = this.cloneCascading(newNode.next, totalVersion, { prev: newNode });
+
+				newNode.next = resultNext.updatedNode;
+
+				lastNode = resultNext.lastNode;
 			}
 
-			return newNode;
+			return { updatedNode: newNode, lastNode: newNode.next === null ? newNode : lastNode };
 		}
 
-		return node;
+		return { updatedNode: node, lastNode: null };
 	}
 
 	getClone() {
@@ -165,7 +173,9 @@ class NodePersistent{
 			nodeLatestVersion.getValueByPath(configForValueNode.path);
 		}
 
-		const node = this.cloneCascading(this, numberVersion, configForValueNode);
+		const resultCloneCascading = this.cloneCascading(this, numberVersion, configForValueNode);
+
+		const node = resultCloneCascading.updatedNode;
 
 		return node;
 	}

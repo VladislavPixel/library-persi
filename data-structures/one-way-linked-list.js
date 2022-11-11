@@ -51,9 +51,15 @@ class OneWayLinkedList{
 
 		const newNode = new NodePersistent(value);
 
+		let lastN = null;
+
 		if (this.length !== 0) {
 			if (this.versions.length !== 0) {
-				this.head = this.head.cloneCascading(this.head, this.totalVersions, { prev: newNode });
+				const { updatedNode, lastNode } = this.head.cloneCascading(this.head, this.totalVersions, { prev: newNode });
+
+				lastN = lastNode;
+
+				this.head = updatedNode;
 
 				newNode.changeLog = {};
 				newNode.counterChanges = 0;
@@ -72,7 +78,7 @@ class OneWayLinkedList{
 
 		this.totalVersions++;
 
-		return this.length;
+		return { newLength: this.length, lastNode: lastN };
 	}
 
 	findByKey(key) {
@@ -121,7 +127,7 @@ class OneWayLinkedList{
 
 			this.totalVersions++;
 
-			return node;
+			return { node, newTotalVersion: this.totalVersions };
 		}
 
 		let node;
@@ -152,7 +158,7 @@ class OneWayLinkedList{
 
 		this.totalVersions++;
 
-		return node;
+		return { node, newTotalVersion: this.totalVersions };
 	}
 
 	get(numberVersion, pathNodeValue, arrayMethods) {
