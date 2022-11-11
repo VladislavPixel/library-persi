@@ -86,6 +86,7 @@ class NodePersistent{
 		const clone = Object.assign(new NodePersistent(0), this);
 
 		clone.value = JSON.parse(JSON.stringify(clone.value));
+
 		return clone;
 	}
 

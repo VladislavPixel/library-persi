@@ -5,7 +5,7 @@ class OneWayLinkedList{
 		this.totalVersions = 0;
 		this.versions = new StoreVersions("oneWayLinkedList", this.#getTotalVersion.bind(this));
 		this.historyChanges = new HistoryChanges();
-		this.#initialization(defaultData);
+		this.initialization(defaultData);
 	}
 
 	[Symbol.iterator]() {
@@ -20,7 +20,7 @@ class OneWayLinkedList{
 		return this.totalVersions;
 	}
 
-	#initialization(initData) {
+	initialization(initData) {
 		const isArray = initData instanceof Array;
 
 		const isObject = initData instanceof Object;
