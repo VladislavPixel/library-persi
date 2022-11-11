@@ -2,8 +2,7 @@ class OneWayLinkedList{
 	constructor(defaultData) {
 		this.head = null;
 		this.length = 0;
-		this.totalVersions = 0;
-		this.versions = new StoreVersions("oneWayLinkedList", this.getTotalVersion.bind(this));
+		this.versions = new StoreVersions("oneWayLinkedList");
 		this.historyChanges = new HistoryChanges();
 		this.initialization(defaultData);
 	}
@@ -16,8 +15,8 @@ class OneWayLinkedList{
 		return new IteratorForNewAndOldNodes(this.head);
 	}
 
-	getTotalVersion() {
-		return this.totalVersions;
+	get totalVersions() {
+		return this.versions.totalVersions;
 	}
 
 	initialization(initData) {
@@ -75,7 +74,7 @@ class OneWayLinkedList{
 
 		this.versions.registerVersion(this.head, this.totalVersions);
 
-		this.totalVersions++;
+		this.versions.totalVersions++;
 
 		return { newLength: this.length, lastNode: lastN };
 	}
@@ -115,6 +114,7 @@ class OneWayLinkedList{
 			const node = this.head.set(configForValueNode, this.totalVersions);
 
 			if (node !== this.head) {
+				console.log("Попал в неравенство");
 				node.resetChangeLog();
 
 				this.head = node;
@@ -122,7 +122,7 @@ class OneWayLinkedList{
 				this.versions.registerVersion(this.head, this.totalVersions);
 			}
 
-			this.totalVersions++;
+			this.versions.totalVersions++;
 
 			return { node, newTotalVersion: this.totalVersions };
 		}
@@ -153,7 +153,7 @@ class OneWayLinkedList{
 			this.versions.registerVersion(this.head, this.totalVersions);
 		}
 
-		this.totalVersions++;
+		this.versions.totalVersions++;
 
 		return { node, newTotalVersion: this.totalVersions };
 	}

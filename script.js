@@ -6,9 +6,10 @@ doubleLinkedList.set({ value: { name: "pixel", age: 24 } });
 doubleLinkedList.set({ path: "value/color", value: "green" });
 doubleLinkedList.set({ path: "value/phone", value: "8-345-345-21-12" });
 doubleLinkedList.set({ path: "value/bob", value: "bim" });
-//doubleLinkedList.set({ path: "value", value: 85 });
 
 doubleLinkedList.addFirst(777);
+
+doubleLinkedList.set({ path: "value", value: 85 });
 
 console.log(doubleLinkedList, "doubleLinkedList");
 

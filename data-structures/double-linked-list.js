@@ -2,7 +2,7 @@ class DoubleLinkedList extends OneWayLinkedList {
 	constructor(defaultData) {
 		super();
 		this.tail = null;
-		this.versions = new StoreVersions("doubleLinkedList", this.getTotalVersion.bind(this));
+		this.versions = new StoreVersions("doubleLinkedList");
 		this.initialization(defaultData);
 	}
 

@@ -1,7 +1,6 @@
 class HashTable {
 	constructor(defaultData) {
-		this.totalVersions = 0;
-		this.versions = new StoreVersions("hashTable", this.#getTotalVersion.bind(this));
+		this.versions = new StoreVersions("hashTable");
 		this.historyChanges = new HistoryChanges();
 		this.structure = this.initialization(defaultData);
 	}
@@ -10,8 +9,8 @@ class HashTable {
 		return new IteratorKeysAndValues(this.structure);
 	}
 
-	#getTotalVersion() {
-		return this.totalVersions;
+	get totalVersions () {
+		return this.versions.totalVersions;
 	}
 
 	initialization(initData) {
@@ -28,7 +27,7 @@ class HashTable {
 
 			this.versions.registerVersion(nodeHashTable, this.totalVersions);
 
-			this.totalVersions++;
+			this.versions.totalVersions++;
 
 			return nodeHashTable;
 		}
@@ -51,7 +50,7 @@ class HashTable {
 
 		this.versions.registerVersion(nodeHashTable, this.totalVersions);
 
-		this.totalVersions++;
+		this.versions.totalVersions++
 
 		return nodeHashTable;
 	}
@@ -88,7 +87,7 @@ class HashTable {
 
 		this.structure.addChange(this.totalVersions, correctChange);
 
-		this.totalVersions++;
+		this.versions.totalVersions++;
 
 		return this.totalVersions;
 	}

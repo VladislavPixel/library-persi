@@ -1,8 +1,8 @@
 class StoreVersions {
-	constructor(typeStructure, getTotalVersionsFn) {
-		this.getTotalVersion = getTotalVersionsFn;
+	constructor(typeStructure) {
 		this.typeStructure = typeStructure;
 		this.selectedVersion = 0;
+		this.totalVersions = 0;
 		this.snapshots = [];
 	}
 
@@ -16,7 +16,7 @@ class StoreVersions {
 
 	#atForHashTable(indexVersion) {
 		if (indexVersion === undefined) {
-			this.selectedVersion = this.getTotalVersion() - 1;
+			this.selectedVersion = this.totalVersions - 1;
 
 			const clone = this.getClone(this.snapshots[this.snapshots.length - 1].value);
 
@@ -24,7 +24,7 @@ class StoreVersions {
 		}
 
 		if (typeof indexVersion === "number") {
-			const currentVersion = this.getTotalVersion() - 1;
+			const currentVersion = this.totalVersions - 1;
 
 			const valueAbsolute = Math.abs(indexVersion);
 
@@ -42,7 +42,7 @@ class StoreVersions {
 		}
 
 		if (indexVersion === "+1") {
-			if (this.selectedVersion + 1 > this.getTotalVersion() - 1) {
+			if (this.selectedVersion + 1 > this.totalVersions - 1) {
 				throw new Error("Operation +1 changes selected version and takes it out of range.");
 			}
 
@@ -96,7 +96,7 @@ class StoreVersions {
 		return updatedNode;
 	}
 
-	#binarySearchByVersion(numberVersion) {
+	#searchByVersion(numberVersion) {
 		let startIndex = 0;
 
 		let endIndex = this.snapshots.length - 1;
@@ -119,23 +119,23 @@ class StoreVersions {
 	}
 
 	#atForOneWayLinkedList(indexVersion) {
-		const totalVersion = this.getTotalVersion() - 1;
+		const correctTotalVersion = this.totalVersions - 1;
 
 		if (indexVersion === undefined) {
 			let nodeLastVersion = this.snapshots[this.snapshots.length - 1].value;
 
-			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, totalVersion);
+			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, correctTotalVersion);
 
 			return nodeLastVersion;
 		}
 
 		const isNumber = typeof indexVersion === "number";
 
-		if (!isNumber || indexVersion < 0 || indexVersion > totalVersion) {
-			throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${totalVersion}.`);
+		if (!isNumber || indexVersion < 0 || indexVersion > correctTotalVersion) {
+			throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${correctTotalVersion}.`);
 		}
 
-		let nodeForVersion = this.#binarySearchByVersion(indexVersion);
+		let nodeForVersion = this.#searchByVersion(indexVersion);
 
 		nodeForVersion = this.#recApplyListChangeForNode(nodeForVersion, indexVersion);
 
