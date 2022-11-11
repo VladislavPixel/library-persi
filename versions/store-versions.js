@@ -3,7 +3,7 @@ class StoreVersions {
 		this.getTotalVersion = getTotalVersionsFn;
 		this.typeStructure = typeStructure;
 		this.selectedVersion = 0;
-		this.arrVersions = [];
+		this.snapshots = [];
 	}
 
 	getClone(node) {
@@ -18,7 +18,7 @@ class StoreVersions {
 		if (indexVersion === undefined) {
 			this.selectedVersion = this.getTotalVersion() - 1;
 
-			const clone = this.getClone(this.arrVersions[this.arrVersions.length - 1].value);
+			const clone = this.getClone(this.snapshots[this.snapshots.length - 1].value);
 
 			return clone.applyListChanges().value;
 		}
@@ -36,7 +36,7 @@ class StoreVersions {
 
 			const correctIndex = valueAbsolute <= 4 ? 0 : Math.floor(valueAbsolute / 4);
 
-			const clone = this.getClone(this.arrVersions[correctIndex].value);
+			const clone = this.getClone(this.snapshots[correctIndex].value);
 
 			return clone.applyListChanges(valueAbsolute).value;
 		}
@@ -48,7 +48,7 @@ class StoreVersions {
 
 			const correctIndex = this.selectedVersion + 1 <= 4 ? 0 : Math.floor((this.selectedVersion + 1) / 4);
 
-			const node = this.arrVersions[correctIndex];
+			const node = this.snapshots[correctIndex];
 
 			if (node instanceof Object) {
 				this.selectedVersion += 1;
@@ -68,7 +68,7 @@ class StoreVersions {
 
 			const correctIndex = this.selectedVersion - 1 <= 4 ? 0 : Math.floor((this.selectedVersion - 1) / 4);
 
-			const node = this.arrVersions[correctIndex];
+			const node = this.snapshots[correctIndex];
 
 			if (node instanceof Object) {
 				this.selectedVersion -= 1;
@@ -99,30 +99,30 @@ class StoreVersions {
 	#binarySearchByVersion(numberVersion) {
 		let startIndex = 0;
 
-		let endIndex = this.arrVersions.length - 1;
+		let endIndex = this.snapshots.length - 1;
 
 		while(startIndex <= endIndex) {
 			const middleIndex = Math.floor((startIndex + endIndex) / 2);
 
-			if (this.arrVersions[middleIndex].version === numberVersion) {
-				return this.arrVersions[middleIndex].value;
+			if (this.snapshots[middleIndex].version === numberVersion) {
+				return this.snapshots[middleIndex].value;
 			}
 
-			if (this.arrVersions[middleIndex].version > numberVersion) {
+			if (this.snapshots[middleIndex].version > numberVersion) {
 				endIndex = middleIndex - 1;
 			} else {
 				startIndex = middleIndex + 1;
 			}
 		}
 
-		return this.arrVersions[Math.floor((startIndex + endIndex) / 2)].value;
+		return this.snapshots[Math.floor((startIndex + endIndex) / 2)].value;
 	}
 
 	#atForOneWayLinkedList(indexVersion) {
 		const totalVersion = this.getTotalVersion() - 1;
 
 		if (indexVersion === undefined) {
-			let nodeLastVersion = this.arrVersions[this.arrVersions.length - 1].value;
+			let nodeLastVersion = this.snapshots[this.snapshots.length - 1].value;
 
 			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, totalVersion);
 
@@ -143,7 +143,7 @@ class StoreVersions {
 	}
 
 	at(indexVersion) {
-		if (this.arrVersions.length === 0) {
+		if (this.snapshots.length === 0) {
 			throw new Error("The versions store is Empty. Operation at() is not supported.");
 		}
 
@@ -158,8 +158,8 @@ class StoreVersions {
 	}
 
 	registerVersion(value, numberVersion) {
-		this.arrVersions.push({ value, version: numberVersion });
+		this.snapshots.push({ value, version: numberVersion });
 
-		return this.arrVersions.length;
+		return this.snapshots.length;
 	}
 }

@@ -4,12 +4,15 @@ class NodePersistent{
 		this.next = null;
 		this.prev = null;
 		this.MAX_CHANGES = 4;
-		this.counterChanges = 0;
-		this.changeLog = {};
+		this.changeLog = new Map();
 	}
 
 	[Symbol.iterator]() {
 		return new IteratorNodePersistentByNodes(this);
+	}
+
+	resetChangeLog() {
+		this.changeLog.clear();
 	}
 
 	getFirstNode() {
@@ -48,14 +51,12 @@ class NodePersistent{
 
 	addChange(numberVersion, change) {
 		if ("path" in change) {
-			this.changeLog[numberVersion] = { value: change.value, path: change.path };
+			this.changeLog.set(numberVersion, { value: change.value, path: change.path });
 		} else {
-			this.changeLog[numberVersion] = change;
+			this.changeLog.set(numberVersion, change);
 		}
 
-		this.counterChanges++;
-
-		return this.counterChanges;
+		return this.changeLog.size;
 	}
 
 	cloneCascading(node, totalVersion, change) {
@@ -67,7 +68,7 @@ class NodePersistent{
 			node.addChange(totalVersion, change);
 		}
 
-		if (node.counterChanges > node.MAX_CHANGES) {
+		if (node.changeLog.size > node.MAX_CHANGES) {
 			const newNode = node.applyListChanges();
 
 			const resultPrev = this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
@@ -135,18 +136,12 @@ class NodePersistent{
 
 		newNode.prev = this.prev;
 
-		const arrKeys = Object.keys(this.changeLog);
-
-		for (const strVersion of arrKeys) {
-			if (numberVersion !== undefined) {
-				const index = Number(strVersion);
-
-				if (index > numberVersion) {
-					break;
-				}
+		for (const item of this.changeLog) {
+			if (numberVersion !== undefined && item[0] > numberVersion) {
+				break;
 			}
 
-			const change = this.changeLog[strVersion];
+			const change = item[1];
 
 			if ("path" in change) {
 				const { value: dataValue, lastSegment } = newNode.getValueByPath(change.path);

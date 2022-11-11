@@ -10,7 +10,7 @@ doubleLinkedList.set({ path: "value/bob", value: "bim" });
 
 doubleLinkedList.addFirst(777);
 
-console.log("Структура doubleLinkedList", doubleLinkedList);
+console.log(doubleLinkedList, "doubleLinkedList");
 
 //! HashTable
 

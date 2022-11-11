@@ -65,7 +65,7 @@ class HashTable {
 			this.historyChanges.registerChange(`Set value for hashTable. Updating the value along the way - ${configChange.path}. NewValue - ${configChange.value}.`);
 		}
 
-		const clone = this.versions.arrVersions[this.versions.arrVersions.length - 1].value.getClone();
+		const clone = this.versions.snapshots[this.versions.snapshots.length - 1].value.getClone();
 
 		const cloneLatestVersion = clone.applyListChanges();
 
@@ -74,7 +74,7 @@ class HashTable {
 			cloneLatestVersion.getValueByPath(configChange.path);
 		}
 
-		if (this.structure.counterChanges === this.structure.MAX_CHANGES) {
+		if (this.structure.changeLog.size === this.structure.MAX_CHANGES) {
 			this.structure = cloneLatestVersion;
 
 			this.versions.registerVersion(this.structure, this.totalVersions);
@@ -104,7 +104,7 @@ class HashTable {
 
 		const correctIndex = numberVersion <= 4 ? 0 : Math.floor(numberVersion / 4);
 
-		const clone = this.versions.arrVersions[correctIndex].value.getClone().applyListChanges(numberVersion);
+		const clone = this.versions.snapshots[correctIndex].value.getClone().applyListChanges(numberVersion);
 
 		const { value, lastSegment } = clone.getValueByPath(path);
 

@@ -61,8 +61,7 @@ class OneWayLinkedList{
 
 				this.head = updatedNode;
 
-				newNode.changeLog = {};
-				newNode.counterChanges = 0;
+				newNode.resetChangeLog();
 			} else {
 				this.head.prev = newNode;
 			}
@@ -116,9 +115,7 @@ class OneWayLinkedList{
 			const node = this.head.set(configForValueNode, this.totalVersions);
 
 			if (node !== this.head) {
-				node.counterChanges = 0;
-
-				node.changeLog = {};
+				node.resetChangeLog();
 
 				this.head = node;
 
