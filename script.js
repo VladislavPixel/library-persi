@@ -24,7 +24,10 @@ persistentOneWayLinkedList.set({ path: "value/home/target", value: "Tula" }, [{ 
 // persistentOneWayLinkedList.set({ value: "Globus" }, [{ nameMethod: "findByKey", arrArgsForMethod: ["Valeria"] }]);
 // persistentOneWayLinkedList.set({ value: 3500, path: "value" }, [{ nameMethod: "findByKey", arrArgsForMethod: [1500] }]);
 
-console.log(persistentOneWayLinkedList.versions.at(0));
+//console.log(persistentOneWayLinkedList.versions.at(12));
+console.log(persistentOneWayLinkedList.get(12, "value/home", [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/home/target", value: "Moscow" }] }]));
+console.log(persistentOneWayLinkedList.get(13, "value/home/target", [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/job", value: "programmer" }] }]));
+console.log(persistentOneWayLinkedList.get(6, "value", [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: "pixel" }] }]));
 
 console.log(persistentOneWayLinkedList);
 

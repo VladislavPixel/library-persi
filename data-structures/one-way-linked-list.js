@@ -150,4 +150,40 @@ class OneWayLinkedList{
 
 		return this.totalVersions;
 	}
+
+	get(numberVersion, pathNodeValue, arrayMethods) {
+		const isNumber = typeof numberVersion === "number";
+
+		if (!isNumber || pathNodeValue === undefined || numberVersion < 0 || numberVersion > this.totalVersions - 1) {
+			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
+		}
+
+		this.historyChanges.registerChange(`Getting field value from List. Version query - ${numberVersion}. Way to the field - ${pathNodeValue}.${arrayMethods !== undefined ? " Search methods have been applied." : " Search methods were not applied. The search is carried out in the first node."}`);
+
+		if (arrayMethods === undefined) {
+			const node = this.versions.at(numberVersion);
+
+			const { value, lastSegment } = node.getValueByPath(pathNodeValue);
+
+			return value[lastSegment];
+		}
+
+		let node = this.versions.at(numberVersion);
+
+		for (const { nameMethod, arrArgsForMethod } of arrayMethods) {
+			if (!(nameMethod in node)) {
+				throw new Error(`${nameMethod} is not supported in your list.`);
+			}
+
+			node = node[nameMethod](...arrArgsForMethod);
+		}
+
+		if (node === -1) {
+			throw new Error("The node was not found.");
+		}
+
+		const { value, lastSegment } = node.getValueByPath(pathNodeValue);
+
+		return value[lastSegment];
+	}
 }

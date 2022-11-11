@@ -8,8 +8,12 @@ class NodePersistent{
 		this.changeLog = {};
 	}
 
+	[Symbol.iterator]() {
+		return new IteratorNodePersistentByNodes(this);
+	}
+
 	getFirstNode() {
-		const iterator = new IteratorReverseOverNodes(this)
+		const iterator = new IteratorReverseOverNodes(this);
 
 		let result;
 
@@ -18,6 +22,28 @@ class NodePersistent{
 		}
 
 		return result;
+	}
+
+	findByKey(key) {
+		for (const node of this) {
+			if (typeof key === "object") {
+				const { path, value } = key;
+
+				try {
+					const { value: val, lastSegment } = node.getValueByPath(path);
+
+					if (val && val[lastSegment] === value) {
+						return node;
+					}
+				} catch (err) {
+					continue;
+				}
+			} else if (node.value === key) {
+				return node;
+			}
+		}
+
+		return -1;
 	}
 
 	addChange(numberVersion, change) {
