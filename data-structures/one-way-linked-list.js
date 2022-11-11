@@ -3,7 +3,7 @@ class OneWayLinkedList{
 		this.head = null;
 		this.length = 0;
 		this.totalVersions = 0;
-		this.versions = new StoreVersions("oneWayLinkedList", this.#getTotalVersion.bind(this));
+		this.versions = new StoreVersions("oneWayLinkedList", this.getTotalVersion.bind(this));
 		this.historyChanges = new HistoryChanges();
 		this.initialization(defaultData);
 	}
@@ -16,7 +16,7 @@ class OneWayLinkedList{
 		return new IteratorForNewAndOldNodes(this.head);
 	}
 
-	#getTotalVersion() {
+	getTotalVersion() {
 		return this.totalVersions;
 	}
 
@@ -118,37 +118,41 @@ class OneWayLinkedList{
 
 				this.versions.registerVersion(this.head, this.totalVersions);
 			}
-		} else {
-			let node;
 
-			for (const { nameMethod, arrArgsForMethod } of preprocessingConfig) {
-				if (!(nameMethod in this)) {
-					throw new Error(`${nameMethod} is not supported in your list.`);
-				}
+			this.totalVersions++;
 
-				node = this[nameMethod](...arrArgsForMethod);
+			return node;
+		}
+
+		let node;
+
+		for (const { nameMethod, arrArgsForMethod } of preprocessingConfig) {
+			if (!(nameMethod in this)) {
+				throw new Error(`${nameMethod} is not supported in your list.`);
 			}
 
-			if (node === -1) {
-				throw new Error("Node is not found in on your list for operation set().");
-			}
+			node = this[nameMethod](...arrArgsForMethod);
+		}
 
-			this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`);
+		if (node === -1) {
+			throw new Error("Node is not found in on your list for operation set().");
+		}
 
-			const result = node.set(configForValueNode, this.totalVersions);
+		this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`);
 
-			const firstNode = result.getFirstNode();
+		const result = node.set(configForValueNode, this.totalVersions);
 
-			if (firstNode !== this.head) {
-				this.head = firstNode;
+		const firstNode = result.getFirstNode();
 
-				this.versions.registerVersion(this.head, this.totalVersions);
-			}
+		if (firstNode !== this.head) {
+			this.head = firstNode;
+
+			this.versions.registerVersion(this.head, this.totalVersions);
 		}
 
 		this.totalVersions++;
 
-		return this.totalVersions;
+		return node;
 	}
 
 	get(numberVersion, pathNodeValue, arrayMethods) {

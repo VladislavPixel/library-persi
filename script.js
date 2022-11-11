@@ -1,15 +1,33 @@
+//! DoubleLinkedList
+
+const doubleLinkedList = new DoubleLinkedList(["pixel developer"]);
+
+doubleLinkedList.set({ value: { name: "pixel", age: 24 } });
+doubleLinkedList.set({ path: "value/color", value: "green" });
+doubleLinkedList.set({ path: "value/phone", value: "8-345-345-21-12" });
+doubleLinkedList.set({ path: "value/bob", value: "bim" });
+//doubleLinkedList.set({ path: "value", value: 85 });
+
+doubleLinkedList.addFirst(777);
+
+console.log("Структура doubleLinkedList", doubleLinkedList);
+
 //! HashTable
-const persistentHashTable = new HashTable({ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } });
 
-persistentHashTable.set({ path: "value/name", value: "Pixel." });
-persistentHashTable.set({ path: "value/age", value: 33 });
-persistentHashTable.set({ path: "value/color", value: "blue" });
-persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
-persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
+// const persistentHashTable = new HashTable({ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } });
 
-console.log(persistentHashTable.get(5, "value/profession"));
+// persistentHashTable.set({ path: "value/name", value: "Pixel." });
+// persistentHashTable.set({ path: "value/age", value: 33 });
+// persistentHashTable.set({ path: "value/color", value: "blue" });
+// persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
+// persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
+// console.log(persistentHashTable.get(5, "value/home"));
 
-console.log("Структура: ", persistentHashTable);
+// console.log("Версия: ", persistentHashTable.versions.at(3));
+// console.log("Версия: ", persistentHashTable.versions.at("+1"));
+// console.log("Версия: ", persistentHashTable.versions.at("-1"));
+// console.log("Версия: ", persistentHashTable.versions.at());
+// console.log("Структура: ", persistentHashTable);
 
 //! OneWayLinkedList
 //const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
