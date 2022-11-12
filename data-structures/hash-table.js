@@ -13,16 +13,10 @@ class HashTable {
 		return this.versions.totalVersions;
 	}
 
-	initialization(initData) {
-		const isArray = initData instanceof Array;
+	initialization(initData, arrayKeys) {
+		const mapArgumentsForHistory = new Map().set(1, initData).set(2, arrayKeys);
 
-		const isObject = initData instanceof Object;
-
-		const isEmptyInitData = initData === undefined || (isArray && initData.length === 0) || (isObject && Object.keys(initData).length === 0);
-
-		const mapArgumentsForHistory = new Map().set(1, initData);
-
-		if (isEmptyInitData) {
+		if (initData === undefined || arrayKeys === undefined) {
 			this.historyChanges.registerChange("Initialization on your hashTable data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
 			const nodeHashTable = new NodePersistent({});
@@ -34,27 +28,39 @@ class HashTable {
 			return nodeHashTable;
 		}
 
-		if (!isArray && !isObject) {
-			throw new Error("The passed defaultData cannot be used for initialization. Required to pass an object instance or an array instance.");
+		const iteratorForSet = initData instanceof Set ? initData[Symbol.iterator]() : null;
+
+		try {
+			const source = {};
+
+			for (const key of arrayKeys) {
+				if (initData instanceof Map) {
+					source[key] = initData.get(key);
+
+					continue;
+				}
+
+				if (initData instanceof Set) {
+					source[key] = iteratorForSet.next().value;
+
+					continue;
+				}
+
+				source[key] = initData[key];
+			}
+
+			this.historyChanges.registerChange(`Data initialization for structure. Transferring keys and values ​​to a hash table. DefaultData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
+
+			const nodeHashTable = new NodePersistent(source);
+
+			this.versions.registerVersion(nodeHashTable, this.totalVersions);
+
+			this.versions.totalVersions++
+
+			return nodeHashTable;
+		} catch(err) {
+			throw new Error("The transmitted data cannot be used for the initialization hashTable by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
 		}
-
-		const arrayKeys = Object.keys(initData);
-
-		this.historyChanges.registerChange(`Data initialization for structure. Transferring keys and values ​​to a hash table. DefaultData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
-
-		const source = {};
-
-		for (const key of arrayKeys) {
-			source[key] = initData[key];
-		}
-
-		const nodeHashTable = new NodePersistent(source);
-
-		this.versions.registerVersion(nodeHashTable, this.totalVersions);
-
-		this.versions.totalVersions++
-
-		return nodeHashTable;
 	}
 
 	set(configChange) {

@@ -20,30 +20,27 @@ class OneWayLinkedList{
 	}
 
 	initialization(initData) {
-		const isArray = initData instanceof Array;
-
-		const isObject = initData instanceof Object;
-
-		const isEmptyInitData = initData === undefined || (isArray && initData.length === 0) || (isObject && Object.keys(initData).length === 0);
-
 		const mapArgumentsForHistory = new Map().set(1, initData);
 
-		if (isEmptyInitData) {
+		if (initData === undefined) {
 			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
 			return;
 		}
 
-		if (!isArray && !isObject) {
-			throw new Error("The passed defaultData cannot be used for initialization list. Required to pass an object instance or an array instance.");
-		}
+		try {
+			for (const value of initData) {
+				if (initData instanceof Map) {
+					this.addFirst(value[1]);
+					continue;
+				}
 
-		const arrayKeys = Object.keys(initData);
+				this.addFirst(value);
+			}
 
-		this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
-
-		for (const key of arrayKeys) {
-			this.addFirst(initData[key]);
+			this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
+		} catch (err) {
+			throw new Error("The transmitted data cannot be used for the initialization list by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
 		}
 	}
 
