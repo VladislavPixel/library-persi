@@ -132,3 +132,5 @@ const searchNodeFn12 = (node) => {
 console.log(persistentOneWayLinkedList.get(6, "value", [searchNodeFn12]));
 console.log(persistentOneWayLinkedList);
 
+console.log(persistentOneWayLinkedList.historyChanges.display());
+

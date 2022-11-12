@@ -26,8 +26,10 @@ class OneWayLinkedList{
 
 		const isEmptyInitData = initData === undefined || (isArray && initData.length === 0) || (isObject && Object.keys(initData).length === 0);
 
+		const mapArgumentsForHistory = new Map().set(1, initData);
+
 		if (isEmptyInitData) {
-			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.");
+			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
 			return;
 		}
@@ -38,7 +40,7 @@ class OneWayLinkedList{
 
 		const arrayKeys = Object.keys(initData);
 
-		this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`);
+		this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
 
 		for (const key of arrayKeys) {
 			this.addFirst(initData[key]);
@@ -46,7 +48,9 @@ class OneWayLinkedList{
 	}
 
 	addFirst(value) {
-		this.historyChanges.registerChange(`Method Call addFirst(). Adding a new element with the value ${JSON.stringify(value)} to the beginning of a one-way node.`);
+		const mapArgumentsForHistory = new Map().set(1, value);
+
+		this.historyChanges.registerChange(`Method Call addFirst(). Adding a new element with the value ${JSON.stringify(value)} to the beginning of a one-way node.`, "addFirst", mapArgumentsForHistory);
 
 		const newNode = new NodePersistent(value);
 
@@ -108,8 +112,10 @@ class OneWayLinkedList{
 	}
 
 	set(configForValueNode, middleware) {
+		const mapArgumentsForHistory = new Map().set(1, configForValueNode).set(2, middleware);
+
 		if (middleware === undefined) {
-			this.historyChanges.registerChange(`Set value for list. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`);
+			this.historyChanges.registerChange(`Set value for list. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`, "set", mapArgumentsForHistory);
 
 			const node = this.head.set(configForValueNode, this.totalVersions);
 
@@ -132,7 +138,7 @@ class OneWayLinkedList{
 			throw new Error("Node is not found in on your list for operation set().");
 		}
 
-		this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`);
+		this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`, "set", mapArgumentsForHistory);
 
 		const result = node.set(configForValueNode, this.totalVersions);
 
@@ -150,13 +156,15 @@ class OneWayLinkedList{
 	}
 
 	get(numberVersion, pathNodeValue, middleware) {
+		const mapArgumentsForHistory = new Map().set(1, numberVersion).set(2, pathNodeValue).set(3, middleware);
+
 		const isNumber = typeof numberVersion === "number";
 
 		if (!isNumber || pathNodeValue === undefined || numberVersion < 0 || numberVersion > this.totalVersions - 1) {
 			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
 		}
 
-		this.historyChanges.registerChange(`Getting field value from List. Version query - ${numberVersion}. Way to the field - ${pathNodeValue}.${middleware !== undefined ? " Search methods have been applied." : " Search methods were not applied. The search is carried out in the first node."}`);
+		this.historyChanges.registerChange(`Getting field value from List. Version query - ${numberVersion}. Way to the field - ${pathNodeValue}.${middleware !== undefined ? " Search methods have been applied." : " Search methods were not applied. The search is carried out in the first node."}`, "get", mapArgumentsForHistory);
 
 		if (middleware === undefined) {
 			const node = this.versions.at(numberVersion);

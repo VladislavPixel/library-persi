@@ -20,8 +20,10 @@ class HashTable {
 
 		const isEmptyInitData = initData === undefined || (isArray && initData.length === 0) || (isObject && Object.keys(initData).length === 0);
 
+		const mapArgumentsForHistory = new Map().set(1, initData);
+
 		if (isEmptyInitData) {
-			this.historyChanges.registerChange("Initialization on your hashTable data structure. Creating an instance without default data.");
+			this.historyChanges.registerChange("Initialization on your hashTable data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
 			const nodeHashTable = new NodePersistent({});
 
@@ -38,7 +40,7 @@ class HashTable {
 
 		const arrayKeys = Object.keys(initData);
 
-		this.historyChanges.registerChange(`Data initialization for structure. Transferring keys and values ​​to a hash table. DefaultData - ${JSON.stringify(initData)}.`);
+		this.historyChanges.registerChange(`Data initialization for structure. Transferring keys and values ​​to a hash table. DefaultData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
 
 		const source = {};
 
@@ -58,10 +60,12 @@ class HashTable {
 	set(configChange) {
 		const isObject = typeof configChange === "object";
 
+		const mapArgumentsForHistory = new Map().set(1, configChange);
+
 		if (!isObject || (isObject && (!("path" in configChange) || configChange.path === undefined))) {
-			this.historyChanges.registerChange(`The path to the update segment is treated as empty, so the hash table will be completely overwritten. NewValue - ${isObject ? configChange.value : configChange}.`);
+			this.historyChanges.registerChange(`The path to the update segment is treated as empty, so the hash table will be completely overwritten. NewValue - ${isObject ? configChange.value : configChange}.`, "set", mapArgumentsForHistory);
 		} else {
-			this.historyChanges.registerChange(`Set value for hashTable. Updating the value along the way - ${configChange.path}. NewValue - ${configChange.value}.`);
+			this.historyChanges.registerChange(`Set value for hashTable. Updating the value along the way - ${configChange.path}. NewValue - ${configChange.value}.`, "set", mapArgumentsForHistory);
 		}
 
 		const clone = this.versions.snapshots[this.versions.snapshots.length - 1].value.getClone();
@@ -95,11 +99,13 @@ class HashTable {
 	get(numberVersion, path) {
 		const isNumber = typeof numberVersion === "number";
 
+		const mapArgumentsForHistory = new Map().set(1, numberVersion).set(2, path);
+
 		if (!isNumber || path === undefined || numberVersion < 0 || numberVersion > this.totalVersions - 1) {
 			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
 		}
 
-		this.historyChanges.registerChange(`Getting field value from hashTable. Version query - ${numberVersion}. Way to the field - ${path}.`);
+		this.historyChanges.registerChange(`Getting field value from hashTable. Version query - ${numberVersion}. Way to the field - ${path}.`, "get", mapArgumentsForHistory);
 
 		const correctIndex = numberVersion <= 4 ? 0 : Math.floor(numberVersion / 4);
 

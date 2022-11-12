@@ -13,8 +13,10 @@ class DoubleLinkedList extends OneWayLinkedList {
 
 		const isEmptyInitData = initData === undefined || (isArray && initData.length === 0) || (isObject && Object.keys(initData).length === 0);
 
+		const mapArgumentsForHistory = new Map().set(1, initData);
+
 		if (isEmptyInitData) {
-			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.");
+			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
 			return;
 		}
@@ -25,7 +27,7 @@ class DoubleLinkedList extends OneWayLinkedList {
 
 		const arrayKeys = Object.keys(initData);
 
-		this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`);
+		this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
 
 		for (const key of arrayKeys) {
 			this.addFirst(initData[key]);
