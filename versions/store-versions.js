@@ -6,14 +6,6 @@ class StoreVersions {
 		this.snapshots = [];
 	}
 
-	getClone(node) {
-		const clone = Object.assign(new NodePersistent(0), node);
-
-		clone.value = JSON.parse(JSON.stringify(clone.value));
-
-		return clone;
-	}
-
 	getCorrectIndex(indexVersion) {
 		if (indexVersion === undefined) {
 			this.selectedVersion = this.totalVersions - 1;
@@ -85,7 +77,7 @@ class StoreVersions {
 	#atForHashTable(indexVersion) {
 		const index = this.getCorrectIndex(indexVersion);
 
-		const clone = this.getClone(this.snapshots[index].value);
+		const clone = this.snapshots[index].value.getClone();
 
 		if (indexVersion === undefined) {
 			return clone.applyListChanges().value;

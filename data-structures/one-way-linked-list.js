@@ -107,8 +107,8 @@ class OneWayLinkedList{
 		return -1;
 	}
 
-	set(configForValueNode, preprocessingConfig) {
-		if (preprocessingConfig === undefined) {
+	set(configForValueNode, middleware) {
+		if (middleware === undefined) {
 			this.historyChanges.registerChange(`Set value for list. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`);
 
 			const node = this.head.set(configForValueNode, this.totalVersions);
@@ -126,15 +126,7 @@ class OneWayLinkedList{
 			return { node, newTotalVersion: this.totalVersions };
 		}
 
-		let node;
-
-		for (const { nameMethod, arrArgsForMethod } of preprocessingConfig) {
-			if (!(nameMethod in this)) {
-				throw new Error(`${nameMethod} is not supported in your list.`);
-			}
-
-			node = this[nameMethod](...arrArgsForMethod);
-		}
+		const node = getResultComposeMiddleware.call(this, middleware);
 
 		if (node === -1) {
 			throw new Error("Node is not found in on your list for operation set().");
@@ -157,16 +149,16 @@ class OneWayLinkedList{
 		return { node, newTotalVersion: this.totalVersions };
 	}
 
-	get(numberVersion, pathNodeValue, arrayMethods) {
+	get(numberVersion, pathNodeValue, middleware) {
 		const isNumber = typeof numberVersion === "number";
 
 		if (!isNumber || pathNodeValue === undefined || numberVersion < 0 || numberVersion > this.totalVersions - 1) {
 			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
 		}
 
-		this.historyChanges.registerChange(`Getting field value from List. Version query - ${numberVersion}. Way to the field - ${pathNodeValue}.${arrayMethods !== undefined ? " Search methods have been applied." : " Search methods were not applied. The search is carried out in the first node."}`);
+		this.historyChanges.registerChange(`Getting field value from List. Version query - ${numberVersion}. Way to the field - ${pathNodeValue}.${middleware !== undefined ? " Search methods have been applied." : " Search methods were not applied. The search is carried out in the first node."}`);
 
-		if (arrayMethods === undefined) {
+		if (middleware === undefined) {
 			const node = this.versions.at(numberVersion);
 
 			const { value, lastSegment } = node.getValueByPath(pathNodeValue);
@@ -174,21 +166,15 @@ class OneWayLinkedList{
 			return value[lastSegment];
 		}
 
-		let node = this.versions.at(numberVersion);
+		let nodeForVersion = this.versions.at(numberVersion);
 
-		for (const { nameMethod, arrArgsForMethod } of arrayMethods) {
-			if (!(nameMethod in node)) {
-				throw new Error(`${nameMethod} is not supported in your list.`);
-			}
+		nodeForVersion = getResultComposeMiddleware.call(nodeForVersion, middleware);
 
-			node = node[nameMethod](...arrArgsForMethod);
-		}
-
-		if (node === -1) {
+		if (nodeForVersion === -1) {
 			throw new Error("The node was not found.");
 		}
 
-		const { value, lastSegment } = node.getValueByPath(pathNodeValue);
+		const { value, lastSegment } = nodeForVersion.getValueByPath(pathNodeValue);
 
 		return value[lastSegment];
 	}

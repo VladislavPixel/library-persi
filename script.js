@@ -41,27 +41,94 @@ persistentOneWayLinkedList.set({ value: 555 });
 persistentOneWayLinkedList.set({ value: 888 });
 persistentOneWayLinkedList.set({ value: 1000 });
 persistentOneWayLinkedList.set({ path: "value", value: "space" });
-
 persistentOneWayLinkedList.set({ path: "value", value: 24 });
-persistentOneWayLinkedList.set({ value: 4444444 }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 24 }] }]);
-persistentOneWayLinkedList.set({ value: 11 }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 4444444 }] }]);
-persistentOneWayLinkedList.set({ value: "T-34", path: "value" }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 11 }] }]);
 
-persistentOneWayLinkedList.set({ value: { name: "Vladisalv", job: "programmer", home: { target: "Moscow" } } }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 100 }] }]);
-persistentOneWayLinkedList.set({ path: "value/home/target", value: "Tula" }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/home/target", value: "Moscow" }] }]);
+const searchNodeFn1 = (list) => {
+	const node = list.findByKey({ path: "value", value: 24 });
 
-persistentOneWayLinkedList.set({ value: "Valeria", path: "value/name" }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/name", value: "Vladisalv" }] }]);
+	return node;
+}
+persistentOneWayLinkedList.set({ value: 4444444 }, [searchNodeFn1]);
 
-persistentOneWayLinkedList.set({ value: 900 }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: "pixel" }] }]);
-persistentOneWayLinkedList.set({ value: 1500 }, [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: 900 }] }]);
-persistentOneWayLinkedList.set({ value: "Globus" }, [{ nameMethod: "findByKey", arrArgsForMethod: ["T-34"] }]);
+const searchNodeFn2 = (list) => {
+	const node = list.findByKey({ path: "value", value: 4444444 });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: 11 }, [searchNodeFn2]);
+
+const searchNodeFn3 = (list) => {
+	const node = list.findByKey({ path: "value", value: 11 });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: "T-34", path: "value" }, [searchNodeFn3]);
+
+const searchNodeFn4 = (list) => {
+	const node = list.findByKey({ path: "value", value: 100 });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: { name: "Vladisalv", job: "programmer", home: { target: "Moscow" } } }, [searchNodeFn4]);
+
+const searchNodeFn5 = (list) => {
+	const node = list.findByKey({ path: "value/home/target", value: "Moscow" });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ path: "value/home/target", value: "Tula" }, [searchNodeFn5]);
+
+const searchNodeFn6 = (list) => {
+	const node = list.findByKey({ path: "value/name", value: "Vladisalv" });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: "Valeria", path: "value/name" }, [searchNodeFn6]);
+
+const searchNodeFn7 = (list) => {
+	const node = list.findByKey({ path: "value", value: "pixel" });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: 900 }, [searchNodeFn7]);
+
+const searchNodeFn8 = (list) => {
+	const node = list.findByKey({ path: "value", value: 900 });
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: 1500 }, [searchNodeFn8]);
+
+const searchNodeFn9 = (list) => {
+	const node = list.findByKey("T-34");
+
+	return node;
+}
+persistentOneWayLinkedList.set({ value: "Globus" }, [searchNodeFn9]);
 
 persistentOneWayLinkedList.addFirst("Upside");
 persistentOneWayLinkedList.set({ value: 350 });
 
 console.log(persistentOneWayLinkedList.versions.at());
-//console.log(persistentOneWayLinkedList.get(12, "value/home", [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/home/target", value: "Moscow" }] }]));
-//console.log(persistentOneWayLinkedList.get(13, "value/home/target", [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value/job", value: "programmer" }] }]));
-//console.log(persistentOneWayLinkedList.get(6, "value", [{ nameMethod: "findByKey", arrArgsForMethod: [{ path: "value", value: "pixel" }] }]));
+const searchNodeFn10 = (node) => {
+	const res = node.findByKey({ path: "value/home/target", value: "Moscow" });
+
+	return res;
+}
+console.log(persistentOneWayLinkedList.get(12, "value/home", [searchNodeFn10]));
+
+const searchNodeFn11 = (node) => {
+	const res = node.findByKey({ path: "value/job", value: "programmer" });
+
+	return res;
+}
+console.log(persistentOneWayLinkedList.get(13, "value/home/target", [searchNodeFn11]));
+
+const searchNodeFn12 = (node) => {
+	const res = node.findByKey({ path: "value", value: "pixel" });
+
+	return res;
+}
+console.log(persistentOneWayLinkedList.get(6, "value", [searchNodeFn12]));
 console.log(persistentOneWayLinkedList);
 

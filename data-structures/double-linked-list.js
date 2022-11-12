@@ -46,8 +46,8 @@ class DoubleLinkedList extends OneWayLinkedList {
 		return this.length;
 	}
 
-	set(configForValueNode, preprocessingConfig) {
-		const { node, newTotalVersion } = super.set(configForValueNode, preprocessingConfig);
+	set(configForValueNode, middleware) {
+		const { node, newTotalVersion } = super.set(configForValueNode, middleware);
 
 		if (node.next === null && node !== this.tail) {
 			this.tail = node;
