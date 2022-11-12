@@ -114,7 +114,6 @@ class OneWayLinkedList{
 			const node = this.head.set(configForValueNode, this.totalVersions);
 
 			if (node !== this.head) {
-				console.log("Попал в неравенство");
 				node.resetChangeLog();
 
 				this.head = node;

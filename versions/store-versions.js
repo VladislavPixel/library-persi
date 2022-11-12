@@ -14,35 +14,37 @@ class StoreVersions {
 		return clone;
 	}
 
-	#atForHashTable(indexVersion) {
+	getCorrectIndex(indexVersion) {
 		if (indexVersion === undefined) {
 			this.selectedVersion = this.totalVersions - 1;
 
-			const clone = this.getClone(this.snapshots[this.snapshots.length - 1].value);
-
-			return clone.applyListChanges().value;
+			return this.snapshots.length - 1;
 		}
 
-		if (typeof indexVersion === "number") {
-			const currentVersion = this.totalVersions - 1;
+		const isNumber = typeof indexVersion === "number";
 
-			const valueAbsolute = Math.abs(indexVersion);
+		const currentVersion = this.totalVersions - 1;
 
-			if (indexVersion < 0 || currentVersion < valueAbsolute) {
-				throw new Error("The specified version does not exist.");
+		if (isNumber) {
+			if (indexVersion < 0 || indexVersion > currentVersion) {
+				throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${currentVersion}. Minimum index - 0.`);
 			}
 
-			this.selectedVersion = valueAbsolute;
+			this.selectedVersion = indexVersion;
 
-			const correctIndex = valueAbsolute <= 4 ? 0 : Math.floor(valueAbsolute / 4);
+			if (this.typeStructure === "oneWayLinkedList") {
+				return indexVersion;
+			}
 
-			const clone = this.getClone(this.snapshots[correctIndex].value);
+			return (indexVersion <= 4 ? 0 : Math.floor(indexVersion / 4));
+		}
 
-			return clone.applyListChanges(valueAbsolute).value;
+		if (this.typeStructure === "oneWayLinkedList") {
+			throw new Error("For list-type structures, the index must be numeric and in a range, or don't pass it at all to get the latest version of the structure.");
 		}
 
 		if (indexVersion === "+1") {
-			if (this.selectedVersion + 1 > this.totalVersions - 1) {
+			if (this.selectedVersion + 1 > currentVersion) {
 				throw new Error("Operation +1 changes selected version and takes it out of range.");
 			}
 
@@ -50,15 +52,13 @@ class StoreVersions {
 
 			const node = this.snapshots[correctIndex];
 
-			if (node instanceof Object) {
-				this.selectedVersion += 1;
-
-				const clone = this.getClone(node.value);
-
-				return clone.applyListChanges(this.selectedVersion).value; 
+			if (!(node instanceof Object)) {
+				throw new Error(`You entered an invalid version index. The specified offset sets the index to ${this.selectedVersion + 1}. There is no such index in the version store.`);
 			}
 
-			throw new Error(`You entered an invalid version index. The specified offset sets the index to ${this.selectedVersion + 1}. There is no such index in the version store.`);
+			this.selectedVersion += 1;
+
+			return correctIndex;
 		}
 
 		if (indexVersion === "-1") {
@@ -70,23 +70,37 @@ class StoreVersions {
 
 			const node = this.snapshots[correctIndex];
 
-			if (node instanceof Object) {
-				this.selectedVersion -= 1;
-
-				const clone = this.getClone(node.value);
-
-				return clone.applyListChanges(this.selectedVersion).value; 
+			if (!(node instanceof Object)) {
+				throw new Error(`You entered an invalid version index. The specified offset sets the index to ${this.selectedVersion - 1}. There is no such index in the version store.`);
 			}
 
-			throw new Error(`You entered an invalid version index. The specified offset sets the index to ${this.selectedVersion - 1}. There is no such index in the version store.`);
+			this.selectedVersion -= 1;
+
+			return correctIndex;
 		}
 
 		throw new Error(`You have entered an incorrect change index. The index must be in the range of the number of changes or must be "+1", "-1".`);
 	}
 
+	#atForHashTable(indexVersion) {
+		const index = this.getCorrectIndex(indexVersion);
+
+		const clone = this.getClone(this.snapshots[index].value);
+
+		if (indexVersion === undefined) {
+			return clone.applyListChanges().value;
+		}
+
+		if (typeof indexVersion === "number") {
+			return clone.applyListChanges(indexVersion).value;
+		}
+
+		return clone.applyListChanges(this.selectedVersion).value;
+	}
+
 	#recApplyListChangeForNode(node, numberVersion) {
 		if (node === null) {
-			return;
+			return null;
 		}
 
 		let updatedNode = node.applyListChanges(numberVersion);
@@ -119,25 +133,19 @@ class StoreVersions {
 	}
 
 	#atForOneWayLinkedList(indexVersion) {
-		const correctTotalVersion = this.totalVersions - 1;
+		const index = this.getCorrectIndex(indexVersion);
 
 		if (indexVersion === undefined) {
-			let nodeLastVersion = this.snapshots[this.snapshots.length - 1].value;
+			let nodeLastVersion = this.snapshots[index].value;
 
-			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, correctTotalVersion);
+			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, this.selectedVersion);
 
 			return nodeLastVersion;
 		}
 
-		const isNumber = typeof indexVersion === "number";
+		let nodeForVersion = this.#searchByVersion(index);
 
-		if (!isNumber || indexVersion < 0 || indexVersion > correctTotalVersion) {
-			throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${correctTotalVersion}.`);
-		}
-
-		let nodeForVersion = this.#searchByVersion(indexVersion);
-
-		nodeForVersion = this.#recApplyListChangeForNode(nodeForVersion, indexVersion);
+		nodeForVersion = this.#recApplyListChangeForNode(nodeForVersion, index);
 
 		return nodeForVersion;
 	}
