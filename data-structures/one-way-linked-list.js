@@ -47,7 +47,7 @@ class OneWayLinkedList{
 	addFirst(value) {
 		const mapArgumentsForHistory = new Map().set(1, value);
 
-		this.historyChanges.registerChange(`Method Call addFirst(). Adding a new element with the value ${JSON.stringify(value)} to the beginning of a one-way node.`, "addFirst", mapArgumentsForHistory);
+		this.historyChanges.registerChange(`Method Call addFirst(). Adding a new element with the value ${JSON.stringify(value)} to the beginning of a node.`, "addFirst", mapArgumentsForHistory);
 
 		const newNode = new NodePersistent(value);
 
@@ -77,7 +77,7 @@ class OneWayLinkedList{
 
 		this.versions.totalVersions++;
 
-		return { newLength: this.length, lastNode: lastN };
+		return { newLength: this.length, lastNode: lastN, firstNode: this.head };
 	}
 
 	deleteFirst() {
@@ -109,7 +109,7 @@ class OneWayLinkedList{
 
 		this.versions.totalVersions++;
 
-		return { newLength: this.length, lastNode: lastN, result: deletedNode };
+		return { newLength: this.length, lastNode: lastN, result: deletedNode, firstNode: this.head };
 	}
 
 	findByKey(key) {
@@ -150,19 +150,19 @@ class OneWayLinkedList{
 		if (middleware === undefined) {
 			this.historyChanges.registerChange(`Set value for list. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`, "set", mapArgumentsForHistory);
 
-			const node = this.head.set(configForValueNode, this.totalVersions);
+			const { updatedNode, firstNode, lastNode } = this.head.set(configForValueNode, this.totalVersions);
 
-			if (node !== this.head) {
-				node.resetChangeLog();
+			if (updatedNode !== null && updatedNode !== this.head) {
+				updatedNode.resetChangeLog();
 
-				this.head = node;
+				this.head = updatedNode;
 
 				this.versions.registerVersion(this.head, this.totalVersions);
 			}
 
 			this.versions.totalVersions++;
 
-			return { node, newTotalVersion: this.totalVersions };
+			return { updatedNode, firstNode, lastNode, newTotalVersion: this.totalVersions };
 		}
 
 		const node = getResultComposeMiddleware.call(this, middleware);
@@ -173,11 +173,9 @@ class OneWayLinkedList{
 
 		this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`, "set", mapArgumentsForHistory);
 
-		const result = node.set(configForValueNode, this.totalVersions);
+		const { updatedNode, firstNode, lastNode } = node.set(configForValueNode, this.totalVersions);
 
-		const firstNode = result.getFirstNode();
-
-		if (firstNode !== this.head) {
+		if (firstNode !== null && firstNode !== this.head) {
 			this.head = firstNode;
 
 			this.versions.registerVersion(this.head, this.totalVersions);
@@ -185,7 +183,7 @@ class OneWayLinkedList{
 
 		this.versions.totalVersions++;
 
-		return { node: result, newTotalVersion: this.totalVersions };
+		return { updatedNode, firstNode, lastNode, newTotalVersion: this.totalVersions };
 	}
 
 	get(numberVersion, pathNodeValue, middleware) {

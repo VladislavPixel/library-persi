@@ -32,36 +32,72 @@ class DoubleLinkedList extends OneWayLinkedList {
 	}
 
 	addFirst(value) {
-		const { newLength, lastNode } = super.addFirst(value);
+		const { newLength, lastNode, firstNode } = super.addFirst(value);
 
 		if (newLength === 1) {
 			this.tail = this.head;
 		}
 
-		if (lastNode !== this.tail) {
+		if (lastNode !== null && lastNode !== this.tail) {
 			this.tail = lastNode;
 		}
 
-		return { newLength, lastNode };
+		return { newLength, lastNode, firstNode };
 	}
 
 	deleteFirst() {
-		const { newLength, lastNode, result } = super.deleteFirst();
+		const { newLength, lastNode, result, firstNode } = super.deleteFirst();
 
 		if (newLength === 0) {
 			this.tail = null;
 		}
 
-		return { newLength, lastNode, result };
+		return { newLength, lastNode, result, firstNode };
+	}
+
+	addLast(value) {
+		const mapArgumentsForHistory = new Map().set(1, value);
+
+		this.historyChanges.registerChange(`Method Call addLast(). Adding a new element with the value ${JSON.stringify(value)} to the end of the sheet.`, "addLast", mapArgumentsForHistory);
+
+		const newNode = new NodePersistent(value);
+
+		if (this.length !== 0) {
+			if (this.versions.length !== 0) {
+				const { firstNode } = this.tail.cloneCascading(this.tail, this.totalVersions, { next: newNode });
+
+				if (firstNode !== null && this.head !== firstNode) {
+					this.head = firstNode;
+
+					this.versions.registerVersion(this.head, this.totalVersions);
+				}
+
+				newNode.resetChangeLog();
+			} else {
+				this.tail.next = newNode;
+			}
+
+			newNode.prev = this.tail;
+		} else {
+			this.head = newNode;
+		}
+
+		this.tail = newNode;
+
+		this.length++;
+
+		this.versions.totalVersions++;
+
+		return { newLength: this.length, lastNode: this.tail, firstNode: this.head };
 	}
 
 	set(configForValueNode, middleware) {
-		const { node, newTotalVersion } = super.set(configForValueNode, middleware);
+		const { updatedNode, firstNode, lastNode, newTotalVersion } = super.set(configForValueNode, middleware);
 
-		if (node.next === null && node !== this.tail) {
-			this.tail = node;
+		if (lastNode !== null && lastNode !== this.tail) {
+			this.tail = lastNode;
 		}
 
-		return { node, newTotalVersion };
+		return { updatedNode, firstNode, lastNode, newTotalVersion };
 	}
 }

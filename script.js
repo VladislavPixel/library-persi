@@ -5,51 +5,74 @@ const doubleLinkedList = new DoubleLinkedList(["pixel developer"]);
 doubleLinkedList.set({ value: { name: "pixel", age: 24 } });
 doubleLinkedList.set({ path: "value/color", value: "green" });
 doubleLinkedList.set({ path: "value/phone", value: "8-345-345-21-12" });
-doubleLinkedList.set({ path: "value/bob", value: "bim" });
+//doubleLinkedList.set({ path: "value/bob", value: "bim" });
 
 doubleLinkedList.addFirst(777);
 
-doubleLinkedList.set({ path: "value", value: 85 });
+doubleLinkedList.set({ value: 2000 });
+doubleLinkedList.set({ value: 2500 });
+doubleLinkedList.set({ value: 3000 });
+doubleLinkedList.set({ value: 4000 });
 
-const searchNodeFn33 = (list) => {
-	const node = list.findByKey({ path: "value/bob", value: "bim" });
-
-	return node;
-}
-
-doubleLinkedList.set({ path: "value/name", value: "VLADISLAV" }, [searchNodeFn33])
-
-const searchNodeFn34 = (list) => {
+const searchNode55 = (list) => {
 	const node = list.findByKey({ path: "value/color", value: "green" });
 
 	return node;
 }
 
-doubleLinkedList.set({ path: "value/name", value: "Upside" }, [searchNodeFn34])
+doubleLinkedList.set({ path: "value/name", value: "max" }, [searchNode55])
 
-const searchNodeFn35 = (list) => {
-	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
 
-	return node;
-}
+//doubleLinkedList.addFirst(123213123);
 
-doubleLinkedList.set({ path: "value/name", value: "Zmey" }, [searchNodeFn35])
+//doubleLinkedList.addLast(900000000000)
 
-const searchNodeFn36 = (list) => {
-	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
+// doubleLinkedList.set({ path: "value", value: 85 });
+// doubleLinkedList.set({ path: "value", value: 120 });
+// doubleLinkedList.set({ path: "value", value: 133 });
+// doubleLinkedList.set({ path: "value", value: 250 });
 
-	return node;
-}
+// const searchNodeFn33 = (list) => {
+// 	const node = list.findByKey({ path: "value/bob", value: "bim" });
 
-doubleLinkedList.set({ path: "value/name", value: "LOL" }, [searchNodeFn36])
+// 	return node;
+// }
 
-const searchNodeFn37 = (list) => {
-	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
+// doubleLinkedList.set({ path: "value/name", value: "VLADISLAV" }, [searchNodeFn33])
 
-	return node;
-}
+// const searchNodeFn34 = (list) => {
+// 	const node = list.findByKey({ path: "value/color", value: "green" });
 
-doubleLinkedList.set({ path: "value/name", value: "LOLipop" }, [searchNodeFn37])
+// 	return node;
+// }
+
+// doubleLinkedList.set({ path: "value/name", value: "Upside" }, [searchNodeFn34])
+
+// const searchNodeFn35 = (list) => {
+// 	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
+
+// 	return node;
+// }
+
+// doubleLinkedList.set({ path: "value/name", value: "Zmey" }, [searchNodeFn35])
+
+// const searchNodeFn36 = (list) => {
+// 	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
+
+// 	return node;
+// }
+
+// doubleLinkedList.set({ path: "value/name", value: "LOL" }, [searchNodeFn36])
+
+//doubleLinkedList.addLast("note");
+
+// const searchNodeFn37 = (list) => {
+// 	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
+
+// 	return node;
+// }
+
+// doubleLinkedList.set({ path: "value/name", value: "LOLipop" }, [searchNodeFn37])
 
 // const searchNode39 = (list) => {
 // 	const node = list.findByKey({ path: "value/name", value: "LOLipop" });

@@ -61,7 +61,7 @@ class NodePersistent{
 
 	cloneCascading(node, totalVersion, change) {
 		if (node === null) {
-			return { updatedNode: null, lastNode: null };
+			return { updatedNode: null, firstNode: null, lastNode: null };
 		}
 
 		if (change !== undefined) {
@@ -71,11 +71,15 @@ class NodePersistent{
 		if (node.changeLog.size > node.MAX_CHANGES) {
 			const newNode = node.applyListChanges();
 
+			let firstNode = null;
+
+			let lastNode = null;
+
 			const resultPrev = this.cloneCascading(newNode.prev, totalVersion, { next: newNode });
 
 			newNode.prev = resultPrev.updatedNode;
 
-			let lastNode = null;
+			firstNode = resultPrev.firstNode;
 
 			if (change.next !== newNode.next) {
 				const resultNext = this.cloneCascading(newNode.next, totalVersion, { prev: newNode });
@@ -85,10 +89,16 @@ class NodePersistent{
 				lastNode = resultNext.lastNode;
 			}
 
-			return { updatedNode: newNode, lastNode: newNode.next === null ? newNode : lastNode };
+			return { updatedNode: newNode, firstNode: newNode.prev === null ? newNode : firstNode, lastNode: newNode.next === null ? newNode : lastNode };
 		}
 
-		return { updatedNode: node, lastNode: null };
+		const nodeWithChanges = node.applyListChanges();
+
+		const first = nodeWithChanges.prev === null ? node : null;
+
+		const last = nodeWithChanges.next === null ? node : null;
+
+		return { updatedNode: node, firstNode: first, lastNode: last};
 	}
 
 	getClone() {
@@ -168,10 +178,8 @@ class NodePersistent{
 			nodeLatestVersion.getValueByPath(configForValueNode.path);
 		}
 
-		const resultCloneCascading = this.cloneCascading(this, numberVersion, configForValueNode);
+		const { updatedNode, firstNode, lastNode } = this.cloneCascading(this, numberVersion, configForValueNode);
 
-		const node = resultCloneCascading.updatedNode;
-
-		return node;
+		return { updatedNode, firstNode, lastNode };
 	}
 }
