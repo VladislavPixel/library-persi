@@ -92,15 +92,15 @@ class NodePersistent{
 	}
 
 	getClone() {
-		const clone = Object.assign(new NodePersistent(0), this);
+		const cloneNode = Object.assign(new NodePersistent(0), this);
 
-		clone.value = JSON.parse(JSON.stringify(clone.value));
+		clone.value = clone(clone.value);
 
-		return clone;
+		return cloneNode;
 	}
 
 	getCloneValue(valueNode) {
-		return JSON.parse(JSON.stringify(valueNode));
+		return clone(valueNode);
 	}
 
 	getValueByPath(path) {
