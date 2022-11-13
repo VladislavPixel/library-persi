@@ -25,7 +25,7 @@ class OneWayLinkedList{
 		if (initData === undefined) {
 			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
-			return;
+			return null;
 		}
 
 		try {
@@ -80,6 +80,38 @@ class OneWayLinkedList{
 		return { newLength: this.length, lastNode: lastN };
 	}
 
+	deleteFirst() {
+		if (this.length === 0) {
+			throw new Error("Deleting the first item from an empty list is not supported. First add the elements.");
+		}
+
+		const mapArgumentsForHistory = new Map();
+
+		this.historyChanges.registerChange(`Method Call deleteFirst(). Deleting the first item in the list.`, "deleteFirst", mapArgumentsForHistory);
+
+		const deletedNode = this.head.applyListChanges();
+
+		let lastN = null;
+
+		if (this.head.next !== null) {
+			const { updatedNode, lastNode } = this.head.cloneCascading(this.head.next, this.totalVersions, { prev: null });
+
+			lastN = lastNode;
+
+			this.head = updatedNode;
+		} else {
+			this.head = null;
+		}
+
+		this.length--;
+
+		this.versions.registerVersion(this.head, this.totalVersions);
+
+		this.versions.totalVersions++;
+
+		return { newLength: this.length, lastNode: lastN, result: deletedNode };
+	}
+
 	findByKey(key) {
 		if (this.length === 0) {
 			throw new Error("Method - findByKey is not supported in Empty list.");
@@ -109,6 +141,10 @@ class OneWayLinkedList{
 	}
 
 	set(configForValueNode, middleware) {
+		if (this.length === 0) {
+			throw new Error("Method - set is not supported in Empty list.");
+		}
+
 		const mapArgumentsForHistory = new Map().set(1, configForValueNode).set(2, middleware);
 
 		if (middleware === undefined) {
@@ -153,6 +189,10 @@ class OneWayLinkedList{
 	}
 
 	get(numberVersion, pathNodeValue, middleware) {
+		if (this.length === 0) {
+			throw new Error("Method - get is not supported in Empty list.");
+		}
+
 		const mapArgumentsForHistory = new Map().set(1, numberVersion).set(2, pathNodeValue).set(3, middleware);
 
 		const isNumber = typeof numberVersion === "number";

@@ -109,28 +109,30 @@ persistentOneWayLinkedList.set({ value: "Globus" }, [searchNodeFn9]);
 persistentOneWayLinkedList.addFirst("Upside");
 persistentOneWayLinkedList.set({ value: 350 });
 
-console.log(persistentOneWayLinkedList.versions.at());
-const searchNodeFn10 = (node) => {
-	const res = node.findByKey({ path: "value/home/target", value: "Moscow" });
+//console.log(persistentOneWayLinkedList.deleteFirst())
 
-	return res;
-}
-console.log(persistentOneWayLinkedList.get(12, "value/home", [searchNodeFn10]));
+// console.log(persistentOneWayLinkedList.versions.at());
+// const searchNodeFn10 = (node) => {
+// 	const res = node.findByKey({ path: "value/home/target", value: "Moscow" });
 
-const searchNodeFn11 = (node) => {
-	const res = node.findByKey({ path: "value/job", value: "programmer" });
+// 	return res;
+// }
+// console.log(persistentOneWayLinkedList.get(12, "value/home", [searchNodeFn10]));
 
-	return res;
-}
-console.log(persistentOneWayLinkedList.get(13, "value/home/target", [searchNodeFn11]));
+// const searchNodeFn11 = (node) => {
+// 	const res = node.findByKey({ path: "value/job", value: "programmer" });
 
-const searchNodeFn12 = (node) => {
-	const res = node.findByKey({ path: "value", value: "pixel" });
+// 	return res;
+// }
+// console.log(persistentOneWayLinkedList.get(13, "value/home/target", [searchNodeFn11]));
 
-	return res;
-}
-console.log(persistentOneWayLinkedList.get(6, "value", [searchNodeFn12]));
+// const searchNodeFn12 = (node) => {
+// 	const res = node.findByKey({ path: "value", value: "pixel" });
+
+// 	return res;
+// }
+// console.log(persistentOneWayLinkedList.get(6, "value", [searchNodeFn12]));
 console.log(persistentOneWayLinkedList);
 
-console.log(persistentOneWayLinkedList.historyChanges.at(2));
-console.log(persistentOneWayLinkedList.historyChanges.at("+1"));
+// console.log(persistentOneWayLinkedList.historyChanges.at(2));
+// console.log(persistentOneWayLinkedList.historyChanges.at("+1"));
