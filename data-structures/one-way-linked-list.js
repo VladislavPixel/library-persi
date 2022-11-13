@@ -185,7 +185,7 @@ class OneWayLinkedList{
 
 		this.versions.totalVersions++;
 
-		return { node, newTotalVersion: this.totalVersions };
+		return { node: result, newTotalVersion: this.totalVersions };
 	}
 
 	get(numberVersion, pathNodeValue, middleware) {

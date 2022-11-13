@@ -12,7 +12,7 @@ class DoubleLinkedList extends OneWayLinkedList {
 		if (initData === undefined) {
 			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
 
-			return;
+			return null;
 		}
 
 		try {
@@ -32,17 +32,27 @@ class DoubleLinkedList extends OneWayLinkedList {
 	}
 
 	addFirst(value) {
-		const result = super.addFirst(value);
+		const { newLength, lastNode } = super.addFirst(value);
 
-		if (this.length === 1) {
+		if (newLength === 1) {
 			this.tail = this.head;
 		}
 
-		if (result.lastNode !== this.tail) {
-			this.tail = result.lastNode;
+		if (lastNode !== this.tail) {
+			this.tail = lastNode;
 		}
 
-		return this.length;
+		return { newLength, lastNode };
+	}
+
+	deleteFirst() {
+		const { newLength, lastNode, result } = super.deleteFirst();
+
+		if (newLength === 0) {
+			this.tail = null;
+		}
+
+		return { newLength, lastNode, result };
 	}
 
 	set(configForValueNode, middleware) {

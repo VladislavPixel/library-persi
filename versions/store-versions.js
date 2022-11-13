@@ -24,7 +24,7 @@ class StoreVersions {
 
 			this.selectedVersion = indexVersion;
 
-			if (this.typeStructure === "oneWayLinkedList") {
+			if (this.typeStructure === "oneWayLinkedList" || this.typeStructure === "doubleLinkedList") {
 				return indexVersion;
 			}
 
@@ -124,7 +124,7 @@ class StoreVersions {
 		return this.snapshots[Math.floor((startIndex + endIndex) / 2)].value;
 	}
 
-	#atForOneWayLinkedList(indexVersion) {
+	#atForList(indexVersion) {
 		const index = this.getCorrectIndex(indexVersion);
 
 		if (indexVersion === undefined) {
@@ -159,7 +159,8 @@ class StoreVersions {
 			case "hashTable":
 				return this.#atForHashTable(indexVersion);
 			case "oneWayLinkedList":
-				return this.#atForOneWayLinkedList(indexVersion);
+			case "doubleLinkedList":
+				return this.#atForList(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);
 		}
