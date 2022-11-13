@@ -130,12 +130,20 @@ class StoreVersions {
 		if (indexVersion === undefined) {
 			let nodeLastVersion = this.snapshots[index].value;
 
+			if (nodeLastVersion === null) {
+				return nodeLastVersion;
+			}
+
 			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, this.selectedVersion);
 
 			return nodeLastVersion;
 		}
 
 		let nodeForVersion = this.#searchByVersion(index);
+
+		if (nodeForVersion === null) {
+			return nodeForVersion;
+		}
 
 		nodeForVersion = this.#recApplyListChangeForNode(nodeForVersion, index);
 
