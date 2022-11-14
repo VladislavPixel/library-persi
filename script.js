@@ -20,17 +20,42 @@ const searchNode55 = (list) => {
 	return node;
 }
 
-doubleLinkedList.set({ path: "value/name", value: "max" }, [searchNode55])
+doubleLinkedList.set({ path: "value/name", value: "max" }, [searchNode55]);
 
+doubleLinkedList.addFirst(123213123);
 
-//doubleLinkedList.addFirst(123213123);
+const searchNode56 = (list) => {
+	const node = list.findByKey({ path: "value", value: 4000 });
+
+	return node;
+}
+
+doubleLinkedList.set({ path: "value", value: 4500 }, [searchNode56]);
+
+const searchNode57 = (list) => {
+	const node = list.findByKey({ path: "value", value: 4500 });
+
+	return node;
+}
+
+doubleLinkedList.set({ path: "value", value: 5500 }, [searchNode57]);
+
+const searchNode58 = (list) => {
+	const node = list.findByKey({ path: "value", value: 5500 });
+
+	return node;
+}
+
+doubleLinkedList.set({ path: "value", value: 6500 }, [searchNode58]);
+
+doubleLinkedList.set({ path: "value", value: 85 });
+doubleLinkedList.set({ path: "value", value: 120 });
+doubleLinkedList.set({ path: "value", value: 133 });
+doubleLinkedList.set({ path: "value", value: 250 });
+
+doubleLinkedList.deleteLast();
 
 //doubleLinkedList.addLast(900000000000)
-
-// doubleLinkedList.set({ path: "value", value: 85 });
-// doubleLinkedList.set({ path: "value", value: 120 });
-// doubleLinkedList.set({ path: "value", value: 133 });
-// doubleLinkedList.set({ path: "value", value: 250 });
 
 // const searchNodeFn33 = (list) => {
 // 	const node = list.findByKey({ path: "value/bob", value: "bim" });

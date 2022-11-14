@@ -91,6 +91,48 @@ class DoubleLinkedList extends OneWayLinkedList {
 		return { newLength: this.length, lastNode: this.tail, firstNode: this.head };
 	}
 
+	deleteLast() {
+		if (this.length === 0) {
+			throw new Error("Removing the last element. First, add the elements.");
+		}
+
+		const mapArgumentsForHistory = new Map();
+
+		this.historyChanges.registerChange(`Calling the deleteLast() method. Remove the last element from the list.`, "deleteLast", mapArgumentsForHistory);
+
+		const deletedNode = this.tail.applyListChanges();
+
+		let lastN = null;
+
+		const currentHead = this.head;
+
+		if (deletedNode.prev !== null) {
+			const { lastNode, firstNode } = this.tail.cloneCascading(deletedNode.prev, this.totalVersions, { next: null });
+
+			lastN = lastNode;
+
+			this.tail = lastNode;
+
+			if (firstNode !== null) {
+				this.head = firstNode;
+			}
+		} else {
+			this.tail = null;
+
+			this.head = null;
+		}
+
+		this.length--;
+
+		if (currentHead !== this.head) {
+			this.versions.registerVersion(this.head, this.totalVersions);
+		}
+
+		this.versions.totalVersions++;
+
+		return { newLength: this.length, result: deletedNode, firstNode: this.head, lastNode: lastN };
+	}
+
 	set(configForValueNode, middleware) {
 		const { updatedNode, firstNode, lastNode, newTotalVersion } = super.set(configForValueNode, middleware);
 
