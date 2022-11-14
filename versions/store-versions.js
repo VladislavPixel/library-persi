@@ -17,6 +17,8 @@ class StoreVersions {
 
 		const currentVersion = this.totalVersions - 1;
 
+		const isAnyList = this.typeStructure === "doublyLinkedList" || this.typeStructure === "oneWayLinkedList" || this.typeStructure === "twoWayLinkedList";
+
 		if (isNumber) {
 			if (indexVersion < 0 || indexVersion > currentVersion) {
 				throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${currentVersion}. Minimum index - 0.`);
@@ -24,14 +26,14 @@ class StoreVersions {
 
 			this.selectedVersion = indexVersion;
 
-			if (this.typeStructure === "oneWayLinkedList" || this.typeStructure === "doubleLinkedList") {
+			if (isAnyList) {
 				return indexVersion;
 			}
 
 			return (indexVersion <= 4 ? 0 : Math.floor(indexVersion / 4));
 		}
 
-		if (this.typeStructure === "oneWayLinkedList") {
+		if (isAnyList) {
 			throw new Error("For list-type structures, the index must be numeric and in a range, or don't pass it at all to get the latest version of the structure.");
 		}
 
@@ -159,7 +161,8 @@ class StoreVersions {
 			case "hashTable":
 				return this.#atForHashTable(indexVersion);
 			case "oneWayLinkedList":
-			case "doubleLinkedList":
+			case "twoWayLinkedList":
+			case "doublyLinkedList":
 				return this.#atForList(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);

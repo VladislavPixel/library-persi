@@ -1,61 +1,82 @@
-//! DoubleLinkedList
+//! DoublyLinkedList
 
-const doubleLinkedList = new DoubleLinkedList(["pixel developer"]);
+const doublyLinkedList = new DoublyLinkedList(["pixel developer"]);
 
-doubleLinkedList.set({ value: { name: "pixel", age: 24 } });
-doubleLinkedList.set({ path: "value/color", value: "green" });
-doubleLinkedList.set({ path: "value/phone", value: "8-345-345-21-12" });
-//doubleLinkedList.set({ path: "value/bob", value: "bim" });
+doublyLinkedList.set({ value: 2000 });
+doublyLinkedList.set({ value: 2500 });
+doublyLinkedList.set({ value: 3000 });
 
-doubleLinkedList.addFirst(777);
+doublyLinkedList.addLast("viva");
 
-doubleLinkedList.set({ value: 2000 });
-doubleLinkedList.set({ value: 2500 });
-doubleLinkedList.set({ value: 3000 });
-doubleLinkedList.set({ value: 4000 });
+doublyLinkedList.addFirst("space");
 
-const searchNode55 = (list) => {
-	const node = list.findByKey({ path: "value/color", value: "green" });
+doublyLinkedList.set({ value: "color" });
 
-	return node;
+const iteratorReverse = doublyLinkedList.getIteratorForReverseValueLastVersion();
+
+console.log(doublyLinkedList, "двусвязанный лист");
+
+for (const val of iteratorReverse) {
+	console.log(val);
 }
 
-doubleLinkedList.set({ path: "value/name", value: "max" }, [searchNode55]);
 
-doubleLinkedList.addFirst(123213123);
+//! TwoWayLinkedList
 
-const searchNode56 = (list) => {
-	const node = list.findByKey({ path: "value", value: 4000 });
+// const twoWayLinkedList = new TwoWayLinkedList(["pixel developer"]);
 
-	return node;
-}
+// twoWayLinkedList.set({ value: { name: "pixel", age: 24 } });
+// twoWayLinkedList.set({ path: "value/color", value: "green" });
+// twoWayLinkedList.set({ path: "value/phone", value: "8-345-345-21-12" });
+// twoWayLinkedList.set({ path: "value/bob", value: "bim" });
 
-doubleLinkedList.set({ path: "value", value: 4500 }, [searchNode56]);
+// twoWayLinkedList.addFirst(777);
 
-const searchNode57 = (list) => {
-	const node = list.findByKey({ path: "value", value: 4500 });
+// twoWayLinkedList.set({ value: 2000 });
+// twoWayLinkedList.set({ value: 2500 });
+// twoWayLinkedList.set({ value: 3000 });
+// twoWayLinkedList.set({ value: 4000 });
 
-	return node;
-}
+// const searchNode55 = (list) => {
+// 	const node = list.findByKey({ path: "value/color", value: "green" });
 
-doubleLinkedList.set({ path: "value", value: 5500 }, [searchNode57]);
+// 	return node;
+// }
 
-const searchNode58 = (list) => {
-	const node = list.findByKey({ path: "value", value: 5500 });
+// twoWayLinkedList.set({ path: "value/name", value: "max" }, [searchNode55]);
 
-	return node;
-}
+// twoWayLinkedList.addFirst(123213123);
 
-doubleLinkedList.set({ path: "value", value: 6500 }, [searchNode58]);
+// const searchNode56 = (list) => {
+// 	const node = list.findByKey({ path: "value", value: 4000 });
 
-doubleLinkedList.set({ path: "value", value: 85 });
-doubleLinkedList.set({ path: "value", value: 120 });
-doubleLinkedList.set({ path: "value", value: 133 });
-doubleLinkedList.set({ path: "value", value: 250 });
+// 	return node;
+// }
 
-doubleLinkedList.deleteLast();
+// twoWayLinkedList.set({ path: "value", value: 4500 }, [searchNode56]);
 
-//doubleLinkedList.addLast(900000000000)
+// const searchNode57 = (list) => {
+// 	const node = list.findByKey({ path: "value", value: 4500 });
+
+// 	return node;
+// }
+
+// twoWayLinkedList.set({ path: "value", value: 5500 }, [searchNode57]);
+
+// const searchNode58 = (list) => {
+// 	const node = list.findByKey({ path: "value", value: 5500 });
+
+// 	return node;
+// }
+
+// twoWayLinkedList.set({ path: "value", value: 6500 }, [searchNode58]);
+
+// twoWayLinkedList.set({ path: "value", value: 85 });
+// twoWayLinkedList.set({ path: "value", value: 120 });
+// twoWayLinkedList.set({ path: "value", value: 133 });
+// twoWayLinkedList.set({ path: "value", value: 250 });
+
+//twoWayLinkedList.addLast(900000000000)
 
 // const searchNodeFn33 = (list) => {
 // 	const node = list.findByKey({ path: "value/bob", value: "bim" });
@@ -63,7 +84,7 @@ doubleLinkedList.deleteLast();
 // 	return node;
 // }
 
-// doubleLinkedList.set({ path: "value/name", value: "VLADISLAV" }, [searchNodeFn33])
+// twoWayLinkedList.set({ path: "value/name", value: "VLADISLAV" }, [searchNodeFn33])
 
 // const searchNodeFn34 = (list) => {
 // 	const node = list.findByKey({ path: "value/color", value: "green" });
@@ -71,7 +92,7 @@ doubleLinkedList.deleteLast();
 // 	return node;
 // }
 
-// doubleLinkedList.set({ path: "value/name", value: "Upside" }, [searchNodeFn34])
+// twoWayLinkedList.set({ path: "value/name", value: "Upside" }, [searchNodeFn34])
 
 // const searchNodeFn35 = (list) => {
 // 	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
@@ -79,7 +100,7 @@ doubleLinkedList.deleteLast();
 // 	return node;
 // }
 
-// doubleLinkedList.set({ path: "value/name", value: "Zmey" }, [searchNodeFn35])
+// twoWayLinkedList.set({ path: "value/name", value: "Zmey" }, [searchNodeFn35])
 
 // const searchNodeFn36 = (list) => {
 // 	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
@@ -87,9 +108,9 @@ doubleLinkedList.deleteLast();
 // 	return node;
 // }
 
-// doubleLinkedList.set({ path: "value/name", value: "LOL" }, [searchNodeFn36])
+// twoWayLinkedList.set({ path: "value/name", value: "LOL" }, [searchNodeFn36])
 
-//doubleLinkedList.addLast("note");
+//twoWayLinkedList.addLast("note");
 
 // const searchNodeFn37 = (list) => {
 // 	const node = list.findByKey({ path: "value/phone", value: "8-345-345-21-12" });
@@ -97,7 +118,7 @@ doubleLinkedList.deleteLast();
 // 	return node;
 // }
 
-// doubleLinkedList.set({ path: "value/name", value: "LOLipop" }, [searchNodeFn37])
+// twoWayLinkedList.set({ path: "value/name", value: "LOLipop" }, [searchNodeFn37])
 
 // const searchNode39 = (list) => {
 // 	const node = list.findByKey({ path: "value/name", value: "LOLipop" });
@@ -105,9 +126,9 @@ doubleLinkedList.deleteLast();
 // 	return node;
 // }
 
-// console.log(doubleLinkedList.get(11, "value/age", [searchNode39]));
+// console.log(twoWayLinkedList.get(11, "value/age", [searchNode39]));
 
-console.log(doubleLinkedList, "doubleLinkedList");
+//console.log(twoWayLinkedList, "twoWayLinkedList");
 
 //! HashTable
 
