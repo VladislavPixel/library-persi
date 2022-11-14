@@ -75,4 +75,10 @@ class HistoryChanges {
 
 		return this.arrHistoryChanges.length;
 	}
+
+	deleteFirstItemHistory() {
+		const item = this.arrHistoryChanges.pop();
+
+		return item;
+	}
 }

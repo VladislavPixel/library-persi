@@ -7,6 +7,8 @@ class TwoWayLinkedList extends OneWayLinkedList {
 	}
 
 	initialization(initData) {
+		this.historyChanges.deleteFirstItemHistory();
+
 		const mapArgumentsForHistory = new Map().set(1, initData);
 
 		if (initData === undefined) {

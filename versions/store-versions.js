@@ -17,7 +17,7 @@ class StoreVersions {
 
 		const currentVersion = this.totalVersions - 1;
 
-		const isAnyList = this.typeStructure === "doublyLinkedList" || this.typeStructure === "oneWayLinkedList" || this.typeStructure === "twoWayLinkedList";
+		const isAnyList = this.typeStructure === "stack" || this.typeStructure === "doublyLinkedList" || this.typeStructure === "oneWayLinkedList" || this.typeStructure === "twoWayLinkedList";
 
 		if (isNumber) {
 			if (indexVersion < 0 || indexVersion > currentVersion) {
@@ -163,6 +163,7 @@ class StoreVersions {
 			case "oneWayLinkedList":
 			case "twoWayLinkedList":
 			case "doublyLinkedList":
+			case "stack":
 				return this.#atForList(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);

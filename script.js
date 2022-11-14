@@ -1,29 +1,43 @@
+//! Stack
+
+// const stack = new Stack();
+
+// stack.push(125)
+// stack.push(88)
+// stack.push(1213231)
+
+// console.log(stack.peek(), "head");
+// stack.pop();
+// console.log(stack.peek(), "head");
+// stack.pop();
+// console.log(stack.peek(), "head");
+// stack.pop();
+
+// console.log(stack.list);
+
 //! DoublyLinkedList
 
-const doublyLinkedList = new DoublyLinkedList(["pixel developer"]);
+// const doublyLinkedList = new DoublyLinkedList(["pixel developer"]);
 
-doublyLinkedList.set({ value: 2000 });
-doublyLinkedList.set({ value: 2500 });
-doublyLinkedList.set({ value: 3000 });
+// doublyLinkedList.set({ value: 2000 });
+// doublyLinkedList.set({ value: 2500 });
+// doublyLinkedList.set({ value: 3000 });
 
-doublyLinkedList.addLast("viva");
+// doublyLinkedList.addLast("viva");
 
-doublyLinkedList.addFirst("space");
+// doublyLinkedList.addFirst("space");
 
-doublyLinkedList.set({ value: "color" });
+// doublyLinkedList.set({ value: "color" });
 
-const iteratorReverse = doublyLinkedList.getIteratorForReverseValueLastVersion();
+// console.log(doublyLinkedList, "двусвязанный лист");
 
-console.log(doublyLinkedList, "двусвязанный лист");
-
-for (const val of iteratorReverse) {
-	console.log(val);
-}
-
+// for (const val of iteratorReverse) {
+// 	console.log(val);
+// }
 
 //! TwoWayLinkedList
 
-// const twoWayLinkedList = new TwoWayLinkedList(["pixel developer"]);
+// const twoWayLinkedList = new TwoWayLinkedList([123]);
 
 // twoWayLinkedList.set({ value: { name: "pixel", age: 24 } });
 // twoWayLinkedList.set({ path: "value/color", value: "green" });
