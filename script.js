@@ -1,3 +1,24 @@
+//! DecQueue
+
+const decQueue = new DecQueue();
+
+decQueue.insertLast(155);
+decQueue.insertFirst(250);
+decQueue.insertLast(444);
+decQueue.insertLast(600);
+decQueue.insertFirst(1000);
+
+decQueue.removeLast();
+decQueue.removeLast();
+decQueue.removeFirst()
+
+console.log(decQueue.peekFirst());
+console.log(decQueue.peekLast());
+
+console.log(decQueue.versions.at(3));
+
+console.log(decQueue);
+
 //! Queue
 
 // const queue = new Queue();
@@ -12,7 +33,7 @@
 // console.log(queue.peekFirst());
 //console.log(queue.peekFirst());
 
-console.log(queue, "Очередь");
+//console.log(queue, "Очередь");
 
 //! Stack
 
