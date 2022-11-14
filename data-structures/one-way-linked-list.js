@@ -93,8 +93,8 @@ class OneWayLinkedList{
 
 		let lastN = null;
 
-		if (this.head.next !== null) {
-			const { updatedNode, lastNode } = this.head.cloneCascading(this.head.next, this.totalVersions, { prev: null });
+		if (deletedNode.next !== null) {
+			const { updatedNode, lastNode } = this.head.cloneCascading(deletedNode.next, this.totalVersions, { prev: null });
 
 			lastN = lastNode;
 

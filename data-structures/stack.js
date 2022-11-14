@@ -1,15 +1,15 @@
-class Stack {
+class Stack extends DoublyLinkedList {
 	constructor() {
-		this.list = new DoublyLinkedList();
-		this.list.versions = new StoreVersions("stack");
+		super();
+		this.versions = new StoreVersions("stack");
 	}
 
 	get size() {
-		return this.list.length;
+		return this.length;
 	}
 
 	push(value) {
-		const { newLength } = this.list.addFirst(value);
+		const { newLength } = super.addFirst(value);
 
 		return newLength;
 	}
@@ -19,7 +19,7 @@ class Stack {
 			throw new Error("Operation pop is not supported in Empty structure. It is necessary to add a value, and after that call the removal.");
 		}
 
-		const { result } = this.list.deleteFirst();
+		const { result } = super.deleteFirst();
 
 		return result.value;
 	}
@@ -29,7 +29,7 @@ class Stack {
 			throw new Error("Operation peek is not supported in Empty structure.");
 		}
 
-		const nodeLatestVersion = this.list.head.applyListChanges();
+		const nodeLatestVersion = this.head.applyListChanges();
 
 		const clone = nodeLatestVersion.getClone();
 

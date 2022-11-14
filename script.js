@@ -1,3 +1,19 @@
+//! Queue
+
+// const queue = new Queue();
+
+// queue.insert(125);
+// queue.insert(777);
+// queue.insert(212312);
+
+// queue.remove()
+// queue.remove()
+// queue.remove()
+// console.log(queue.peekFirst());
+//console.log(queue.peekFirst());
+
+console.log(queue, "Очередь");
+
 //! Stack
 
 // const stack = new Stack();
