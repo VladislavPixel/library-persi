@@ -22,7 +22,7 @@ class IteratorForDepthForward {
 
 		while(this.#auxiliaryTree ?? this.#arrayNodes.length) {
 			if (this.#auxiliaryTree) {
-				const valueCurrentNode = this.#auxiliaryTree.value;
+				const valueCurrentNode = this.#auxiliaryTree.getCloneValue(this.#auxiliaryTree.value);
 
 				this.#arrayNodes.push(this.#auxiliaryTree);
 

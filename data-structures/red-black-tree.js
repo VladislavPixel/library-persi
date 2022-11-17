@@ -15,6 +15,10 @@ class RedBlackTree {
 		return new IteratorForDepthSymmetrical(this.root);
 	}
 
+	getIteratorForDepthReverse() {
+		return new IteratorForDepthReverse(this.root);
+	}
+
 	getIteratorForFindMethod(key) {
 		return new IteratorForFindMethod(this.root, key);
 	}

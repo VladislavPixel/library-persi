@@ -29,7 +29,7 @@ class IteratorForDepthSymmetrical {
 				const treeNode = this.#arrayNodes.pop();
 
 				if (treeNode) {
-					const currentNodeValue = treeNode.value;
+					const currentNodeValue = treeNode.getCloneValue(treeNode.value);
 
 					this.#auxiliaryTree = treeNode.right;
 

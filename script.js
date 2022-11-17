@@ -17,7 +17,7 @@ console.log(redBlackTree.versions.at(1), "1 версии");
 console.log(redBlackTree.versions.at(2), "2 версии");
 console.log(redBlackTree.versions.at(3), "3 версии");
 
-for (const value of redBlackTree.getIteratorForDepthSymmetrical()) {
+for (const value of redBlackTree.getIteratorForDepthReverse()) {
 	console.log(value);
 }
 

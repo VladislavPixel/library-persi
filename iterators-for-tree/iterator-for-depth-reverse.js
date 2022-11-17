@@ -24,9 +24,28 @@ class IteratorForDepthReverse {
 		}
 
 		while (this.#auxiliaryTree ?? this.#arrayNodes.length) {
-      
-    }
+			if (this.#auxiliaryTree) {
+				this.#arrayNodes.push(this.#auxiliaryTree);
 
-    return { value: undefined, done: true };
+				this.#auxiliaryTree = this.#auxiliaryTree.left;
+			} else {
+				const lastElementArrayNodes = this.#arrayNodes[this.#arrayNodes.length - 1];
+
+				if (lastElementArrayNodes?.right && lastElementArrayNodes.right !== this.#lastWorkTreeNode) {
+					this.#auxiliaryTree = lastElementArrayNodes.right;
+
+				} else {
+					const treeNode = this.#arrayNodes.pop();
+
+					this.#lastWorkTreeNode = treeNode;
+
+					if (treeNode) {
+						return { value: treeNode.getCloneValue(treeNode.value), done: false };
+					}
+				}
+			}
+		}
+
+		return { value: undefined, done: true };
 	}
 }
