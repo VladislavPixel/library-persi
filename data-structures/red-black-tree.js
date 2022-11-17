@@ -19,6 +19,10 @@ class RedBlackTree {
 		return new IteratorForDepthReverse(this.root);
 	}
 
+	getIteratorForWidthTraversal() {
+		return new IteratorForWidthTraversal(this.root);
+	}
+
 	getIteratorForFindMethod(key) {
 		return new IteratorForFindMethod(this.root, key);
 	}

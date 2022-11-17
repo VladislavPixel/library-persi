@@ -1,25 +1,16 @@
 //! RedBlackTree
 
-const redBlackTree = new RedBlackTree();
+// const redBlackTree = new RedBlackTree();
 
-redBlackTree.insert("name", 100);
-redBlackTree.insert("color", 25);
-redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
+// redBlackTree.insert("name", 100);
+// redBlackTree.insert("color", 25);
+// redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
+// redBlackTree.insert("foo", 15);
+// redBlackTree.insert("zzz", 30);
 
-const versionLast = redBlackTree.versions.at();
-versionLast.right.value.name = "MAX"
-
-console.log(versionLast.right.value === redBlackTree.root.right.value, "Сравнение значений, действительно ли оно клонируется");
-console.log(versionLast, "Клон");
-console.log(redBlackTree, "Основное дерево структуры");
-
-console.log(redBlackTree.versions.at(1), "1 версии");
-console.log(redBlackTree.versions.at(2), "2 версии");
-console.log(redBlackTree.versions.at(3), "3 версии");
-
-for (const value of redBlackTree.getIteratorForDepthReverse()) {
-	console.log(value);
-}
+// for (const value of redBlackTree.getIteratorForWidthTraversal()) {
+// 	console.log(value);
+// }
 
 //! DecQueue
 

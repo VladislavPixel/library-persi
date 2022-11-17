@@ -16,7 +16,11 @@ class NodePersistentTree {
 	}
 
 	getIteratorForDepthReverse() {
-		return new IteratorForDepthReverse(this.root);
+		return new IteratorForDepthReverse(this);
+	}
+
+	getIteratorForWidthTraversal() {
+		return new IteratorForWidthTraversal(this);
 	}
 
 	getCloneValue(valueNode) {
