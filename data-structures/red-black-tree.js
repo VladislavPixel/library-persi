@@ -2,6 +2,21 @@ class RedBlackTree {
 	constructor() {
 		this.root = null;
 		this.length = 0;
+		this.versions = new StoreVersions("redBlackTree");
+		this.historyChanges = new HistoryChanges();
+		this.initialization();
+	}
+
+	get totalVersions() {
+		return this.versions.totalVersions;
+	}
+
+	initialization() {
+		this.historyChanges.registerChange("Initialization on your redBlackTree data structure. Creating an instance without default data.", "initialization", new Map());
+
+		this.versions.registerVersion(this.root, this.totalVersions);
+
+		this.versions.totalVersions++;
 	}
 
 	getIteratorForFindMethod(key) {
@@ -39,6 +54,10 @@ class RedBlackTree {
 	}
 
 	insert(value, key) {
+		const mapArgumentsForHistory = new Map().set(1, value).set(2, key);
+
+		this.historyChanges.registerChange("Calling the insertion method into the tree.", "insert", mapArgumentsForHistory);
+
 		const newNode = new NodePersistentTree(value, key);
 
 		if (this.length === 0) {
@@ -46,7 +65,11 @@ class RedBlackTree {
 
 			this.root = newNode;
 
+			this.versions.registerVersion(this.root, this.totalVersions);
+
 			this.length++;
+
+			this.versions.totalVersions++;
 
 			return this.length;
 		}
@@ -62,42 +85,44 @@ class RedBlackTree {
 
 			const { children, brokeRuleStatus, grandson } = recLookPlaceAndInsert(nextNode);
 
+			const cloneCurrentNode = currentNode.getClone();
+
 			if (isLeftNodeNext) {
-				currentNode.left = children;
+				cloneCurrentNode.left = children;
 
 			} else {
-				currentNode.right = children;
+				cloneCurrentNode.right = children;
 			}
 
 			if (brokeRuleStatus === null) {
-				if (this.isBrokeRule(currentNode, children)) {
-					return { children: currentNode, brokeRuleStatus: true, grandson: children };
+				if (this.isBrokeRule(cloneCurrentNode, children)) {
+					return { children: cloneCurrentNode, brokeRuleStatus: true, grandson: children };
 				}
 
-				return { children: currentNode, brokeRuleStatus: false, grandson: children };
+				return { children: cloneCurrentNode, brokeRuleStatus: false, grandson: children };
 			}
 
 			if (brokeRuleStatus === false) {
-				return { children: currentNode, brokeRuleStatus: null, grandson: children };
+				return { children: cloneCurrentNode, brokeRuleStatus: null, grandson: children };
 			}
 
-			if (this.isTriggerColor(currentNode)) {
-				this.updateColorsForNodeAndChildrens(currentNode);
+			if (this.isTriggerColor(cloneCurrentNode)) {
+				this.updateColorsForNodeAndChildrens(cloneCurrentNode);
 
-				return { children: currentNode, brokeRuleStatus: null, grandson: children };
+				return { children: cloneCurrentNode, brokeRuleStatus: null, grandson: children };
 			}
 
-			const { isExternalGrandson, isLeft } = this.checkGrandson(grandson, children, currentNode);
+			const { isExternalGrandson, isLeft } = this.checkGrandson(grandson, children, cloneCurrentNode);
 
-			currentNode.isRed = !currentNode.isRed;
+			cloneCurrentNode.isRed = !cloneCurrentNode.isRed;
 
 			if (isExternalGrandson) {
 				children.isRed = !children.isRed;
 
 				if (isLeft) {
-					this.ror(currentNode, children);
+					this.ror(cloneCurrentNode, children);
 				} else {
-					this.rol(currentNode, children);
+					this.rol(cloneCurrentNode, children);
 				}
 
 				return { children, brokeRuleStatus: null, grandson: null };
@@ -106,14 +131,14 @@ class RedBlackTree {
 			grandson.isRed = !grandson.isRed;
 
 			if (isLeft) {
-				this.rorSmall(currentNode, children, grandson);
+				this.rorSmall(cloneCurrentNode, children, grandson);
 
-				this.rol(currentNode, grandson);
+				this.rol(cloneCurrentNode, grandson);
 
 			} else {
-				this.rolSmall(currentNode, children, grandson);
+				this.rolSmall(cloneCurrentNode, children, grandson);
 
-				this.ror(currentNode, grandson);
+				this.ror(cloneCurrentNode, grandson);
 			}
 
 			return { children: grandson, brokeRuleStatus: null, grandson: null };
@@ -121,7 +146,11 @@ class RedBlackTree {
 
 		this.root = recLookPlaceAndInsert(this.root).children;
 
+		this.versions.registerVersion(this.root, this.totalVersions);
+
 		this.length++;
+
+		this.versions.totalVersions++;
 
 		return this.length;
 	}
@@ -154,9 +183,9 @@ class RedBlackTree {
 		parent.left = grandfather;
 	}
 
-	find(key) {
+	findByKey(key) {
 		if (this.length === 0) {
-			throw new Error("Method is find is not suppoeted in Empty RedBlackTree.");
+			throw new Error("Method is findByKey is not suppoeted in Empty RedBlackTree.");
 		}
 
 		const iterator = this.getIteratorForFindMethod(key);

@@ -1,4 +1,4 @@
-class NodePersistent{
+class NodePersistent {
 	constructor(value) {
 		this.value = value;
 		this.next = null;

@@ -1,23 +1,42 @@
+//! RedBlackTree
+
+const redBlackTree = new RedBlackTree();
+
+redBlackTree.insert("name", 100);
+redBlackTree.insert("color", 25);
+redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
+
+const versionLast = redBlackTree.versions.at();
+versionLast.right.value.name = "MAX"
+
+console.log(versionLast.right.value === redBlackTree.root.right.value, "Сравнение значений, действительно ли оно клонируется");
+console.log(versionLast, "Клон");
+console.log(redBlackTree, "Основное дерево структуры");
+
+console.log(redBlackTree.versions.at(1), "1 версии");
+console.log(redBlackTree.versions.at(2), "2 версии");
+console.log(redBlackTree.versions.at(3), "3 версии");
+
 //! DecQueue
 
-const decQueue = new DecQueue();
+// const decQueue = new DecQueue();
 
-decQueue.insertLast(155);
-decQueue.insertFirst(250);
-decQueue.insertLast(444);
-decQueue.insertLast(600);
-decQueue.insertFirst(1000);
+// decQueue.insertLast(155);
+// decQueue.insertFirst(250);
+// decQueue.insertLast(444);
+// decQueue.insertLast(600);
+// decQueue.insertFirst(1000);
 
-decQueue.removeLast();
-decQueue.removeLast();
-decQueue.removeFirst()
+// decQueue.removeLast();
+// decQueue.removeLast();
+// decQueue.removeFirst()
 
-console.log(decQueue.peekFirst());
-console.log(decQueue.peekLast());
+// console.log(decQueue.peekFirst());
+// console.log(decQueue.peekLast());
 
-console.log(decQueue.versions.at(3));
+// console.log(decQueue.versions.at(3));
 
-console.log(decQueue);
+// console.log(decQueue);
 
 //! Queue
 

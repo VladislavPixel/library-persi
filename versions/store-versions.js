@@ -19,6 +19,8 @@ class StoreVersions {
 
 		const isAnyList = this.typeStructure === "decQueue" || this.typeStructure === "queue" || this.typeStructure === "stack" || this.typeStructure === "doublyLinkedList" || this.typeStructure === "oneWayLinkedList" || this.typeStructure === "twoWayLinkedList";
 
+		const isAnyTree = this.typeStructure === "redBlackTree";
+
 		if (isNumber) {
 			if (indexVersion < 0 || indexVersion > currentVersion) {
 				throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${currentVersion}. Minimum index - 0.`);
@@ -26,15 +28,15 @@ class StoreVersions {
 
 			this.selectedVersion = indexVersion;
 
-			if (isAnyList) {
+			if (isAnyList || isAnyTree) {
 				return indexVersion;
 			}
 
 			return (indexVersion <= 4 ? 0 : Math.floor(indexVersion / 4));
 		}
 
-		if (isAnyList) {
-			throw new Error("For list-type structures, the index must be numeric and in a range, or don't pass it at all to get the latest version of the structure.");
+		if (isAnyList || isAnyTree) {
+			throw new Error("For list-type and tree structures, the index must be numeric and in a range, or don't pass it at all to get the latest version of the structure.");
 		}
 
 		if (indexVersion === "+1") {
@@ -152,6 +154,44 @@ class StoreVersions {
 		return nodeForVersion;
 	}
 
+	recursivelyCloneAllNodesForTree(tree) {
+		if (tree === null) {
+			return null;
+		}
+
+		tree.left = this.recursivelyCloneAllNodesForTree(tree.left);
+
+		tree.right = this.recursivelyCloneAllNodesForTree(tree.right);
+
+		const clone = tree.getClone();
+
+		return clone;
+	}
+
+	#atForTree(indexVersion) {
+		const index = this.getCorrectIndex(indexVersion);
+
+		if (indexVersion === undefined) {
+			const root = this.snapshots[index].value.getClone();
+
+			const cloneRoot = this.recursivelyCloneAllNodesForTree(root);
+
+			return cloneRoot;
+		}
+
+		const nodeForVersion = this.#searchByVersion(index);
+
+		if (nodeForVersion === null) {
+			return nodeForVersion;
+		}
+
+		const root = nodeForVersion.getClone();
+
+		const cloneRoot = this.recursivelyCloneAllNodesForTree(root);
+
+		return cloneRoot;
+	}
+
 	at(indexVersion) {
 		if (this.snapshots.length === 0) {
 			throw new Error("The versions store is Empty. Operation at() is not supported.");
@@ -167,6 +207,8 @@ class StoreVersions {
 			case "queue":
 			case "decQueue":
 				return this.#atForList(indexVersion);
+			case "redBlackTree":
+				return this.#atForTree(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);
 		}
