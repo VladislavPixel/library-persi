@@ -8,7 +8,11 @@ class NodePersistentTree {
 	}
 
 	[Symbol.iterator]() {
-		return new IteratorNodePersistentForReverseValues(this);
+		return new IteratorForDepthForward(this);
+	}
+
+	getIteratorForDepthSymmetrical() {
+		return new IteratorForDepthSymmetrical(this);
 	}
 
 	getCloneValue(valueNode) {

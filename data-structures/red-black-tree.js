@@ -4,14 +4,26 @@ class RedBlackTree {
 		this.length = 0;
 		this.versions = new StoreVersions("redBlackTree");
 		this.historyChanges = new HistoryChanges();
-		this.initialization();
+		this.#initialization();
+	}
+
+	[Symbol.iterator]() {
+		return new IteratorForDepthForward(this.root);
+	}
+
+	getIteratorForDepthSymmetrical() {
+		return new IteratorForDepthSymmetrical(this.root);
+	}
+
+	getIteratorForFindMethod(key) {
+		return new IteratorForFindMethod(this.root, key);
 	}
 
 	get totalVersions() {
 		return this.versions.totalVersions;
 	}
 
-	initialization() {
+	#initialization() {
 		this.historyChanges.registerChange("Initialization on your redBlackTree data structure. Creating an instance without default data.", "initialization", new Map());
 
 		this.versions.registerVersion(this.root, this.totalVersions);
@@ -19,11 +31,7 @@ class RedBlackTree {
 		this.versions.totalVersions++;
 	}
 
-	getIteratorForFindMethod(key) {
-		return new IteratorForFindMethod(this.root, key);
-	}
-
-	isBrokeRule(parent, node) {
+	#isBrokeRule(parent, node) {
 		if (parent === null) {
 			return false;
 		}
@@ -31,7 +39,7 @@ class RedBlackTree {
 		return parent.isRed === true && node.isRed === true;
 	}
 
-	checkGrandson(grandson, parent, grandfather) {
+	#checkGrandson(grandson, parent, grandfather) {
 		const isLeftParent = grandfather.left === parent ? true : false;
 
 		const isLeftGrandson = parent.left === grandson ? true : false;
@@ -39,11 +47,11 @@ class RedBlackTree {
 		return { isExternalGrandson: isLeftParent === isLeftGrandson, isLeft: isLeftGrandson };
 	}
 
-	isTriggerColor(node) {
+	#isTriggerColor(node) {
 		return !node.isRed && node.left !== null && node.left.isRed && node.right !== null && node.right.isRed;
 	}
 
-	updateColorsForNodeAndChildrens(node) {
+	#updateColorsForNodeAndChildrens(node) {
 		if (node !== this.root) {
 			node.isRed = true;
 		}
@@ -95,7 +103,7 @@ class RedBlackTree {
 			}
 
 			if (brokeRuleStatus === null) {
-				if (this.isBrokeRule(cloneCurrentNode, children)) {
+				if (this.#isBrokeRule(cloneCurrentNode, children)) {
 					return { children: cloneCurrentNode, brokeRuleStatus: true, grandson: children };
 				}
 
@@ -106,13 +114,13 @@ class RedBlackTree {
 				return { children: cloneCurrentNode, brokeRuleStatus: null, grandson: children };
 			}
 
-			if (this.isTriggerColor(cloneCurrentNode)) {
-				this.updateColorsForNodeAndChildrens(cloneCurrentNode);
+			if (this.#isTriggerColor(cloneCurrentNode)) {
+				this.#updateColorsForNodeAndChildrens(cloneCurrentNode);
 
 				return { children: cloneCurrentNode, brokeRuleStatus: null, grandson: children };
 			}
 
-			const { isExternalGrandson, isLeft } = this.checkGrandson(grandson, children, cloneCurrentNode);
+			const { isExternalGrandson, isLeft } = this.#checkGrandson(grandson, children, cloneCurrentNode);
 
 			cloneCurrentNode.isRed = !cloneCurrentNode.isRed;
 
@@ -120,9 +128,9 @@ class RedBlackTree {
 				children.isRed = !children.isRed;
 
 				if (isLeft) {
-					this.ror(cloneCurrentNode, children);
+					this.#ror(cloneCurrentNode, children);
 				} else {
-					this.rol(cloneCurrentNode, children);
+					this.#rol(cloneCurrentNode, children);
 				}
 
 				return { children, brokeRuleStatus: null, grandson: null };
@@ -131,14 +139,14 @@ class RedBlackTree {
 			grandson.isRed = !grandson.isRed;
 
 			if (isLeft) {
-				this.rorSmall(cloneCurrentNode, children, grandson);
+				this.#rorSmall(cloneCurrentNode, children, grandson);
 
-				this.rol(cloneCurrentNode, grandson);
+				this.#rol(cloneCurrentNode, grandson);
 
 			} else {
-				this.rolSmall(cloneCurrentNode, children, grandson);
+				this.#rolSmall(cloneCurrentNode, children, grandson);
 
-				this.ror(cloneCurrentNode, grandson);
+				this.#ror(cloneCurrentNode, grandson);
 			}
 
 			return { children: grandson, brokeRuleStatus: null, grandson: null };
@@ -155,7 +163,7 @@ class RedBlackTree {
 		return this.length;
 	}
 
-	rorSmall(grandfather, parent, grandson) {
+	#rorSmall(grandfather, parent, grandson) {
 		parent.left = grandson.right;
 
 		grandson.right = parent;
@@ -163,7 +171,7 @@ class RedBlackTree {
 		grandfather.right = grandson;
 	}
 
-	rolSmall(grandfather, parent, grandson) {
+	#rolSmall(grandfather, parent, grandson) {
 		grandfather.left = grandson;
 
 		parent.right = grandson.left;
@@ -171,13 +179,13 @@ class RedBlackTree {
 		grandson.left = parent;
 	}
 
-	ror(grandfather, parent) {
+	#ror(grandfather, parent) {
 		grandfather.left = parent.right;
 
 		parent.right = grandfather;
 	}
 
-	rol(grandfather, parent) {
+	#rol(grandfather, parent) {
 		grandfather.right = parent.left;
 
 		parent.left = grandfather;
