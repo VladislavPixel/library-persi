@@ -1,7 +1,6 @@
 class Stack extends DoublyLinkedList {
 	constructor() {
 		super();
-		this.versions = new StoreVersions("stack");
 	}
 
 	get size() {

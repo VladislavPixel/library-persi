@@ -1,7 +1,6 @@
 class Queue extends DoublyLinkedList {
 	constructor() {
 		super();
-		this.versions = new StoreVersions("queue");
 	}
 
 	get size() {

@@ -1,8 +1,8 @@
-class OneWayLinkedList{
+class OneWayLinkedList {
 	constructor(defaultData) {
 		this.head = null;
 		this.length = 0;
-		this.versions = new StoreVersions("oneWayLinkedList");
+		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
 		this.initialization(defaultData);
 	}

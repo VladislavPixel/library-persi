@@ -2,7 +2,6 @@ class TwoWayLinkedList extends OneWayLinkedList {
 	constructor(defaultData) {
 		super();
 		this.tail = null;
-		this.versions = new StoreVersions("twoWayLinkedList");
 		this.initialization(defaultData);
 	}
 

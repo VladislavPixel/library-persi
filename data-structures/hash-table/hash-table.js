@@ -1,6 +1,6 @@
 class HashTable {
 	constructor(defaultData) {
-		this.versions = new StoreVersions("hashTable");
+		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
 		this.structure = this.initialization(defaultData);
 	}

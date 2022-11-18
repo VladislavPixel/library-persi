@@ -2,7 +2,7 @@ class RedBlackTree {
 	constructor() {
 		this.root = null;
 		this.length = 0;
-		this.versions = new StoreVersions("redBlackTree");
+		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
 		this.#initialization();
 	}

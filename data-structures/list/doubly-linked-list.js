@@ -1,7 +1,6 @@
 class DoublyLinkedList extends TwoWayLinkedList {
 	constructor(defaultData) {
 		super();
-		this.versions = new StoreVersions("doublyLinkedList");
 		this.initialization(defaultData);
 	}
 

@@ -1,7 +1,6 @@
 class DecQueue extends DoublyLinkedList {
 	constructor() {
 		super();
-		this.versions = new StoreVersions("decQueue");
 	}
 
 	get size() {

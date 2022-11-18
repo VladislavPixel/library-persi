@@ -17,9 +17,9 @@ class StoreVersions {
 
 		const currentVersion = this.totalVersions - 1;
 
-		const isAnyList = this.typeStructure === "decQueue" || this.typeStructure === "queue" || this.typeStructure === "stack" || this.typeStructure === "doublyLinkedList" || this.typeStructure === "oneWayLinkedList" || this.typeStructure === "twoWayLinkedList";
+		const isAnyList = this.typeStructure === "DecQueue" || this.typeStructure === "Queue" || this.typeStructure === "Stack" || this.typeStructure === "DoublyLinkedList" || this.typeStructure === "OneWayLinkedList" || this.typeStructure === "TwoWayLinkedList";
 
-		const isAnyTree = this.typeStructure === "redBlackTree";
+		const isAnyTree = this.typeStructure === "RedBlackTree";
 
 		if (isNumber) {
 			if (indexVersion < 0 || indexVersion > currentVersion) {
@@ -198,16 +198,16 @@ class StoreVersions {
 		}
 
 		switch (this.typeStructure) {
-			case "hashTable":
+			case "HashTable":
 				return this.#atForHashTable(indexVersion);
-			case "oneWayLinkedList":
-			case "twoWayLinkedList":
-			case "doublyLinkedList":
-			case "stack":
-			case "queue":
-			case "decQueue":
+			case "OneWayLinkedList":
+			case "TwoWayLinkedList":
+			case "DoublyLinkedList":
+			case "Stack":
+			case "Queue":
+			case "DecQueue":
 				return this.#atForList(indexVersion);
-			case "redBlackTree":
+			case "RedBlackTree":
 				return this.#atForTree(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);
