@@ -1,14 +1,10 @@
-function getResultComposeMiddleware(arrMiddleware) {
+function getResultComposeMiddleware(middleware) {
 	let result;
 
 	let index = 0;
 
-	for (const middlewareFn of arrMiddleware) {
-		if (index === 0) {
-			result = middlewareFn(this);
-		} else {
-			result = middlewareFn(result);
-		}
+	for (const middlewareFn of middleware) {
+		result = (index === 0) ? middlewareFn(this) : middlewareFn(result);
 
 		index++;
 	}

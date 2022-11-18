@@ -199,14 +199,14 @@
 
 //! HashTable
 //{ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } }
-const persistentHashTable = new HashTable();
+//const persistentHashTable = new HashTable();
 
-persistentHashTable.set({ path: "value/name", value: "Pixel.", hi: function () { console.log("HI") }, sing() { console.log("Moment"); } });
-persistentHashTable.set({ path: "value/age", value: 33 });
-persistentHashTable.set({ path: "value/color", value: "blue" });
+// persistentHashTable.set({ path: "value/name", value: "Pixel.", hi: function () { console.log("HI") }, sing() { console.log("Moment"); } });
+// persistentHashTable.set({ path: "value/age", value: 33 });
+// persistentHashTable.set({ path: "value/color", value: "blue" });
 // persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
-persistentHashTable.set({ path: "value/friends", value: "null" });
-persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
+// persistentHashTable.set({ path: "value/friends", value: "null" });
+// persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
 //console.log(persistentHashTable.get(5, "value/home"));
 
 // const version = persistentHashTable.versions.at(3);
@@ -216,32 +216,34 @@ persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" 
 // console.log("Версия: ", persistentHashTable.versions.at("+1"));
 // console.log("Версия: ", persistentHashTable.versions.at("-1"));
 // console.log("Версия: ", persistentHashTable.versions.at());
-console.log("Структура: ", persistentHashTable);
+//console.log("Структура: ", persistentHashTable);
 
 
 
 //! OneWayLinkedList
-// const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
+const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
 
-// persistentOneWayLinkedList.addFirst(100);
-// persistentOneWayLinkedList.addFirst(777);
+persistentOneWayLinkedList.addFirst(100);
+persistentOneWayLinkedList.addFirst(777);
 
-// persistentOneWayLinkedList.set({ value: 125 });
-// persistentOneWayLinkedList.set({ value: 555 });
-// persistentOneWayLinkedList.set({ value: 888 });
-// persistentOneWayLinkedList.set({ value: 1000 });
-// persistentOneWayLinkedList.set({ path: "value", value: "space" });
-// persistentOneWayLinkedList.set({ path: "value", value: 24 });
-// persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
+persistentOneWayLinkedList.set({ value: 125 });
+persistentOneWayLinkedList.set({ value: 555 });
+persistentOneWayLinkedList.set({ value: 888 });
+persistentOneWayLinkedList.set({ value: 1000 });
+persistentOneWayLinkedList.set({ path: "value", value: "space" });
+persistentOneWayLinkedList.set({ path: "value", value: 24 });
+persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
 
-// console.log(persistentOneWayLinkedList, "Структура");
+
 // console.log(persistentOneWayLinkedList.versions.at(-1), "persistentOneWayLinkedList");
-// const searchNodeFn1 = (list) => {
-// 	const node = list.findByKey({ path: "value", value: 24 });
+const searchNodeFn1 = (list) => {
+	const node = list.findByKey({ path: "value", value: 2555502 });
 
-// 	return node;
-// }
-// persistentOneWayLinkedList.set({ value: 4444444 }, [searchNodeFn1]);
+	return node;
+}
+persistentOneWayLinkedList.set({ value: 4444444 }, [searchNodeFn1]);
+
+console.log(persistentOneWayLinkedList, "Структура");
 
 // const searchNodeFn2 = (list) => {
 // 	const node = list.findByKey({ path: "value", value: 4444444 });
