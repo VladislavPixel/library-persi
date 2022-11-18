@@ -8,11 +8,11 @@ redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
 redBlackTree.insert("foo", 15);
 redBlackTree.insert("zzz", 30);
 
-console.log(redBlackTree, "REDBLACK");
+// for (const value of redBlackTree.getIteratorForWidthTraversal()) {
+// 	console.log(value);
+// }
 
-for (const value of redBlackTree.getIteratorForWidthTraversal()) {
-	console.log(value);
-}
+console.log(redBlackTree, "REDBLACK");
 
 //! DecQueue
 
