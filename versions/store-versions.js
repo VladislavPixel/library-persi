@@ -8,90 +8,74 @@ class StoreVersions {
 
 	getCorrectIndex(indexVersion) {
 		if (indexVersion === undefined) {
-			this.selectedVersion = this.totalVersions - 1;
-
 			return this.snapshots.length - 1;
 		}
 
 		const isNumber = typeof indexVersion === "number";
 
-		const currentVersion = this.totalVersions - 1;
-
 		const isAnyList = this.typeStructure === "DecQueue" || this.typeStructure === "Queue" || this.typeStructure === "Stack" || this.typeStructure === "DoublyLinkedList" || this.typeStructure === "OneWayLinkedList" || this.typeStructure === "TwoWayLinkedList";
 
 		const isAnyTree = this.typeStructure === "RedBlackTree";
 
+		if (isNumber && (isAnyList || isAnyTree)) {
+			return indexVersion;
+		}
+
 		if (isNumber) {
-			if (indexVersion < 0 || indexVersion > currentVersion) {
-				throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${currentVersion}. Minimum index - 0.`);
-			}
-
-			this.selectedVersion = indexVersion;
-
-			if (isAnyList || isAnyTree) {
-				return indexVersion;
-			}
-
 			return (indexVersion <= 4 ? 0 : Math.floor(indexVersion / 4));
 		}
 
 		if (isAnyList || isAnyTree) {
-			throw new Error("For list-type and tree structures, the index must be numeric and in a range, or don't pass it at all to get the latest version of the structure.");
+			return -1;
 		}
+
+		const currentVersion = this.totalVersions - 1;
 
 		if (indexVersion === "+1") {
 			if (this.selectedVersion + 1 > currentVersion) {
-				throw new Error("Operation +1 changes selected version and takes it out of range.");
+				return -1;
 			}
 
-			const correctIndex = this.selectedVersion + 1 <= 4 ? 0 : Math.floor((this.selectedVersion + 1) / 4);
-
-			const node = this.snapshots[correctIndex];
-
-			if (!(node instanceof Object)) {
-				throw new Error(`You entered an invalid version index. The specified offset sets the index to ${this.selectedVersion + 1}. There is no such index in the version store.`);
-			}
-
-			this.selectedVersion += 1;
-
-			return correctIndex;
+			return ( this.selectedVersion + 1 <= 4 ? 0 : Math.floor((this.selectedVersion + 1) / 4) );
 		}
 
 		if (indexVersion === "-1") {
-			if (this.selectedVersion - 1 < 0) {
-				throw new Error("Operation -1 changes selected version and takes it out of range.");
+			if(this.selectedVersion - 1 < 0) {
+				return -1;
 			}
 
-			const correctIndex = this.selectedVersion - 1 <= 4 ? 0 : Math.floor((this.selectedVersion - 1) / 4);
-
-			const node = this.snapshots[correctIndex];
-
-			if (!(node instanceof Object)) {
-				throw new Error(`You entered an invalid version index. The specified offset sets the index to ${this.selectedVersion - 1}. There is no such index in the version store.`);
-			}
-
-			this.selectedVersion -= 1;
-
-			return correctIndex;
+			return ( this.selectedVersion - 1 <= 4 ? 0 : Math.floor((this.selectedVersion - 1) / 4) );
 		}
 
-		throw new Error(`You have entered an incorrect change index. The index must be in the range of the number of changes or must be "+1", "-1".`);
+		return -1;
 	}
 
 	#atForHashTable(indexVersion) {
 		const index = this.getCorrectIndex(indexVersion);
 
-		const clone = this.snapshots[index].value.getClone();
+		const version = this.snapshots[index];
+
+		if (!(version instanceof Object)) {
+			throw new Error(`You have entered an invalid version index. The index must be in the range of the number of versions, or must have the value: "+1", "-1" - provided that you originally made a request for some version. At the moment the value under the index you passed is - ${JSON.stringify(version)}.`);
+		}
+
+		const cloneVersion = version.value.getClone();
 
 		if (indexVersion === undefined) {
-			return clone.applyListChanges().value;
+			this.selectedVersion = this.totalVersions - 1;
+
+			return cloneVersion.applyListChanges().value;
 		}
 
 		if (typeof indexVersion === "number") {
-			return clone.applyListChanges(indexVersion).value;
+			this.selectedVersion = indexVersion;
+
+			return cloneVersion.applyListChanges(indexVersion).value;
 		}
 
-		return clone.applyListChanges(this.selectedVersion).value;
+		this.selectedVersion = indexVersion === "+1" ? this.selectedVersion + 1 : this.selectedVersion - 1;
+
+		return cloneVersion.applyListChanges(this.selectedVersion).value;
 	}
 
 	#recApplyListChangeForNode(node, numberVersion) {
@@ -128,68 +112,54 @@ class StoreVersions {
 		return this.snapshots[Math.floor((startIndex + endIndex) / 2)].value;
 	}
 
-	#atForList(indexVersion) {
-		const index = this.getCorrectIndex(indexVersion);
-
-		if (indexVersion === undefined) {
-			let nodeLastVersion = this.snapshots[index].value;
-
-			if (nodeLastVersion === null) {
-				return nodeLastVersion;
-			}
-
-			nodeLastVersion = this.#recApplyListChangeForNode(nodeLastVersion, this.selectedVersion);
-
-			return nodeLastVersion;
-		}
-
-		let nodeForVersion = this.#searchByVersion(index);
-
-		if (nodeForVersion === null) {
-			return nodeForVersion;
-		}
-
-		nodeForVersion = this.#recApplyListChangeForNode(nodeForVersion, index);
-
-		return nodeForVersion;
-	}
-
-	recursivelyCloneAllNodesForTree(tree) {
+	#recursivelyCloneAllNodesForTree(tree) {
 		if (tree === null) {
 			return null;
 		}
 
-		tree.left = this.recursivelyCloneAllNodesForTree(tree.left);
+		tree.left = this.#recursivelyCloneAllNodesForTree(tree.left);
 
-		tree.right = this.recursivelyCloneAllNodesForTree(tree.right);
+		tree.right = this.#recursivelyCloneAllNodesForTree(tree.right);
 
 		const clone = tree.getClone();
 
 		return clone;
 	}
 
-	#atForTree(indexVersion) {
+	#atForPointerMachineModel(indexVersion) {
 		const index = this.getCorrectIndex(indexVersion);
 
-		if (indexVersion === undefined) {
-			const root = this.snapshots[index].value.getClone();
+		const version = this.snapshots[index];
 
-			const cloneRoot = this.recursivelyCloneAllNodesForTree(root);
+		console.log(index, "INDEX");
 
-			return cloneRoot;
+		console.log(version, "Версия");
+
+		if (!(version instanceof Object)) {
+			throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${this.totalVersions - 1}. Minimum index - 0.`);
 		}
 
-		const nodeForVersion = this.#searchByVersion(index);
+		const node = indexVersion === undefined ? version.value : this.#searchByVersion(index);
 
-		if (nodeForVersion === null) {
-			return nodeForVersion;
+		if (node === null) {
+			return node;
 		}
 
-		const root = nodeForVersion.getClone();
+		if (this.typeStructure === "RedBlackTree") {
+			this.selectedVersion = index;
 
-		const cloneRoot = this.recursivelyCloneAllNodesForTree(root);
+			const cloneNode = node.getClone();
 
-		return cloneRoot;
+			const recursivelyClone = this.#recursivelyCloneAllNodesForTree(cloneNode);
+
+			return recursivelyClone;
+		}
+
+		this.selectedVersion = indexVersion === undefined ? this.totalVersions - 1 : indexVersion;
+
+		const nodeForVersion = this.#recApplyListChangeForNode(node, this.selectedVersion);
+
+		return nodeForVersion;
 	}
 
 	at(indexVersion) {
@@ -206,9 +176,8 @@ class StoreVersions {
 			case "Stack":
 			case "Queue":
 			case "DecQueue":
-				return this.#atForList(indexVersion);
 			case "RedBlackTree":
-				return this.#atForTree(indexVersion);
+				return this.#atForPointerMachineModel(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);
 		}

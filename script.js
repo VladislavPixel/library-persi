@@ -1,18 +1,18 @@
 //! RedBlackTree
 
-const redBlackTree = new RedBlackTree();
+// const redBlackTree = new RedBlackTree();
 
-redBlackTree.insert("name", 100);
-redBlackTree.insert("color", 25);
-redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
-redBlackTree.insert("foo", 15);
-redBlackTree.insert("zzz", 30);
+// redBlackTree.insert("name", 100);
+// redBlackTree.insert("color", 25);
+// redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
+// redBlackTree.insert("foo", 15);
+// redBlackTree.insert("zzz", 30);
 
 // for (const value of redBlackTree.getIteratorForWidthTraversal()) {
 // 	console.log(value);
 // }
 
-console.log(redBlackTree, "REDBLACK");
+//console.log(redBlackTree, "REDBLACK");
 
 //! DecQueue
 
@@ -198,15 +198,16 @@ console.log(redBlackTree, "REDBLACK");
 //console.log(twoWayLinkedList, "twoWayLinkedList");
 
 //! HashTable
+//{ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } }
+// const persistentHashTable = new HashTable();
 
-//const persistentHashTable = new HashTable({ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } });
-
-//persistentHashTable.set({ path: "value/name", value: "Pixel." });
+// persistentHashTable.set({ path: "value/name", value: "Pixel." });
 // persistentHashTable.set({ path: "value/age", value: 33 });
 // persistentHashTable.set({ path: "value/color", value: "blue" });
-//persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
+// persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
+// persistentHashTable.set({ path: "value/friends", value: "null" });
 // persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
-// console.log(persistentHashTable.get(5, "value/home"));
+//console.log(persistentHashTable.get(5, "value/home"));
 
 // console.log("Версия: ", persistentHashTable.versions.at(3));
 // console.log("Версия: ", persistentHashTable.versions.at("+1"));
@@ -215,18 +216,21 @@ console.log(redBlackTree, "REDBLACK");
 //console.log("Структура: ", persistentHashTable);
 
 //! OneWayLinkedList
-// const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
+const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
 
-// persistentOneWayLinkedList.addFirst(100);
-// persistentOneWayLinkedList.addFirst(777);
+persistentOneWayLinkedList.addFirst(100);
+persistentOneWayLinkedList.addFirst(777);
 
-// persistentOneWayLinkedList.set({ value: 125 });
-// persistentOneWayLinkedList.set({ value: 555 });
-// persistentOneWayLinkedList.set({ value: 888 });
-// persistentOneWayLinkedList.set({ value: 1000 });
-// persistentOneWayLinkedList.set({ path: "value", value: "space" });
-// persistentOneWayLinkedList.set({ path: "value", value: 24 });
+persistentOneWayLinkedList.set({ value: 125 });
+persistentOneWayLinkedList.set({ value: 555 });
+persistentOneWayLinkedList.set({ value: 888 });
+persistentOneWayLinkedList.set({ value: 1000 });
+persistentOneWayLinkedList.set({ path: "value", value: "space" });
+persistentOneWayLinkedList.set({ path: "value", value: 24 });
+persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
 
+console.log(persistentOneWayLinkedList);
+console.log(persistentOneWayLinkedList.versions.at(4), "persistentOneWayLinkedList");
 // const searchNodeFn1 = (list) => {
 // 	const node = list.findByKey({ path: "value", value: 24 });
 
@@ -316,7 +320,7 @@ console.log(redBlackTree, "REDBLACK");
 // 	return res;
 // }
 // console.log(persistentOneWayLinkedList.get(6, "value", [searchNodeFn12]));
-//console.log(persistentOneWayLinkedList);
+//console.log(persistentOneWayLinkedList.versions.at());
 
 // console.log(persistentOneWayLinkedList.historyChanges.at(2));
 // console.log(persistentOneWayLinkedList.historyChanges.at("+1"));

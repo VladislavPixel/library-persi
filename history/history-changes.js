@@ -35,7 +35,7 @@ class HistoryChanges {
 
 		const change = this.arrHistoryChanges[index];
 
-		if (!(change instanceof ItemHistory) || index === -1) {
+		if (!(change instanceof ItemHistory)) {
 			throw new Error(`You have entered an invalid change index. The index must be in the range of the number of changes, or must have the value: "+1", "-1" - provided that you originally made a request for some version. At the moment the value under the index you passed is - ${JSON.stringify(change)}.`);
 		}
 
