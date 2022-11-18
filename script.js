@@ -216,21 +216,21 @@
 //console.log("Структура: ", persistentHashTable);
 
 //! OneWayLinkedList
-const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
+// const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
 
-persistentOneWayLinkedList.addFirst(100);
-persistentOneWayLinkedList.addFirst(777);
+// persistentOneWayLinkedList.addFirst(100);
+// persistentOneWayLinkedList.addFirst(777);
 
-persistentOneWayLinkedList.set({ value: 125 });
-persistentOneWayLinkedList.set({ value: 555 });
-persistentOneWayLinkedList.set({ value: 888 });
-persistentOneWayLinkedList.set({ value: 1000 });
-persistentOneWayLinkedList.set({ path: "value", value: "space" });
-persistentOneWayLinkedList.set({ path: "value", value: 24 });
-persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
+// persistentOneWayLinkedList.set({ value: 125 });
+// persistentOneWayLinkedList.set({ value: 555 });
+// persistentOneWayLinkedList.set({ value: 888 });
+// persistentOneWayLinkedList.set({ value: 1000 });
+// persistentOneWayLinkedList.set({ path: "value", value: "space" });
+// persistentOneWayLinkedList.set({ path: "value", value: 24 });
+// persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
 
-console.log(persistentOneWayLinkedList);
-console.log(persistentOneWayLinkedList.versions.at(4), "persistentOneWayLinkedList");
+// console.log(persistentOneWayLinkedList, "Структура");
+// console.log(persistentOneWayLinkedList.versions.at(-1), "persistentOneWayLinkedList");
 // const searchNodeFn1 = (list) => {
 // 	const node = list.findByKey({ path: "value", value: 24 });
 

@@ -129,17 +129,11 @@ class StoreVersions {
 	#atForPointerMachineModel(indexVersion) {
 		const index = this.getCorrectIndex(indexVersion);
 
-		const version = this.snapshots[index];
-
-		console.log(index, "INDEX");
-
-		console.log(version, "Версия");
-
-		if (!(version instanceof Object)) {
+		if (index < 0 || index > this.totalVersions - 1) {
 			throw new Error(`The operation at() is not supported for the selected index. Index must be a number and not out of range. Your index - ${indexVersion}. Maximum index for the current structure version - ${this.totalVersions - 1}. Minimum index - 0.`);
 		}
 
-		const node = indexVersion === undefined ? version.value : this.#searchByVersion(index);
+		const node = indexVersion === undefined ? this.snapshots[index].value : this.#searchByVersion(index);
 
 		if (node === null) {
 			return node;
@@ -155,7 +149,7 @@ class StoreVersions {
 			return recursivelyClone;
 		}
 
-		this.selectedVersion = indexVersion === undefined ? this.totalVersions - 1 : indexVersion;
+		this.selectedVersion = indexVersion === undefined ? this.totalVersions - 1 : index;
 
 		const nodeForVersion = this.#recApplyListChangeForNode(node, this.selectedVersion);
 
