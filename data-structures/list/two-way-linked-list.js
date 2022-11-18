@@ -10,9 +10,17 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 		const mapArgumentsForHistory = new Map().set(1, initData);
 
-		if (initData === undefined) {
-			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "initializing the data structure",
+			nameMethod: "initialization",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
 
+		this.historyChanges.registerChange(itemHistory);
+
+		if (initData === undefined) {
 			return null;
 		}
 
@@ -25,8 +33,6 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 				this.addFirst(value);
 			}
-
-			this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
 		} catch (err) {
 			throw new Error("The transmitted data cannot be used for the initialization list by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
 		}
@@ -59,7 +65,15 @@ class TwoWayLinkedList extends OneWayLinkedList {
 	addLast(value) {
 		const mapArgumentsForHistory = new Map().set(1, value);
 
-		this.historyChanges.registerChange(`Method Call addLast(). Adding a new element with the value ${JSON.stringify(value)} to the end of the sheet.`, "addLast", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "adding to the end",
+			nameMethod: "addLast",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		const newNode = new NodePersistent(value);
 
@@ -99,7 +113,15 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 		const mapArgumentsForHistory = new Map();
 
-		this.historyChanges.registerChange(`Calling the deleteLast() method. Remove the last element from the list.`, "deleteLast", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "deleting from the end",
+			nameMethod: "deleteLast",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		const deletedNode = this.tail.applyListChanges();
 

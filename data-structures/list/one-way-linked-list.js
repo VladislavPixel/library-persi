@@ -22,9 +22,17 @@ class OneWayLinkedList {
 	initialization(initData) {
 		const mapArgumentsForHistory = new Map().set(1, initData);
 
-		if (initData === undefined) {
-			this.historyChanges.registerChange("Initialization on your list data structure. Creating an instance without default data.", "initialization", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "initializing the data structure",
+			nameMethod: "initialization",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
 
+		this.historyChanges.registerChange(itemHistory);
+
+		if (initData === undefined) {
 			return null;
 		}
 
@@ -37,8 +45,6 @@ class OneWayLinkedList {
 
 				this.addFirst(value);
 			}
-
-			this.historyChanges.registerChange(`Data initialization for structure list. Transferring data that is passed by default to the structure using the addFirst() method. Source initData - ${JSON.stringify(initData)}.`, "initialization", mapArgumentsForHistory);
 		} catch (err) {
 			throw new Error("The transmitted data cannot be used for the initialization list by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
 		}
@@ -47,7 +53,15 @@ class OneWayLinkedList {
 	addFirst(value) {
 		const mapArgumentsForHistory = new Map().set(1, value);
 
-		this.historyChanges.registerChange(`Method Call addFirst(). Adding a new element with the value ${JSON.stringify(value)} to the beginning of a node.`, "addFirst", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "adding to the beginning",
+			nameMethod: "addFirst",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		const newNode = new NodePersistent(value);
 
@@ -87,7 +101,15 @@ class OneWayLinkedList {
 
 		const mapArgumentsForHistory = new Map();
 
-		this.historyChanges.registerChange(`Method Call deleteFirst(). Deleting the first item in the list.`, "deleteFirst", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "deleting at the beginning",
+			nameMethod: "deleteFirst",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		const deletedNode = this.head.applyListChanges();
 
@@ -147,8 +169,16 @@ class OneWayLinkedList {
 
 		const mapArgumentsForHistory = new Map().set(1, configForValueNode).set(2, middleware);
 
+		const itemHistory = {
+			type: "setting the value",
+			nameMethod: "set",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
 		if (middleware === undefined) {
-			this.historyChanges.registerChange(`Set value for list. Updating the value along the way - ${configForValueNode.path ? configForValueNode.path : "from the root"}. New value - ${JSON.stringify(configForValueNode.value)}. set() method was called without preprocessing config.`, "set", mapArgumentsForHistory);
+			this.historyChanges.registerChange(itemHistory);
 
 			const { updatedNode, firstNode, lastNode } = this.head.set(configForValueNode, this.totalVersions);
 
@@ -171,7 +201,7 @@ class OneWayLinkedList {
 			throw new Error("Node is not found in on your list for operation set().");
 		}
 
-		this.historyChanges.registerChange(`Set value ${JSON.stringify(configForValueNode.value)} for Node.`, "set", mapArgumentsForHistory);
+		this.historyChanges.registerChange(itemHistory);
 
 		const { updatedNode, firstNode, lastNode } = node.set(configForValueNode, this.totalVersions);
 
@@ -199,7 +229,15 @@ class OneWayLinkedList {
 			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
 		}
 
-		this.historyChanges.registerChange(`Getting field value from List. Version query - ${numberVersion}. Way to the field - ${pathNodeValue}.${middleware !== undefined ? " Search methods have been applied." : " Search methods were not applied. The search is carried out in the first node."}`, "get", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "getting the value",
+			nameMethod: "get",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		if (middleware === undefined) {
 			const node = this.versions.at(numberVersion);

@@ -199,21 +199,26 @@
 
 //! HashTable
 //{ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } }
-// const persistentHashTable = new HashTable();
+const persistentHashTable = new HashTable();
 
-// persistentHashTable.set({ path: "value/name", value: "Pixel." });
-// persistentHashTable.set({ path: "value/age", value: 33 });
-// persistentHashTable.set({ path: "value/color", value: "blue" });
+persistentHashTable.set({ path: "value/name", value: "Pixel.", hi: function () { console.log("HI") }, sing() { console.log("Moment"); } });
+persistentHashTable.set({ path: "value/age", value: 33 });
+persistentHashTable.set({ path: "value/color", value: "blue" });
 // persistentHashTable.set({ path: "value/home/numerate/code", value: 12345 });
-// persistentHashTable.set({ path: "value/friends", value: "null" });
-// persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
+persistentHashTable.set({ path: "value/friends", value: "null" });
+persistentHashTable.set({ path: "value/profession", value: "Frontend Developer" });
 //console.log(persistentHashTable.get(5, "value/home"));
 
-// console.log("Версия: ", persistentHashTable.versions.at(3));
+// const version = persistentHashTable.versions.at(3);
+// version.age = 55;
+
+// console.log("Версия: ", version);
 // console.log("Версия: ", persistentHashTable.versions.at("+1"));
 // console.log("Версия: ", persistentHashTable.versions.at("-1"));
 // console.log("Версия: ", persistentHashTable.versions.at());
-//console.log("Структура: ", persistentHashTable);
+console.log("Структура: ", persistentHashTable);
+
+
 
 //! OneWayLinkedList
 // const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);

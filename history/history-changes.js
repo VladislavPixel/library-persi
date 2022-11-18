@@ -4,7 +4,7 @@ class HistoryChanges {
 		this.arrHistoryChanges = [];
 	}
 
-	getCorrectIndex(indexChange) {
+	#getCorrectIndex(indexChange) {
 		if (indexChange === undefined) {
 			return this.arrHistoryChanges.length - 1;
 		}
@@ -31,7 +31,7 @@ class HistoryChanges {
 			throw new Error("The change history is empty. Operation at() version history is not supported.");
 		}
 
-		const index = this.getCorrectIndex(indexChange);
+		const index = this.#getCorrectIndex(indexChange);
 
 		const change = this.arrHistoryChanges[index];
 
@@ -54,10 +54,10 @@ class HistoryChanges {
 		}
 	}
 
-	registerChange(message, nameMethod, argumentMap) {
-		const item = new ItemHistory(message, nameMethod, argumentMap);
+	registerChange({ type, nameMethod, iterable, accessModifier, currentVersion }) {
+		const itemHistory = new ItemHistory(type, nameMethod, iterable, accessModifier, currentVersion);
 
-		this.arrHistoryChanges.push(item);
+		this.arrHistoryChanges.push(itemHistory);
 
 		return this.arrHistoryChanges.length;
 	}

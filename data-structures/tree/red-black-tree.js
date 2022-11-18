@@ -32,7 +32,15 @@ class RedBlackTree {
 	}
 
 	#initialization() {
-		this.historyChanges.registerChange("Initialization on your redBlackTree data structure. Creating an instance without default data.", "initialization", new Map());
+		const itemHistory = {
+			type: "initializing the data structure",
+			nameMethod: "initialization",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "private",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		this.versions.registerVersion(this.root, this.totalVersions);
 
@@ -72,7 +80,15 @@ class RedBlackTree {
 	insert(value, key) {
 		const mapArgumentsForHistory = new Map().set(1, value).set(2, key);
 
-		this.historyChanges.registerChange("Calling the insertion method into the tree.", "insert", mapArgumentsForHistory);
+		const itemHistory = {
+			type: "adding",
+			nameMethod: "insert",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
 
 		const newNode = new NodePersistentTree(value, key);
 
