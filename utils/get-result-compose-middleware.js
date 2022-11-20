@@ -9,7 +9,7 @@ function getResultComposeMiddleware(middlewareS) {
 		index++;
 	}
 
-	if (result instanceof NodePersistent || result === null) {
+	if (result === null || result instanceof NodePersistent || result instanceof NodePersistentTree) {
 		return result;
 	}
 

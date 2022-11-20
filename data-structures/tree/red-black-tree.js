@@ -35,7 +35,7 @@ class RedBlackTree {
 		const itemHistory = {
 			type: "initializing the data structure",
 			nameMethod: "initialization",
-			iterable: mapArgumentsForHistory,
+			iterable: new Map(),
 			accessModifier: "private",
 			currentVersion: this.totalVersions
 		};
@@ -229,5 +229,49 @@ class RedBlackTree {
 		}
 
 		return null;
+	}
+
+	get(numberVersion, pathNodeValue, middlewareS) {
+		if (this.length === 0) {
+			throw new Error("Method - get is not supported in Empty tree.");
+		}
+
+		const mapArgumentsForHistory = new Map().set(1, numberVersion).set(2, pathNodeValue).set(3, middlewareS);
+
+		const isNumber = typeof numberVersion === "number";
+
+		if (!isNumber || pathNodeValue === undefined || numberVersion < 0 || numberVersion > this.totalVersions - 1) {
+			throw new Error(`Operation get() is not available for version - ${numberVersion}. The request must contain a valid path (2 argument). Version should be smaller ${this.totalVersions} and start off 0.`);
+		}
+
+		const itemHistory = {
+			type: "getting the value",
+			nameMethod: "get",
+			iterable: mapArgumentsForHistory,
+			accessModifier: "public",
+			currentVersion: this.totalVersions
+		};
+
+		this.historyChanges.registerChange(itemHistory);
+
+		if (middlewareS === undefined) {
+			const node = this.versions.at(numberVersion);
+
+			const { value, lastSegment } = node.getValueByPath(pathNodeValue);
+
+			return value[lastSegment];
+		}
+
+		let nodeForVersion = this.versions.at(numberVersion);
+
+		nodeForVersion = getResultComposeMiddleware.call(nodeForVersion, middlewareS);
+
+		if (nodeForVersion === null) {
+			throw new Error("The node was not found.");
+		}
+
+		const { value, lastSegment } = nodeForVersion.getValueByPath(pathNodeValue);
+
+		return value[lastSegment];
 	}
 }

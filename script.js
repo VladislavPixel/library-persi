@@ -1,18 +1,28 @@
 //! RedBlackTree
 
-// const redBlackTree = new RedBlackTree();
+const redBlackTree = new RedBlackTree();
 
-// redBlackTree.insert("name", 100);
-// redBlackTree.insert("color", 25);
-// redBlackTree.insert({ name: "Vlad", age: 24, job: "programming" }, 175);
-// redBlackTree.insert("foo", 15);
-// redBlackTree.insert("zzz", 30);
+redBlackTree.insert({ color: { brasketMoon: true, seal: 125 }, marker: 123 }, 100);
+redBlackTree.insert("color", 25);
+redBlackTree.insert({ name: "Vlad", age: 24, job: "programming", moment: { viva: "costos" } }, 175);
+redBlackTree.insert("foo", 15);
+redBlackTree.insert("zzz", 30);
 
 // for (const value of redBlackTree.getIteratorForWidthTraversal()) {
 // 	console.log(value);
 // }
 
-//console.log(redBlackTree, "REDBLACK");
+console.log(redBlackTree, "REDBLACK");
+
+//console.log(redBlackTree.get(1, "value/color"));
+
+const searchNodeRedBlackTree = (tree) => {
+	const node = tree.findByKey(175);
+
+	return node;
+}
+
+//console.log(redBlackTree.get(3, "value/moment", [searchNodeRedBlackTree]));
 
 //! DecQueue
 
@@ -199,7 +209,7 @@
 
 //! HashTable
 //{ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } }
-const persistentHashTable = new HashTable(["Vladislav", 24, "programmer"], ["name", "age", "job"]);
+//const persistentHashTable = new HashTable(["Vladislav", 24, "programmer"], ["name", "age", "job"]);
 
 // persistentHashTable.set({ path: "value/name", value: "Pixel.", hi: function () { console.log("HI") }, sing() { console.log("Moment"); } });
 // persistentHashTable.set({ path: "value/age", value: 33 });
@@ -216,7 +226,7 @@ const persistentHashTable = new HashTable(["Vladislav", 24, "programmer"], ["nam
 // console.log("Версия: ", persistentHashTable.versions.at("+1"));
 // console.log("Версия: ", persistentHashTable.versions.at("-1"));
 // console.log("Версия: ", persistentHashTable.versions.at());
-console.log("Структура: ", persistentHashTable);
+//console.log("Структура: ", persistentHashTable);
 
 
 
