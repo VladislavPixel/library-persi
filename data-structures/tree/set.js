@@ -12,6 +12,22 @@ class SetStructure extends RedBlackTree{
 		return new IteratorEntries(this);
 	}
 
+	values() {
+		return new IteratorInInsertionOrder(this);
+	}
+
+	keys() {
+		return new IteratorInInsertionOrder(this);
+	}
+
+	forEach(callbackFn, thisArg) {
+		const correctThis = thisArg ? thisArg : this;
+
+		for (const value of this) {
+			callbackFn.call(correctThis, value, value, this);
+		}
+	}
+
 	#getIteratorForDepthForward() {
 		return new IteratorForDepthForward(this.root);
 	}

@@ -1,13 +1,11 @@
 //! Set
 
-const set = new SetStructure(["name", "color", "green", 123]);
+//const set = new SetStructure(["name", "color", "green", 123]);
 
-set.add({ market: "boom" })
+//set.add({ market: "boom" })
 
 
-for (const val of set.entries()) {
-	console.log(val, "v");
-}
+//set.forEach((key, value, setIns) => console.log(`${key} = ${value}`, setIns))
 
 //! RedBlackTree
 
