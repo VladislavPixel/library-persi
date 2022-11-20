@@ -77,12 +77,12 @@ class RedBlackTree {
 		node.right.isRed = false;
 	}
 
-	insert(value, key) {
+	insert(value, key, options) {
 		const mapArgumentsForHistory = new Map().set(1, value).set(2, key);
 
 		const itemHistory = {
 			type: "adding",
-			nameMethod: "insert",
+			nameMethod: options && options.nameMethodForHistory ? options.nameMethodForHistory : "insert",
 			iterable: mapArgumentsForHistory,
 			accessModifier: "public",
 			currentVersion: this.totalVersions
@@ -177,6 +177,10 @@ class RedBlackTree {
 		}
 
 		this.root = recLookPlaceAndInsert(this.root).children;
+
+		if (this.root && this.root.isRed) {
+			this.root.isRed = false;
+		}
 
 		this.versions.registerVersion(this.root, this.totalVersions);
 

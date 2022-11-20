@@ -23,8 +23,8 @@ class NodePersistentTree {
 		return new IteratorForWidthTraversal(this);
 	}
 
-	getIteratorForFindMethod() {
-		return new IteratorForFindMethod(this);
+	getIteratorForFindMethod(key) {
+		return new IteratorForFindMethod(this, key);
 	}
 
 	getCloneValue(valueNode) {

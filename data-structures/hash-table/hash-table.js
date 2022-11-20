@@ -1,8 +1,8 @@
 class HashTable {
-	constructor(defaultData, iterableKeys) {
+	constructor(iterableData, iterableKeys) {
 		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
-		this.structure = this.#initialization(defaultData, iterableKeys);
+		this.structure = this.#initialization(iterableData, iterableKeys);
 	}
 
 	[Symbol.iterator]() {
@@ -13,8 +13,8 @@ class HashTable {
 		return this.versions.totalVersions;
 	}
 
-	#initialization(initData, iterableKeys) {
-		const mapArgumentsForHistory = new Map().set(1, initData).set(2, iterableKeys);
+	#initialization(iterableData, iterableKeys) {
+		const mapArgumentsForHistory = new Map().set(1, iterableData).set(2, iterableKeys);
 
 		const itemHistory = {
 			type: "initializing the data structure",
@@ -26,10 +26,10 @@ class HashTable {
 
 		this.historyChanges.registerChange(itemHistory);
 
-		const isObject = initData !== null && typeof initData === "object" && !Array.isArray(initData) && !(initData instanceof Map) && !(initData instanceof Set);
+		const isObject = iterableData !== null && typeof iterableData === "object" && !Array.isArray(iterableData) && !(iterableData instanceof Map) && !(iterableData instanceof Set);
 
 		if (isObject && iterableKeys === undefined) {
-			const cloneData = clone(initData);
+			const cloneData = clone(iterableData);
 
 			const nodeHashTable = new NodePersistent(cloneData);
 
@@ -40,7 +40,7 @@ class HashTable {
 			return nodeHashTable;
 		}
 
-		if (initData === undefined || iterableKeys === undefined) {
+		if (iterableData === undefined || iterableKeys === undefined) {
 			const nodeHashTable = new NodePersistent({});
 
 			this.versions.registerVersion(nodeHashTable, this.totalVersions);
@@ -50,7 +50,7 @@ class HashTable {
 			return nodeHashTable;
 		}
 
-		const isNotIterable = initData[Symbol.iterator] === undefined || iterableKeys[Symbol.iterator] === undefined;
+		const isNotIterable = iterableData[Symbol.iterator] === undefined || iterableKeys[Symbol.iterator] === undefined;
 
 		if (isNotIterable) {
 			throw new Error("Data for initialization with values and an array of keys must be iterable.");
@@ -58,9 +58,9 @@ class HashTable {
 
 		const source = {};
 
-		const iteratorInitData = initData[Symbol.iterator]();
+		const iteratorInitData = iterableData[Symbol.iterator]();
 
-		const isMap = initData instanceof Map;
+		const isMap = iterableData instanceof Map;
 
 		for (const key of iterableKeys) {
 			if (!(typeof key === "string")) {

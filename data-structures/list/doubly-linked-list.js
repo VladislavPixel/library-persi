@@ -1,6 +1,6 @@
 class DoublyLinkedList extends TwoWayLinkedList {
-	constructor(defaultData) {
-		super(defaultData);
+	constructor(iterable) {
+		super(iterable);
 	}
 
 	getIteratorForReverseValueLastVersion() {

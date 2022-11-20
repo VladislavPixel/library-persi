@@ -1,16 +1,16 @@
 class TwoWayLinkedList extends OneWayLinkedList {
-	constructor(defaultData) {
+	constructor(iterable) {
 		super();
 		this.tail = null;
-		this.initialization(defaultData);
+		this.initialization(iterable);
 	}
 
-	initialization(initData) {
+	initialization(iterable) {
 		this.historyChanges.deleteFirstItemHistory();
 
 		this.versions.removeVersions();
 
-		super.initialization(initData);
+		super.initialization(iterable);
 	}
 
 	addFirst(value) {

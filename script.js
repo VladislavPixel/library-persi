@@ -1,26 +1,37 @@
+//! Set
+
+const set = new SetStructure(["name", "color", "green", 123]);
+
+set.add({ market: "boom" })
+
+
+for (const val of set.entries()) {
+	console.log(val, "v");
+}
+
 //! RedBlackTree
 
-const redBlackTree = new RedBlackTree();
+// const redBlackTree = new RedBlackTree();
 
-redBlackTree.insert({ color: { brasketMoon: true, seal: 125 }, marker: 123 }, 100);
-redBlackTree.insert("color", 25);
-redBlackTree.insert({ name: "Vlad", age: 24, job: "programming", moment: { viva: "costos" } }, 175);
-redBlackTree.insert("foo", 15);
-redBlackTree.insert("zzz", 30);
+// redBlackTree.insert({ color: { brasketMoon: true, seal: 125 }, marker: 123 }, 100);
+// redBlackTree.insert("color", 25);
+// redBlackTree.insert({ name: "Vlad", age: 24, job: "programming", moment: { viva: "costos" } }, 175);
+// redBlackTree.insert("foo", 15);
+// redBlackTree.insert("zzz", 30);
 
 // for (const value of redBlackTree.getIteratorForWidthTraversal()) {
 // 	console.log(value);
 // }
 
-console.log(redBlackTree, "REDBLACK");
+//console.log(redBlackTree, "REDBLACK");
 
 //console.log(redBlackTree.get(1, "value/color"));
 
-const searchNodeRedBlackTree = (tree) => {
-	const node = tree.findByKey(175);
+// const searchNodeRedBlackTree = (tree) => {
+// 	const node = tree.findByKey(175);
 
-	return node;
-}
+// 	return node;
+// }
 
 //console.log(redBlackTree.get(3, "value/moment", [searchNodeRedBlackTree]));
 

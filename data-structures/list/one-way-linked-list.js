@@ -1,10 +1,10 @@
 class OneWayLinkedList {
-	constructor(defaultData) {
+	constructor(iterable) {
 		this.head = null;
 		this.length = 0;
 		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
-		this.initialization(defaultData);
+		this.initialization(iterable);
 	}
 
 	[Symbol.iterator]() {
@@ -19,8 +19,8 @@ class OneWayLinkedList {
 		return this.versions.totalVersions;
 	}
 
-	initialization(initData) {
-		const mapArgumentsForHistory = new Map().set(1, initData);
+	initialization(iterable) {
+		const mapArgumentsForHistory = new Map().set(1,iterable);
 
 		const itemHistory = {
 			type: "initializing the data structure",
@@ -32,7 +32,7 @@ class OneWayLinkedList {
 
 		this.historyChanges.registerChange(itemHistory);
 
-		if (initData === undefined) {
+		if (iterable === undefined) {
 			this.versions.registerVersion(this.head, this.totalVersions);
 
 			this.versions.totalVersions++;
@@ -40,11 +40,11 @@ class OneWayLinkedList {
 			return null;
 		}
 
-		if (initData[Symbol.iterator] === undefined) {
+		if (iterable[Symbol.iterator] === undefined) {
 			throw new Error("The transmitted data cannot be used for the initialization list by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
 		}
 
-		for (const valueInitData of initData) {
+		for (const valueInitData of iterable) {
 			this.addFirst(valueInitData);
 		}
 	}
