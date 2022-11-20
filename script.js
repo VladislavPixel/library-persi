@@ -70,7 +70,7 @@
 
 //! DoublyLinkedList
 
-// const doublyLinkedList = new DoublyLinkedList(["pixel developer"]);
+//const doublyLinkedList = new DoublyLinkedList(["pixel developer"]);
 
 // doublyLinkedList.set({ value: 2000 });
 // doublyLinkedList.set({ value: 2500 });
@@ -82,7 +82,7 @@
 
 // doublyLinkedList.set({ value: "color" });
 
-// console.log(doublyLinkedList, "двусвязанный лист");
+//console.log(doublyLinkedList, "двусвязанный лист");
 
 // for (const val of iteratorReverse) {
 // 	console.log(val);
@@ -199,7 +199,7 @@
 
 //! HashTable
 //{ name: "Vladislav", age: 24, job: "programmer", home: { target: "Tula", numerate: { code: 77 } } }
-//const persistentHashTable = new HashTable();
+const persistentHashTable = new HashTable(["Vladislav", 24, "programmer"], ["name", "age", "job"]);
 
 // persistentHashTable.set({ path: "value/name", value: "Pixel.", hi: function () { console.log("HI") }, sing() { console.log("Moment"); } });
 // persistentHashTable.set({ path: "value/age", value: 33 });
@@ -216,34 +216,42 @@
 // console.log("Версия: ", persistentHashTable.versions.at("+1"));
 // console.log("Версия: ", persistentHashTable.versions.at("-1"));
 // console.log("Версия: ", persistentHashTable.versions.at());
-//console.log("Структура: ", persistentHashTable);
+console.log("Структура: ", persistentHashTable);
 
 
 
 //! OneWayLinkedList
-const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
+// const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
 
-persistentOneWayLinkedList.addFirst(100);
-persistentOneWayLinkedList.addFirst(777);
+// persistentOneWayLinkedList.addFirst(100);
+// persistentOneWayLinkedList.addFirst(777);
 
-persistentOneWayLinkedList.set({ value: 125 });
-persistentOneWayLinkedList.set({ value: 555 });
-persistentOneWayLinkedList.set({ value: 888 });
-persistentOneWayLinkedList.set({ value: 1000 });
-persistentOneWayLinkedList.set({ path: "value", value: "space" });
-persistentOneWayLinkedList.set({ path: "value", value: 24 });
-persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
+// persistentOneWayLinkedList.set({ value: 125 });
+// persistentOneWayLinkedList.set({ value: 555 });
+// persistentOneWayLinkedList.set({ value: 888 });
+// persistentOneWayLinkedList.set({ value: 1000 });
+// persistentOneWayLinkedList.set({ path: "value", value: "space" });
+// persistentOneWayLinkedList.set({ path: "value", value: 24 });
+// persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
 
 
 // console.log(persistentOneWayLinkedList.versions.at(-1), "persistentOneWayLinkedList");
-const searchNodeFn1 = (list) => {
-	const node = list.findByKey({ path: "value", value: 2555502 });
+// const searchNodeFn1 = (list) => {
+// 	const node = list.findByKey({ path: "value", value: 2555502 });
 
-	return node;
-}
-persistentOneWayLinkedList.set({ value: 4444444 }, [searchNodeFn1]);
+// 	return node;
+// }
+// persistentOneWayLinkedList.set({ value: 4444444 }, [searchNodeFn1]);
 
-console.log(persistentOneWayLinkedList, "Структура");
+// console.log(persistentOneWayLinkedList, "Структура");
+
+// const newSet = new Map();
+
+// newSet.set("name", "vlasd").set("age", 24)
+
+// for (const val of newSet) {
+// 	console.log('val', val);
+//}
 
 // const searchNodeFn2 = (list) => {
 // 	const node = list.findByKey({ path: "value", value: 4444444 });

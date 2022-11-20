@@ -8,45 +8,24 @@ class TwoWayLinkedList extends OneWayLinkedList {
 	initialization(initData) {
 		this.historyChanges.deleteFirstItemHistory();
 
-		const mapArgumentsForHistory = new Map().set(1, initData);
+		this.versions.removeVersions();
 
-		const itemHistory = {
-			type: "initializing the data structure",
-			nameMethod: "initialization",
-			iterable: mapArgumentsForHistory,
-			accessModifier: "public",
-			currentVersion: this.totalVersions
-		};
-
-		this.historyChanges.registerChange(itemHistory);
-
-		if (initData === undefined) {
-			return null;
-		}
-
-		try {
-			for (const value of initData) {
-				if (initData instanceof Map) {
-					this.addFirst(value[1]);
-					continue;
-				}
-
-				this.addFirst(value);
-			}
-		} catch (err) {
-			throw new Error("The transmitted data cannot be used for the initialization list by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
-		}
+		super.initialization(initData);
 	}
 
 	addFirst(value) {
 		const { newLength, lastNode, firstNode } = super.addFirst(value);
 
-		if (newLength === 1) {
+		if (lastNode !== null && lastNode !== this.tail) {
+			this.tail = lastNode;
+		}
+
+		if (this.length === 1) {
 			this.tail = this.head;
 		}
 
-		if (lastNode !== null && lastNode !== this.tail) {
-			this.tail = lastNode;
+		if (this.versions.typeStructure === "TwoWayLinkedList") {
+			return this.length;
 		}
 
 		return { newLength, lastNode, firstNode };
@@ -57,6 +36,10 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 		if (newLength === 0) {
 			this.tail = null;
+		}
+
+		if (this.versions.typeStructure === "TwoWayLinkedList") {
+			return result;
 		}
 
 		return { newLength, lastNode, result, firstNode };
@@ -102,6 +85,10 @@ class TwoWayLinkedList extends OneWayLinkedList {
 		this.length++;
 
 		this.versions.totalVersions++;
+
+		if (this.versions.typeStructure === "TwoWayLinkedList") {
+			return this.length;
+		}
 
 		return { newLength: this.length, lastNode: this.tail, firstNode: this.head };
 	}
@@ -153,14 +140,22 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
+		if (this.versions.typeStructure === "TwoWayLinkedList") {
+			return deletedNode;
+		}
+
 		return { newLength: this.length, result: deletedNode, firstNode: this.head, lastNode: lastN };
 	}
 
-	set(configForValueNode, middleware) {
-		const { updatedNode, firstNode, lastNode, newTotalVersion } = super.set(configForValueNode, middleware);
+	set(configForValueNode, middlewareS) {
+		const { updatedNode, firstNode, lastNode, newTotalVersion } = super.set(configForValueNode, middlewareS);
 
 		if (lastNode !== null && lastNode !== this.tail) {
 			this.tail = lastNode;
+		}
+
+		if (this.versions.typeStructure === "TwoWayLinkedList") {
+			return updatedNode;
 		}
 
 		return { updatedNode, firstNode, lastNode, newTotalVersion };

@@ -182,4 +182,12 @@ class StoreVersions {
 
 		return this.snapshots.length;
 	}
+
+	removeVersions() {
+		this.totalVersions = 0;
+
+		this.snapshots = [];
+
+		return this.totalVersions;
+	}
 }

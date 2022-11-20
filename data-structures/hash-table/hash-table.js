@@ -1,8 +1,8 @@
 class HashTable {
-	constructor(defaultData) {
+	constructor(defaultData, iterableKeys) {
 		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
-		this.structure = this.#initialization(defaultData);
+		this.structure = this.#initialization(defaultData, iterableKeys);
 	}
 
 	[Symbol.iterator]() {
@@ -13,8 +13,8 @@ class HashTable {
 		return this.versions.totalVersions;
 	}
 
-	#initialization(initData, arrayKeys) {
-		const mapArgumentsForHistory = new Map().set(1, initData).set(2, arrayKeys);
+	#initialization(initData, iterableKeys) {
+		const mapArgumentsForHistory = new Map().set(1, initData).set(2, iterableKeys);
 
 		const itemHistory = {
 			type: "initializing the data structure",
@@ -26,7 +26,21 @@ class HashTable {
 
 		this.historyChanges.registerChange(itemHistory);
 
-		if (initData === undefined || arrayKeys === undefined) {
+		const isObject = initData !== null && typeof initData === "object" && !Array.isArray(initData) && !(initData instanceof Map) && !(initData instanceof Set);
+
+		if (isObject && iterableKeys === undefined) {
+			const cloneData = clone(initData);
+
+			const nodeHashTable = new NodePersistent(cloneData);
+
+			this.versions.registerVersion(nodeHashTable, this.totalVersions);
+
+			this.versions.totalVersions++;
+
+			return nodeHashTable;
+		}
+
+		if (initData === undefined || iterableKeys === undefined) {
 			const nodeHashTable = new NodePersistent({});
 
 			this.versions.registerVersion(nodeHashTable, this.totalVersions);
@@ -36,37 +50,35 @@ class HashTable {
 			return nodeHashTable;
 		}
 
-		const iteratorForSet = initData instanceof Set ? initData[Symbol.iterator]() : null;
+		const isNotIterable = initData[Symbol.iterator] === undefined || iterableKeys[Symbol.iterator] === undefined;
 
-		try {
-			const source = {};
+		if (isNotIterable) {
+			throw new Error("Data for initialization with values and an array of keys must be iterable.");
+		}
 
-			for (const key of arrayKeys) {
-				if (initData instanceof Map) {
-					source[key] = initData.get(key);
+		const source = {};
 
-					continue;
-				}
+		const iteratorInitData = initData[Symbol.iterator]();
 
-				if (initData instanceof Set) {
-					source[key] = iteratorForSet.next().value;
+		const isMap = initData instanceof Map;
 
-					continue;
-				}
-
-				source[key] = initData[key];
+		for (const key of iterableKeys) {
+			if (!(typeof key === "string")) {
+				throw new Error("Key for hashTable must have a string type.");
 			}
 
-			const nodeHashTable = new NodePersistent(source);
+			const val = iteratorInitData.next().value;
 
-			this.versions.registerVersion(nodeHashTable, this.totalVersions);
-
-			this.versions.totalVersions++
-
-			return nodeHashTable;
-		} catch(err) {
-			throw new Error("The transmitted data cannot be used for the initialization hashTable by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
+			source[key] = isMap ? val[1] : val;
 		}
+
+		const nodeHashTable = new NodePersistent(source);
+
+		this.versions.registerVersion(nodeHashTable, this.totalVersions);
+
+		this.versions.totalVersions++
+
+		return nodeHashTable;
 	}
 
 	set(configChange) {

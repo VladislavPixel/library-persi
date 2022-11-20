@@ -228,6 +228,6 @@ class RedBlackTree {
 			}
 		}
 
-		return -1;
+		return null;
 	}
 }

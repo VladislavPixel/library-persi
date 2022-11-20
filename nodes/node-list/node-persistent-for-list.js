@@ -46,7 +46,7 @@ class NodePersistent {
 			}
 		}
 
-		return -1;
+		return null;
 	}
 
 	addChange(numberVersion, change) {

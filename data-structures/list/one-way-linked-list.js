@@ -33,20 +33,19 @@ class OneWayLinkedList {
 		this.historyChanges.registerChange(itemHistory);
 
 		if (initData === undefined) {
+			this.versions.registerVersion(this.head, this.totalVersions);
+
+			this.versions.totalVersions++;
+
 			return null;
 		}
 
-		try {
-			for (const value of initData) {
-				if (initData instanceof Map) {
-					this.addFirst(value[1]);
-					continue;
-				}
-
-				this.addFirst(value);
-			}
-		} catch (err) {
+		if (initData[Symbol.iterator] === undefined) {
 			throw new Error("The transmitted data cannot be used for the initialization list by default. It is required to pass an iterable structure. Your default data should contain [Symbol.iterator] method.");
+		}
+
+		for (const valueInitData of initData) {
+			this.addFirst(valueInitData);
 		}
 	}
 
@@ -91,6 +90,10 @@ class OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
+		if (this.versions.typeStructure === "OneWayLinkedList") {
+			return this.length;
+		}
+
 		return { newLength: this.length, lastNode: lastN, firstNode: this.head };
 	}
 
@@ -131,6 +134,10 @@ class OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
+		if (this.versions.typeStructure === "OneWayLinkedList") {
+			return deletedNode;
+		}
+
 		return { newLength: this.length, lastNode: lastN, result: deletedNode, firstNode: this.head };
 	}
 
@@ -159,15 +166,15 @@ class OneWayLinkedList {
 			}
 		}
 
-		return -1;
+		return null;
 	}
 
-	set(configForValueNode, middleware) {
+	set(configForValueNode, middlewareS) {
 		if (this.length === 0) {
 			throw new Error("Method - set is not supported in Empty list.");
 		}
 
-		const mapArgumentsForHistory = new Map().set(1, configForValueNode).set(2, middleware);
+		const mapArgumentsForHistory = new Map().set(1, configForValueNode).set(2, middlewareS);
 
 		const itemHistory = {
 			type: "setting the value",
@@ -177,7 +184,7 @@ class OneWayLinkedList {
 			currentVersion: this.totalVersions
 		};
 
-		if (middleware === undefined) {
+		if (middlewareS === undefined) {
 			this.historyChanges.registerChange(itemHistory);
 
 			const { updatedNode, firstNode, lastNode } = this.head.set(configForValueNode, this.totalVersions);
@@ -192,12 +199,16 @@ class OneWayLinkedList {
 
 			this.versions.totalVersions++;
 
+			if (this.versions.typeStructure === "OneWayLinkedList") {
+				return updatedNode;
+			}
+
 			return { updatedNode, firstNode, lastNode, newTotalVersion: this.totalVersions };
 		}
 
-		const node = getResultComposeMiddleware.call(this, middleware);
+		const node = getResultComposeMiddleware.call(this, middlewareS);
 
-		if (node === -1) {
+		if (node === null) {
 			throw new Error("Node is not found in on your list for operation set().");
 		}
 
@@ -213,15 +224,19 @@ class OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
+		if (this.versions.typeStructure === "OneWayLinkedList") {
+			return updatedNode;
+		}
+
 		return { updatedNode, firstNode, lastNode, newTotalVersion: this.totalVersions };
 	}
 
-	get(numberVersion, pathNodeValue, middleware) {
+	get(numberVersion, pathNodeValue, middlewareS) {
 		if (this.length === 0) {
 			throw new Error("Method - get is not supported in Empty list.");
 		}
 
-		const mapArgumentsForHistory = new Map().set(1, numberVersion).set(2, pathNodeValue).set(3, middleware);
+		const mapArgumentsForHistory = new Map().set(1, numberVersion).set(2, pathNodeValue).set(3, middlewareS);
 
 		const isNumber = typeof numberVersion === "number";
 
@@ -239,7 +254,7 @@ class OneWayLinkedList {
 
 		this.historyChanges.registerChange(itemHistory);
 
-		if (middleware === undefined) {
+		if (middlewareS === undefined) {
 			const node = this.versions.at(numberVersion);
 
 			const { value, lastSegment } = node.getValueByPath(pathNodeValue);
@@ -249,9 +264,9 @@ class OneWayLinkedList {
 
 		let nodeForVersion = this.versions.at(numberVersion);
 
-		nodeForVersion = getResultComposeMiddleware.call(nodeForVersion, middleware);
+		nodeForVersion = getResultComposeMiddleware.call(nodeForVersion, middlewareS);
 
-		if (nodeForVersion === -1) {
+		if (nodeForVersion === null) {
 			throw new Error("The node was not found.");
 		}
 
