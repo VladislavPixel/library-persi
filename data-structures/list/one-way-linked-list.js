@@ -149,7 +149,7 @@ class OneWayLinkedList {
 		const iterator = this.getIteratorNewAndOldNodes();
 
 		for (const { latestVersionN, stockN } of iterator) {
-			if (typeof key !== "object" && key === latestVersionN.value) {
+			if (typeof key !== "object" && isIdentical(key, latestVersionN.value)) {
 				return stockN;
 			}
 
@@ -157,7 +157,7 @@ class OneWayLinkedList {
 				if (typeof key === "object") {
 					const { value, lastSegment } = latestVersionN.getValueByPath(key.path);
 
-					if (value[lastSegment] === key.value) {
+					if (isIdentical(value[lastSegment], key.value)) {
 						return stockN;
 					}
 				}

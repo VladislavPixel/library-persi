@@ -223,7 +223,7 @@ class RedBlackTree {
 		const iterator = this.getIteratorForFindMethod(key);
 
 		for (const node of iterator) {
-			if (node.key === key) {
+			if (isIdentical(node.key, key)) {
 				return node.value;
 			}
 		}

@@ -35,13 +35,13 @@ class NodePersistent {
 				try {
 					const { value: val, lastSegment } = node.getValueByPath(path);
 
-					if (val && val[lastSegment] === value) {
+					if (val && isIdentical(val[lastSegment], value)) {
 						return node;
 					}
 				} catch (err) {
 					continue;
 				}
-			} else if (node.value === key) {
+			} else if (isIdentical(node.value, key)) {
 				return node;
 			}
 		}
