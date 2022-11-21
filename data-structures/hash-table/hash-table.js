@@ -1,12 +1,14 @@
 class HashTable {
+	#structure;
+
 	constructor(iterableData, iterableKeys) {
 		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
-		this.structure = this.#initialization(iterableData, iterableKeys);
+		this.#structure = this.#initialization(iterableData, iterableKeys);
 	}
 
 	[Symbol.iterator]() {
-		return new IteratorKeysAndValues(this.structure);
+		return new IteratorKeysAndValues(this.#structure);
 	}
 
 	get totalVersions () {
@@ -105,10 +107,10 @@ class HashTable {
 			cloneLatestVersion.getValueByPath(configChange.path);
 		}
 
-		if (this.structure.changeLog.size === this.structure.MAX_CHANGES) {
-			this.structure = cloneLatestVersion;
+		if (this.#structure.changeLog.size === this.#structure.MAX_CHANGES) {
+			this.#structure = cloneLatestVersion;
 
-			this.versions.registerVersion(this.structure, this.totalVersions);
+			this.versions.registerVersion(this.#structure, this.totalVersions);
 		}
 
 		const correctChange = isObject && configChange.path === undefined ?
@@ -117,7 +119,7 @@ class HashTable {
 			configChange : 
 			({ value: configChange });
 
-		this.structure.addChange(this.totalVersions, correctChange);
+		this.#structure.addChange(this.totalVersions, correctChange);
 
 		this.versions.totalVersions++;
 
