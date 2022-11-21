@@ -20,7 +20,7 @@ class OneWayLinkedList {
 	}
 
 	initialization(iterable) {
-		const mapArgumentsForHistory = new Map().set(1,iterable);
+		const mapArgumentsForHistory = new Map().set(1, iterable);
 
 		const itemHistory = {
 			type: "initializing the data structure",
