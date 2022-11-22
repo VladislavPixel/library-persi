@@ -10,7 +10,7 @@ class IteratorForDepthReverse {
 	constructor(tree) {
 		this.#tree = tree;
 		this.#arrayNodes = [];
-    this.#auxiliaryTree = this.#tree;
+		this.#auxiliaryTree = this.#tree;
 		this.#lastWorkTreeNode = null;
 	}
 

@@ -23,7 +23,7 @@ class NodePersistentTree {
 		return new IteratorForWidthTraversal(this);
 	}
 
-	getIteratorForFindMethod(key) {
+	#getIteratorForFindMethod(key) {
 		return new IteratorForFindMethod(this, key);
 	}
 
@@ -66,7 +66,7 @@ class NodePersistentTree {
 	}
 
 	findByKey(key) {
-		const iterator = this.getIteratorForFindMethod(key);
+		const iterator = this.#getIteratorForFindMethod(key);
 
 		for (const node of iterator) {
 			if (isIdentical(node.key, key)) {

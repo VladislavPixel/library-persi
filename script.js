@@ -9,7 +9,9 @@
 
 //! RedBlackTree
 
-// const redBlackTree = new RedBlackTree();
+//const redBlackTree = new RedBlackTree();
+
+//redBlackTree.historyChanges.display()
 
 // redBlackTree.insert({ color: { brasketMoon: true, seal: 125 }, marker: 123 }, 100);
 // redBlackTree.insert("color", 25);
@@ -17,13 +19,37 @@
 // redBlackTree.insert("foo", 15);
 // redBlackTree.insert("zzz", 30);
 
+// const version1 = redBlackTree.versions.at(1)
+// version1.value.color = "blue"
+
+// console.log(version1);
+
+// console.log(redBlackTree);
+
+
+//redBlackTree.historyChanges.display()
+
+// let val = null
+
+// let index = 0
+
 // for (const value of redBlackTree.getIteratorForWidthTraversal()) {
-// 	console.log(value);
+//    if (index === 0) {
+//       val = value
+//    }
+//    index++
 // }
 
-//console.log(redBlackTree, "REDBLACK");
+// val.marker = 213123123123123123
 
-//console.log(redBlackTree.get(1, "value/color"));
+// console.log(val);
+
+
+
+// const val = redBlackTree.findByKey(175);
+// val.name = "MIX"
+
+//console.log(redBlackTree, "REDBLACK");
 
 // const searchNodeRedBlackTree = (tree) => {
 // 	const node = tree.findByKey(175);
@@ -31,7 +57,16 @@
 // 	return node;
 // }
 
-//console.log(redBlackTree.get(3, "value/moment", [searchNodeRedBlackTree]));
+//const val = redBlackTree.get(3, "value/moment", [searchNodeRedBlackTree])
+
+//val.viva = "lol"
+
+// console.log(val);
+
+// console.log(redBlackTree, "REDBLACK");
+//console.log(redBlackTree.historyChanges.at("-1"));
+
+//redBlackTree.historyChanges.display()
 
 //! DecQueue
 
