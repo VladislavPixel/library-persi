@@ -15,7 +15,7 @@ class StoreVersions {
 
 		const isAnyList = this.typeStructure === "DecQueue" || this.typeStructure === "Queue" || this.typeStructure === "Stack" || this.typeStructure === "DoublyLinkedList" || this.typeStructure === "OneWayLinkedList" || this.typeStructure === "TwoWayLinkedList";
 
-		const isAnyTree = this.typeStructure === "RedBlackTree";
+		const isAnyTree = this.typeStructure === "RedBlackTree" || this.typeStructure === "SetStructure";
 
 		if (isNumber && (isAnyList || isAnyTree)) {
 			return indexVersion;
@@ -117,11 +117,11 @@ class StoreVersions {
 			return null;
 		}
 
-		tree.left = this.#recursivelyCloneAllNodesForTree(tree.left);
-
-		tree.right = this.#recursivelyCloneAllNodesForTree(tree.right);
-
 		const clone = tree.getClone();
+
+		clone.left = this.#recursivelyCloneAllNodesForTree(clone.left);
+
+		clone.right = this.#recursivelyCloneAllNodesForTree(clone.right);
 
 		return clone;
 	}
@@ -139,7 +139,7 @@ class StoreVersions {
 			return node;
 		}
 
-		if (this.typeStructure === "RedBlackTree") {
+		if (this.typeStructure === "RedBlackTree" || this.typeStructure === "SetStructure") {
 			this.selectedVersion = index;
 
 			const cloneNode = node.getClone();
@@ -171,6 +171,7 @@ class StoreVersions {
 			case "Queue":
 			case "DecQueue":
 			case "RedBlackTree":
+			case "SetStructure":
 				return this.#atForPointerMachineModel(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);

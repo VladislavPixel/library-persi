@@ -1,11 +1,34 @@
 //! Set
+const valueForSet = { name: "mixer", age: 77 };
 
-//const set = new SetStructure(["name", "color", "green", 123]);
+const set = new SetStructure([{ vibla: "momi" }, "name", valueForSet, "color", "green", 123]);
 
-//set.add({ market: "boom" })
+// let valueSet = null;
+
+// for (const val of set.keys()) {
+//    console.log(val);
+//    valueSet = val;
+// }
+
+// valueSet.name = "CASR"
+
+set.add({ market: "boom" })
 
 
-//set.forEach((key, value, setIns) => console.log(`${key} = ${value}`, setIns))
+// set.forEach((key, value, setIns) => console.log(`${key} = ${value}`, setIns))
+
+
+//console.log(set.has(valueForSet));
+
+// const v0 = set.versions.at(0)
+// v0.left.value.vibla = "Vladislav"
+// v0.right.left.value.name = "pop"
+// console.log(v0);
+set.clear();
+
+console.log(set.versions.at(2));
+console.log(set);
+
 
 //! RedBlackTree
 

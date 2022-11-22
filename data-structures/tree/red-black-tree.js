@@ -1,8 +1,6 @@
 class RedBlackTree {
-	#root;
-
 	constructor() {
-		this.#root = null;
+		this.root = null;
 		this.length = 0;
 		this.versions = new StoreVersions(this.constructor.name);
 		this.historyChanges = new HistoryChanges();
@@ -10,23 +8,23 @@ class RedBlackTree {
 	}
 
 	[Symbol.iterator]() {
-		return new IteratorForDepthForward(this.#root);
+		return new IteratorForDepthForward(this.root);
 	}
 
 	getIteratorForDepthSymmetrical() {
-		return new IteratorForDepthSymmetrical(this.#root);
+		return new IteratorForDepthSymmetrical(this.root);
 	}
 
 	getIteratorForDepthReverse() {
-		return new IteratorForDepthReverse(this.#root);
+		return new IteratorForDepthReverse(this.root);
 	}
 
 	getIteratorForWidthTraversal() {
-		return new IteratorForWidthTraversal(this.#root);
+		return new IteratorForWidthTraversal(this.root);
 	}
 
 	#getIteratorForFindMethod(key) {
-		return new IteratorForFindMethod(this.#root, key);
+		return new IteratorForFindMethod(this.root, key);
 	}
 
 	get totalVersions() {
@@ -44,7 +42,7 @@ class RedBlackTree {
 
 		this.historyChanges.registerChange(itemHistory);
 
-		this.versions.registerVersion(this.#root, this.totalVersions);
+		this.versions.registerVersion(this.root, this.totalVersions);
 
 		this.versions.totalVersions++;
 	}
@@ -70,7 +68,7 @@ class RedBlackTree {
 	}
 
 	#updateColorsForNodeAndChildrens(node) {
-		if (node !== this.#root) {
+		if (node !== this.root) {
 			node.isRed = true;
 		}
 
@@ -79,12 +77,12 @@ class RedBlackTree {
 		node.right.isRed = false;
 	}
 
-	insert(value, key) {
+	insert(value, key, options) {
 		const mapArgumentsForHistory = new Map().set(1, value).set(2, key);
 
 		const itemHistory = {
 			type: "adding",
-			nameMethod: "insert",
+			nameMethod: options && options.nameMethodForHistory ? options.nameMethodForHistory : "insert",
 			iterable: mapArgumentsForHistory,
 			accessModifier: "public",
 			currentVersion: this.totalVersions
@@ -97,9 +95,9 @@ class RedBlackTree {
 		if (this.length === 0) {
 			newNode.isRed = false;
 
-			this.#root = newNode;
+			this.root = newNode;
 
-			this.versions.registerVersion(this.#root, this.totalVersions);
+			this.versions.registerVersion(this.root, this.totalVersions);
 
 			this.length++;
 
@@ -178,13 +176,13 @@ class RedBlackTree {
 			return { children: grandson, brokeRuleStatus: null, grandson: null };
 		}
 
-		this.#root = recLookPlaceAndInsert(this.#root).children;
+		this.root = recLookPlaceAndInsert(this.root).children;
 
-		if (this.#root && this.#root.isRed) {
-			this.#root.isRed = false;
+		if (this.root && this.root.isRed) {
+			this.root.isRed = false;
 		}
 
-		this.versions.registerVersion(this.#root, this.totalVersions);
+		this.versions.registerVersion(this.root, this.totalVersions);
 
 		this.length++;
 

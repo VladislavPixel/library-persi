@@ -1,4 +1,4 @@
-class SetStructure extends RedBlackTree{
+class SetStructure extends RedBlackTree {
 	constructor(iterable) {
 		super();
 		this.#initialization(iterable);
@@ -6,6 +6,14 @@ class SetStructure extends RedBlackTree{
 
 	[Symbol.iterator]() {
 		return new IteratorInInsertionOrder(this);
+	}
+
+	#getIteratorOverNativeValues() {
+		return new IteratorOverNativeValues(this);
+	}
+
+	get size() {
+		return this.length;
 	}
 
 	entries() {
@@ -26,10 +34,6 @@ class SetStructure extends RedBlackTree{
 		for (const value of this) {
 			callbackFn.call(correctThis, value, value, this);
 		}
-	}
-
-	#getIteratorForDepthForward() {
-		return new IteratorForDepthForward(this.root);
 	}
 
 	#initialization(iterable) {
@@ -66,16 +70,12 @@ class SetStructure extends RedBlackTree{
 		this.versions.totalVersions++;
 	}
 
-	get size() {
-		return this.length;
-	}
-
 	has(value) {
 		if (this.length === 0) {
 			return false;
 		}
 
-		const iterator = this.#getIteratorForDepthForward();
+		const iterator = this.#getIteratorOverNativeValues();
 
 		for (const val of iterator) {
 			if (sameValueZero(val, value)) {
@@ -108,5 +108,9 @@ class SetStructure extends RedBlackTree{
 		this.root = null;
 
 		this.length = 0;
+
+		this.versions.registerVersion(this.root, this.totalVersions);
+
+		this.versions.totalVersions++;
 	}
 }
