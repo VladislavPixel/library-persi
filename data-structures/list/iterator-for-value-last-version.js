@@ -1,6 +1,8 @@
 class IteratorForValueLastVersion {
+	#list;
+
 	constructor(list) {
-		this.list = list;
+		this.#list = list;
 	}
 
 	[Symbol.iterator]() {
@@ -8,15 +10,15 @@ class IteratorForValueLastVersion {
 	}
 
 	next() {
-		if (this.list === null) {
+		if (this.#list === null) {
 			return { value: undefined, done: true };
 		}
 
-		const nodeLatestVersion = this.list.applyListChanges();
+		const nodeLatestVersion = this.#list.applyListChanges();
 
 		const clone = nodeLatestVersion.getClone();
 
-		this.list = nodeLatestVersion.next;
+		this.#list = nodeLatestVersion.next;
 
 		return { value: clone.value, done: false };
 	}

@@ -1,6 +1,8 @@
 class IteratorForReverseValueLastVersion {
+	#tailList;
+
 	constructor(tailList) {
-		this.tailList = tailList;
+		this.#tailList = tailList;
 	}
 
 	[Symbol.iterator]() {
@@ -8,15 +10,15 @@ class IteratorForReverseValueLastVersion {
 	}
 
 	next() {
-		if (this.tailList === null) {
+		if (this.#tailList === null) {
 			return { value: undefined, done: true };
 		}
 
-		const nodeLatestVersion = this.tailList.applyListChanges();
+		const nodeLatestVersion = this.#tailList.applyListChanges();
 
 		const clone = nodeLatestVersion.getClone();
 
-		this.tailList = nodeLatestVersion.prev;
+		this.#tailList = nodeLatestVersion.prev;
 
 		return { value: clone.value, done: false };
 	}

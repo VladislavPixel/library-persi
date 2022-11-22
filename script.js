@@ -1,7 +1,7 @@
 //! Set
-const valueForSet = { name: "mixer", age: 77 };
+//const valueForSet = { name: "mixer", age: 77 };
 
-const set = new SetStructure([{ vibla: "momi" }, "name", valueForSet, "color", "green", 123]);
+//const set = new SetStructure([{ vibla: "momi" }, "name", valueForSet, "color", "green", 123]);
 
 // let valueSet = null;
 
@@ -12,7 +12,7 @@ const set = new SetStructure([{ vibla: "momi" }, "name", valueForSet, "color", "
 
 // valueSet.name = "CASR"
 
-set.add({ market: "boom" })
+//set.add({ market: "boom" })
 
 
 // set.forEach((key, value, setIns) => console.log(`${key} = ${value}`, setIns))
@@ -24,10 +24,10 @@ set.add({ market: "boom" })
 // v0.left.value.vibla = "Vladislav"
 // v0.right.left.value.name = "pop"
 // console.log(v0);
-set.clear();
+// set.clear();
 
-console.log(set.versions.at(2));
-console.log(set);
+// console.log(set.versions.at(2));
+// console.log(set);
 
 
 //! RedBlackTree
@@ -311,18 +311,22 @@ console.log(set);
 // console.log("Структура: ", persistentHashTable);
 
 //! OneWayLinkedList
-// const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
+const persistentOneWayLinkedList = new OneWayLinkedList(["pixel"]);
 
-// persistentOneWayLinkedList.addFirst(100);
-// persistentOneWayLinkedList.addFirst(777);
+persistentOneWayLinkedList.addFirst(100);
+persistentOneWayLinkedList.addFirst(777);
 
-// persistentOneWayLinkedList.set({ value: 125 });
-// persistentOneWayLinkedList.set({ value: 555 });
-// persistentOneWayLinkedList.set({ value: 888 });
-// persistentOneWayLinkedList.set({ value: 1000 });
-// persistentOneWayLinkedList.set({ path: "value", value: "space" });
-// persistentOneWayLinkedList.set({ path: "value", value: 24 });
-// persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
+persistentOneWayLinkedList.set({ value: 125 });
+
+for (const val of persistentOneWayLinkedList.getIteratorNewAndOldNodes()) {
+   console.log(val, "VALUE ONEWAY");
+}
+persistentOneWayLinkedList.set({ value: 555 });
+persistentOneWayLinkedList.set({ value: 888 });
+persistentOneWayLinkedList.set({ value: 1000 });
+persistentOneWayLinkedList.set({ path: "value", value: "space" });
+persistentOneWayLinkedList.set({ path: "value", value: 24 });
+persistentOneWayLinkedList.set({ path: "value", value: 2555502 });
 
 
 // console.log(persistentOneWayLinkedList.versions.at(-1), "persistentOneWayLinkedList");
@@ -333,7 +337,7 @@ console.log(set);
 // }
 // persistentOneWayLinkedList.set({ value: 4444444 }, [searchNodeFn1]);
 
-// console.log(persistentOneWayLinkedList, "Структура");
+console.log(persistentOneWayLinkedList, "Структура");
 
 // const newSet = new Map();
 

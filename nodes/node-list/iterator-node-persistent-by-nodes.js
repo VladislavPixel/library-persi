@@ -1,6 +1,8 @@
 class IteratorNodePersistentByNodes {
+	#nodePersistent;
+
 	constructor(node) {
-		this.nodePersistent = node;
+		this.#nodePersistent = node;
 	}
 
 	[Symbol.iterator]() {
@@ -8,13 +10,13 @@ class IteratorNodePersistentByNodes {
 	}
 
 	next() {
-		if (this.nodePersistent === null) {
+		if (this.#nodePersistent === null) {
 			return { value: undefined, done: true };
 		}
 
-		const currentNode = this.nodePersistent;
+		const currentNode = this.#nodePersistent;
 
-		this.nodePersistent = this.nodePersistent.next;
+		this.#nodePersistent = this.#nodePersistent.next;
 
 		return { value: currentNode, done: false };
 	}

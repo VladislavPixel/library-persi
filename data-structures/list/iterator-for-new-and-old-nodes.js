@@ -1,6 +1,8 @@
 class IteratorForNewAndOldNodes {
+	#list;
+
 	constructor(list) {
-		this.list = list;
+		this.#list = list;
 	}
 
 	[Symbol.iterator]() {
@@ -8,15 +10,15 @@ class IteratorForNewAndOldNodes {
 	}
 
 	next() {
-		if (this.list === null) {
+		if (this.#list === null) {
 			return { value: undefined, done: true };
 		}
 
-		const current = this.list;
+		const current = this.#list;
 
-		const currentNodeLatestVersion = this.list.applyListChanges();
+		const currentNodeLatestVersion = this.#list.applyListChanges();
 
-		this.list = currentNodeLatestVersion.next;
+		this.#list = currentNodeLatestVersion.next;
 
 		return { value: { latestVersionN: currentNodeLatestVersion, stockN: current }, done: false };
 	}
