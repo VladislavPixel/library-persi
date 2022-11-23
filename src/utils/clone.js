@@ -1,6 +1,4 @@
-const prefixLinkToValue = "[[VAL_REF:";
-
-const prefixLinkToYourself = "[[PREFIX_YOURSELF:base]]";
+import { PREFIX_LINK_TO_VALUE, PREFIX_LINK_TO_YOURSELF } from "./constants";
 
 function fastClone(value) {
 	if (!Boolean(value)) {
@@ -74,7 +72,7 @@ function fastClone(value) {
 	const functionToJSON = Function.prototype["toJSON"];
 
 	function toJSON() {
-		const key = valMap.get(this) ?? `${prefixLinkToValue}${Math.random()}]]`;
+		const key = valMap.get(this) ?? `${PREFIX_LINK_TO_VALUE}${Math.random()}]]`;
 
 		valMap.set(this, key);
 
@@ -105,7 +103,7 @@ function createSerializer(base) {
 
 	return (key, value) => {
 		if (init && value === base) {
-			value = prefixLinkToYourself;
+			value = PREFIX_LINK_TO_YOURSELF;
 
 		} else {
 			init = true;
@@ -117,11 +115,11 @@ function createSerializer(base) {
 
 function createParser(base, valMap) {
 	return (key, value) => {
-		if (value === prefixLinkToYourself) {
+		if (value === PREFIX_LINK_TO_YOURSELF) {
 			return base;
 		}
 
-		if (typeof value === "string" && value.startsWith(prefixLinkToValue)) {
+		if (typeof value === "string" && value.startsWith(PREFIX_LINK_TO_VALUE)) {
 			const resolvedValue = valMap.get(value);
 
 			if (resolvedValue !== undefined) {
@@ -149,3 +147,5 @@ function clone(value) {
 
 	return clone;
 }
+
+export default clone;

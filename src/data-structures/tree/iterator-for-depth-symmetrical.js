@@ -41,3 +41,5 @@ class IteratorForDepthSymmetrical {
 		return { value: undefined, done: true };
 	}
 }
+
+export default IteratorForDepthSymmetrical;

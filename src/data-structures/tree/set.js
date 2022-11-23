@@ -1,3 +1,9 @@
+import RedBlackTree from "./red-black-tree";
+import IteratorEntries from "./iterator-entries";
+import IteratorInInsertionOrder from "./iterator-in-insertion-order";
+import IteratorOverNativeValues from "./iterator-over-native-values";
+import sameValueZero from "../../utils/same-value-zero";
+
 class SetStructure extends RedBlackTree {
 	constructor(iterable) {
 		super();
@@ -114,3 +120,5 @@ class SetStructure extends RedBlackTree {
 		this.versions.totalVersions++;
 	}
 }
+
+export default SetStructure;

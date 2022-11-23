@@ -5,3 +5,5 @@ function sameValueZero(x, y) {
 
 	return x === y;
 }
+
+export default sameValueZero;

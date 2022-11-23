@@ -2,9 +2,14 @@
   "name": "persi",
   "version": "1.0.0",
   "description": "The library provides an API for creating persistent structural data.",
-  "main": "index.js",
+  "main": "./dist/common.js",
+	"module": "./dist/main.js",
+	"type": "module",
+	"source": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+		"start": "parcel",
+    "build": "parcel build --no-source-maps --no-cache",
+		"watch": "parcel watch"
   },
   "repository": {
     "type": "git",
@@ -15,10 +20,13 @@
     "data",
     "data-structure"
   ],
-  "author": "pixel.",
+  "author": "pixel. <pixel.develop@yandex.ru>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/VladislavPixel/library-persi-2/issues"
   },
-  "homepage": "https://github.com/VladislavPixel/library-persi-2#readme"
+  "homepage": "https://github.com/VladislavPixel/library-persi-2#readme",
+  "devDependencies": {
+    "parcel": "^2.8.0"
+  }
 }

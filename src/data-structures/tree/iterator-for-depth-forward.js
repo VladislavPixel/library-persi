@@ -41,3 +41,5 @@ class IteratorForDepthForward {
 		return { value: undefined, done: true };
 	}
 }
+
+export default IteratorForDepthForward;

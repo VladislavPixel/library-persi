@@ -1,3 +1,5 @@
+import DoublyLinkedList from "./doubly-linked-list";
+
 class Stack extends DoublyLinkedList {
 	constructor() {
 		super();
@@ -35,3 +37,5 @@ class Stack extends DoublyLinkedList {
 		return clone.value;
 	}
 }
+
+export default Stack;

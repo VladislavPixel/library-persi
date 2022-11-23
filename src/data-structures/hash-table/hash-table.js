@@ -1,3 +1,9 @@
+import StoreVersions from "../../versions/store-versions";
+import HistoryChanges from "../../history/history-changes";
+import IteratorKeysAndValues from "./iterator-keys-and-values";
+import NodePersistent from "../../nodes/node-list/node-persistent-for-list";
+import clone from "../../utils/clone";
+
 class HashTable {
 	#structure;
 
@@ -154,3 +160,5 @@ class HashTable {
 		return value[lastSegment];
 	}
 }
+
+export default HashTable;

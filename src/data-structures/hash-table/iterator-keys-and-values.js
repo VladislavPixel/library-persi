@@ -1,3 +1,5 @@
+import clone from "../../utils/clone";
+
 class IteratorKeysAndValues {
 	#nodeHashTableLatestVersion;
 
@@ -27,3 +29,5 @@ class IteratorKeysAndValues {
 		return { value, done: false };
 	}
 }
+
+export default IteratorKeysAndValues;

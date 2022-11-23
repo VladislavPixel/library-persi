@@ -1,3 +1,5 @@
+import DoublyLinkedList from "./doubly-linked-list";
+
 class Queue extends DoublyLinkedList {
 	constructor() {
 		super();
@@ -41,3 +43,5 @@ class Queue extends DoublyLinkedList {
 		return clone.value;
 	}
 }
+
+export default Queue;

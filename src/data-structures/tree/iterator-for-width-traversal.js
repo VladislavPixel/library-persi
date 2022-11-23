@@ -39,3 +39,5 @@ class IteratorForWidthTraversal {
 		return { value: undefined, done: true };
 	}
 }
+
+export default IteratorForWidthTraversal;

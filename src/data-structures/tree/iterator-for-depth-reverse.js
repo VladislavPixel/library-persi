@@ -49,3 +49,5 @@ class IteratorForDepthReverse {
 		return { value: undefined, done: true };
 	}
 }
+
+export default IteratorForDepthReverse;

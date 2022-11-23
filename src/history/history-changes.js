@@ -1,3 +1,5 @@
+import ItemHistory from "./item-history";
+
 class HistoryChanges {
 	#selectedIndexHistory;
 
@@ -72,3 +74,5 @@ class HistoryChanges {
 		return item;
 	}
 }
+
+export default HistoryChanges;

@@ -1,3 +1,15 @@
+import StoreVersions from "../../versions/store-versions";
+import HistoryChanges from "../../history/history-changes";
+import IteratorForDepthForward from "./iterator-for-depth-forward";
+import IteratorForDepthSymmetrical from "./iterator-for-depth-symmetrical";
+import IteratorForDepthReverse from "./iterator-for-depth-reverse";
+import IteratorForWidthTraversal from "./iterator-for-width-traversal";
+import IteratorForFindMethod from "./iterator-for-find-method";
+import NodePersistentTree from "../../nodes/node-tree/node-persistent-for-tree";
+import clone from "../../utils/clone";
+import getResultComposeMiddleware from "../../utils/get-result-compose-middleware";
+import isIdentical from "../../utils/is-identical";
+
 class RedBlackTree {
 	constructor() {
 		this.root = null;
@@ -283,3 +295,5 @@ class RedBlackTree {
 		return value[lastSegment];
 	}
 }
+
+export default RedBlackTree;

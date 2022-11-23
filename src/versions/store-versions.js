@@ -1,3 +1,15 @@
+import {
+	ONE_WAY_LINKED_LIST,
+	HASH_TABLE,
+	TWO_WAY_LINKED_LIST,
+	DOUBLY_LINKED_LIST,
+	QUEUE,
+	DEC_QUEUE,
+	STACK,
+	RED_BLACK_TREE,
+	SET_STRUCTURE
+} from "../utils/constants";
+
 class StoreVersions {
 	constructor(typeStructure) {
 		this.typeStructure = typeStructure;
@@ -13,9 +25,9 @@ class StoreVersions {
 
 		const isNumber = typeof indexVersion === "number";
 
-		const isAnyList = this.typeStructure === "DecQueue" || this.typeStructure === "Queue" || this.typeStructure === "Stack" || this.typeStructure === "DoublyLinkedList" || this.typeStructure === "OneWayLinkedList" || this.typeStructure === "TwoWayLinkedList";
+		const isAnyList = this.typeStructure === DEC_QUEUE || this.typeStructure === QUEUE || this.typeStructure === STACK || this.typeStructure === DOUBLY_LINKED_LIST || this.typeStructure === ONE_WAY_LINKED_LIST || this.typeStructure === TWO_WAY_LINKED_LIST;
 
-		const isAnyTree = this.typeStructure === "RedBlackTree" || this.typeStructure === "SetStructure";
+		const isAnyTree = this.typeStructure === RED_BLACK_TREE || this.typeStructure === SET_STRUCTURE;
 
 		if (isNumber && (isAnyList || isAnyTree)) {
 			return indexVersion;
@@ -139,7 +151,7 @@ class StoreVersions {
 			return node;
 		}
 
-		if (this.typeStructure === "RedBlackTree" || this.typeStructure === "SetStructure") {
+		if (this.typeStructure === RED_BLACK_TREE || this.typeStructure === SET_STRUCTURE) {
 			this.selectedVersion = index;
 
 			const cloneNode = node.getClone();
@@ -162,16 +174,16 @@ class StoreVersions {
 		}
 
 		switch (this.typeStructure) {
-			case "HashTable":
+			case HASH_TABLE:
 				return this.#atForHashTable(indexVersion);
-			case "OneWayLinkedList":
-			case "TwoWayLinkedList":
-			case "DoublyLinkedList":
-			case "Stack":
-			case "Queue":
-			case "DecQueue":
-			case "RedBlackTree":
-			case "SetStructure":
+			case ONE_WAY_LINKED_LIST:
+			case TWO_WAY_LINKED_LIST:
+			case DOUBLY_LINKED_LIST:
+			case STACK:
+			case QUEUE:
+			case DEC_QUEUE:
+			case RED_BLACK_TREE:
+			case SET_STRUCTURE:
 				return this.#atForPointerMachineModel(indexVersion);
 			default:
 				throw new Error(`Operation at() is not supported for the selected structure type. Your chosen type ${this.typeStructure}.`);
@@ -192,3 +204,5 @@ class StoreVersions {
 		return this.totalVersions;
 	}
 }
+
+export default StoreVersions;

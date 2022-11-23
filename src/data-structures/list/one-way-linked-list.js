@@ -1,3 +1,12 @@
+import StoreVersions from "../../versions/store-versions";
+import HistoryChanges from "../../history/history-changes";
+import IteratorForValueLastVersion from "./iterator-for-value-last-version";
+import IteratorForNewAndOldNodes from "./iterator-for-new-and-old-nodes";
+import NodePersistent from "../../nodes/node-list/node-persistent-for-list";
+import getResultComposeMiddleware from "../../utils/get-result-compose-middleware";
+import isIdentical from "../../utils/is-identical";
+import { ONE_WAY_LINKED_LIST } from "../../utils/constants";
+
 class OneWayLinkedList {
 	constructor(iterable) {
 		this.head = null;
@@ -90,7 +99,7 @@ class OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
-		if (this.versions.typeStructure === "OneWayLinkedList") {
+		if (this.versions.typeStructure === ONE_WAY_LINKED_LIST) {
 			return this.length;
 		}
 
@@ -134,7 +143,7 @@ class OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
-		if (this.versions.typeStructure === "OneWayLinkedList") {
+		if (this.versions.typeStructure === ONE_WAY_LINKED_LIST) {
 			return deletedNode;
 		}
 
@@ -199,7 +208,7 @@ class OneWayLinkedList {
 
 			this.versions.totalVersions++;
 
-			if (this.versions.typeStructure === "OneWayLinkedList") {
+			if (this.versions.typeStructure === ONE_WAY_LINKED_LIST) {
 				return updatedNode;
 			}
 
@@ -224,7 +233,7 @@ class OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
-		if (this.versions.typeStructure === "OneWayLinkedList") {
+		if (this.versions.typeStructure === ONE_WAY_LINKED_LIST) {
 			return updatedNode;
 		}
 
@@ -275,3 +284,5 @@ class OneWayLinkedList {
 		return value[lastSegment];
 	}
 }
+
+export default OneWayLinkedList;

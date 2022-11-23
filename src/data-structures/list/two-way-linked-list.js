@@ -1,3 +1,7 @@
+import OneWayLinkedList from "./one-way-linked-list";
+import NodePersistent from "../../nodes/node-list/node-persistent-for-list";
+import { TWO_WAY_LINKED_LIST } from "../../utils/constants";
+
 class TwoWayLinkedList extends OneWayLinkedList {
 	constructor(iterable) {
 		super();
@@ -24,7 +28,7 @@ class TwoWayLinkedList extends OneWayLinkedList {
 			this.tail = this.head;
 		}
 
-		if (this.versions.typeStructure === "TwoWayLinkedList") {
+		if (this.versions.typeStructure === TWO_WAY_LINKED_LIST) {
 			return this.length;
 		}
 
@@ -38,7 +42,7 @@ class TwoWayLinkedList extends OneWayLinkedList {
 			this.tail = null;
 		}
 
-		if (this.versions.typeStructure === "TwoWayLinkedList") {
+		if (this.versions.typeStructure === TWO_WAY_LINKED_LIST) {
 			return result;
 		}
 
@@ -86,7 +90,7 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
-		if (this.versions.typeStructure === "TwoWayLinkedList") {
+		if (this.versions.typeStructure === TWO_WAY_LINKED_LIST) {
 			return this.length;
 		}
 
@@ -140,7 +144,7 @@ class TwoWayLinkedList extends OneWayLinkedList {
 
 		this.versions.totalVersions++;
 
-		if (this.versions.typeStructure === "TwoWayLinkedList") {
+		if (this.versions.typeStructure === TWO_WAY_LINKED_LIST) {
 			return deletedNode;
 		}
 
@@ -154,10 +158,12 @@ class TwoWayLinkedList extends OneWayLinkedList {
 			this.tail = lastNode;
 		}
 
-		if (this.versions.typeStructure === "TwoWayLinkedList") {
+		if (this.versions.typeStructure === TWO_WAY_LINKED_LIST) {
 			return updatedNode;
 		}
 
 		return { updatedNode, firstNode, lastNode, newTotalVersion };
 	}
 }
+
+export default TwoWayLinkedList;

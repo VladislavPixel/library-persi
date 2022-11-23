@@ -28,3 +28,5 @@ class IteratorForFindMethod {
 		return { value: current, done: false };
 	}
 }
+
+export default IteratorForFindMethod;

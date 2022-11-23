@@ -1,3 +1,5 @@
+import toJSONValue from "../utils/to-json-value";
+
 class ItemHistory {
 	constructor(type, nameMethod, iterable, accessModifier, currentVersion) {
 		this.type = type;
@@ -23,3 +25,5 @@ class ItemHistory {
 		return `Method: ${this.nameMethod}; Message: ${this.type};`;
 	}
 }
+
+export default ItemHistory;

@@ -21,3 +21,5 @@ class IteratorNodePersistentByNodes {
 		return { value: currentNode, done: false };
 	}
 }
+
+export default IteratorNodePersistentByNodes;

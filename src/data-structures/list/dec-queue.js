@@ -1,3 +1,5 @@
+import DoublyLinkedList from "./doubly-linked-list";
+
 class DecQueue extends DoublyLinkedList {
 	constructor() {
 		super();
@@ -69,3 +71,5 @@ class DecQueue extends DoublyLinkedList {
 		return clone.value;
 	}
 }
+
+export default DecQueue;

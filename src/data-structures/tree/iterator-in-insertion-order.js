@@ -1,3 +1,5 @@
+import clone from "../../utils/clone";
+
 class IteratorInInsertionOrder {
 	#root;
 
@@ -31,3 +33,5 @@ class IteratorInInsertionOrder {
 		return { value: cloneValue, done: false };
 	}
 }
+
+export default IteratorInInsertionOrder;

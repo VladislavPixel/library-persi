@@ -23,3 +23,5 @@ class IteratorForNewAndOldNodes {
 		return { value: { latestVersionN: currentNodeLatestVersion, stockN: current }, done: false };
 	}
 }
+
+export default IteratorForNewAndOldNodes;

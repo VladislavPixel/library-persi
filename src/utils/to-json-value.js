@@ -31,3 +31,5 @@ const toJSONValue = (value) => {
 
 	return result;
 }
+
+export default toJSONValue;

@@ -29,3 +29,5 @@ class IteratorOverNativeValues {
 		return { value: value, done: false };
    }
 }
+
+export default IteratorOverNativeValues;

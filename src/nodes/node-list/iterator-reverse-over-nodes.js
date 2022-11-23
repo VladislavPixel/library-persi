@@ -25,3 +25,5 @@ class IteratorReverseOverNodes {
 		return { value: correctNode, done: false };
 	}
 }
+
+export default IteratorReverseOverNodes;

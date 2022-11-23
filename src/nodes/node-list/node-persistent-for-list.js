@@ -1,3 +1,8 @@
+import IteratorNodePersistentByNodes from "./iterator-node-persistent-by-nodes";
+import IteratorReverseOverNodes from "./iterator-reverse-over-nodes";
+import clone from "../../utils/clone";
+import isIdentical from "../../utils/is-identical";
+
 class NodePersistent {
 	constructor(value) {
 		this.value = value;
@@ -183,3 +188,5 @@ class NodePersistent {
 		return { updatedNode, firstNode, lastNode };
 	}
 }
+
+export default NodePersistent;

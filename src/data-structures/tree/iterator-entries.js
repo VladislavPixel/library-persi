@@ -1,3 +1,5 @@
+import clone from "../../utils/clone";
+
 class IteratorEntries {
 	#root;
 
@@ -31,3 +33,5 @@ class IteratorEntries {
 		return { value: [cloneValue, cloneValue], done: false };
 	}
 }
+
+export default IteratorEntries;

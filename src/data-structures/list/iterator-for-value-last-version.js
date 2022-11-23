@@ -23,3 +23,5 @@ class IteratorForValueLastVersion {
 		return { value: clone.value, done: false };
 	}
 }
+
+export default IteratorForValueLastVersion;

@@ -15,3 +15,5 @@ function getResultComposeMiddleware(middlewareS) {
 
 	throw new Error("The return value from compose Middleware must be a node instance or in the worst case null.");
 }
+
+export default getResultComposeMiddleware;
