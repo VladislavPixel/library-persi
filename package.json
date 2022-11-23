@@ -1,0 +1,24 @@
+{
+  "name": "persi",
+  "version": "1.0.0",
+  "description": "The library provides an API for creating persistent structural data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladislavPixel/library-persi-2.git"
+  },
+  "keywords": [
+    "persi",
+    "data",
+    "data-structure"
+  ],
+  "author": "pixel.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladislavPixel/library-persi-2/issues"
+  },
+  "homepage": "https://github.com/VladislavPixel/library-persi-2#readme"
+}
